@@ -156,7 +156,7 @@
 
 <h2>Keys</h2>
 
-<p>Keys可以在DOM中的某些元素被增加或删除的时候帮助React识别那些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识。</p>
+<p>Keys可以在DOM中的某些元素被增加或删除的时候帮助React识别哪些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识。</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
 <span class="kr">const</span> <span class="nx">listItems</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">number</span><span class="p">)</span> <span class="o">=&gt;</span>
 <span class="hll">  <span class="o">&lt;</span><span class="nx">li</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">number</span><span class="p">.</span><span class="nx">toString</span><span class="p">()}</span><span class="o">&gt;</span>
