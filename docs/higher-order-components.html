@@ -76,11 +76,9 @@
 
     <p>高阶组件（HOC）是react中对组件逻辑进行重用的高级技术。但高阶组件本身并不是React API。它只是一种模式，这种模式是由react自身的组合性质必然产生的。</p>
 
-<p>具体而言，<strong>高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件</strong>
-<code>js
-const EnhancedComponent = higherOrderComponent(WrappedComponent);
-</code></p>
-
+<p>具体而言，<strong>高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">EnhancedComponent</span> <span class="o">=</span> <span class="nx">higherOrderComponent</span><span class="p">(</span><span class="nx">WrappedComponent</span><span class="p">);</span>
+</code></pre></div>
 <p>对比组件将props属性转变成UI，高阶组件则是将一个组件转换成另一个新组件。</p>
 
 <p>高阶组件在React第三方库中很常见，比如Redux的<a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options"><code>connect</code></a>方法和Relay的<a href="https://facebook.github.io/relay/docs/api-reference-relay.html#createcontainer-static-method"><code>createContainer</code></a>.</p>
@@ -316,22 +314,21 @@ const EnhancedComponent = higherOrderComponent(WrappedComponent);
 </code></pre></div>
 <p>换句话说，<code>connect</code> 是一个返回高阶组件的高阶函数！</p>
 
-<p>这种形式有点让人迷惑，有点多余，但是它有一个有用的属性。那就是，类似 <code>connect</code> 函数返回的单参数的高阶组件有着这样的签名格式， &#39;Component =&gt; Component&#39;。输入和输出类型相同的函数是很容易组合在一起。
-&lt;!-- 对以下代码的个人理解：第一段代码对初始组件进行了两次包装；第二段代码就是函数的柯里化 --&gt;
-```js
-// 不要这样做……
-const EnhancedComponent = connect(commentSelector)(withRouter(WrappedComponent))</p>
+<p>这种形式有点让人迷惑，有点多余，但是它有一个有用的属性。那就是，类似 <code>connect</code> 函数返回的单参数的高阶组件有着这样的签名格式， <code>Component =&gt; Component</code>.输入和输出类型相同的函数是很容易组合在一起。</p>
 
-<p>// ……你可以使用一个功能组合工具
-// compose(f, g, h) 和 (...args) =&gt; f(g(h(...args)))是一样的
-const enhance = compose(
-  // 这些都是单参数的高阶组件
-  connect(commentSelector),
-  withRouter
-)
-const EnhancedComponent = enhance(WrappedComponent)
-```</p>
+<!-- 对以下代码的个人理解：第一段代码对初始组件进行了两次包装；第二段代码就是函数的柯里化 -->
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// 不要这样做……</span>
+<span class="kr">const</span> <span class="nx">EnhancedComponent</span> <span class="o">=</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">commentSelector</span><span class="p">)(</span><span class="nx">withRouter</span><span class="p">(</span><span class="nx">WrappedComponent</span><span class="p">))</span>
 
+<span class="c1">// ……你可以使用一个功能组合工具</span>
+<span class="c1">// compose(f, g, h) 和 (...args) =&gt; f(g(h(...args)))是一样的</span>
+<span class="kr">const</span> <span class="nx">enhance</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span>
+  <span class="c1">// 这些都是单参数的高阶组件</span>
+  <span class="nx">connect</span><span class="p">(</span><span class="nx">commentSelector</span><span class="p">),</span>
+  <span class="nx">withRouter</span>
+<span class="p">)</span>
+<span class="kr">const</span> <span class="nx">EnhancedComponent</span> <span class="o">=</span> <span class="nx">enhance</span><span class="p">(</span><span class="nx">WrappedComponent</span><span class="p">)</span>
+</code></pre></div>
 <p>（<code>connect</code>函数产生的高阶组件和其它增强型高阶组件具有同样的被用作装饰器的能力。）</p>
 
 <p>包括lodash（比如说<a href="https://lodash.com/docs/#flowRight"><code>lodash.flowRight</code></a>）, <a href="http://redux.js.org/docs/api/compose.html"><code>Redux</code></a> 和 <a href="http://ramdajs.com/docs/#compose"><code>Ramda</code></a>在内的许多第三方库都提供了类似<code>compose</code>功能的函数。</p>
