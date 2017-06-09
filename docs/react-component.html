@@ -273,9 +273,10 @@
 <h3><code>setState()</code></h3>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">setState</span><span class="p">(</span><span class="nx">updater</span><span class="p">,</span> <span class="p">[</span><span class="nx">callback</span><span class="p">])</span>
 </code></pre></div>
-<p><code>setState()</code>队列改变组件状态病告诉React该组件及其子组件需要用更新的状态来重新渲染。这是用于响应事件处理和服务端响应的更新用户界面的主要方式。</p>
+<p><code>setState()</code>将需要处理的变化塞入（译者注：setState源码中将一个需要改变的变化存放到组件的state对象中，采用队列处理）组件的state对象中，
+并告诉该组件及其子组件需要用更新的状态来重新渲染。这是用于响应事件处理和服务端响应的更新用户界面的主要方式。</p>
 
-<p>将<code>setState()</code>认为是一次<em>请求</em>而不是一次立即执行更新组件的命令。为了更为客观的性能，React可能会推迟它，而后在一次传递中更新几个组件。React不会保证被立刻应用状态的改变。</p>
+<p>将<code>setState()</code>认为是一次<em>请求</em>而不是一次立即执行更新组件的命令。为了更为客观的性能，React可能会推迟它，稍后会一次性更新这些组件。React不会保证在setState之后，能够立刻拿到改变的结果。</p>
 
 <p><code>setState()</code>不是立刻更新组件。其可能是批处理或推迟更新。这使得在调用<code>setState()</code>后立刻读取<code>this.state</code>的一个潜在陷阱。代替地，使用<code>componentDidUpdate</code>或一个<code>setState</code>回调（<code>setState(updater, callback)</code>），当中的每个方法都会保证在更新被应用之后触发。若你需要基于之前的状态来设置状态，阅读下面关于<code>updater</code>参数的介绍。</p>
 
