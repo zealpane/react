@@ -510,7 +510,7 @@
 </code></pre></div>
 <p><a href="https://codepen.io/gaearon/pen/gWWQPY?editors=0010">查看此步完整代码示例。</a></p>
 
-<p>现在我们需要修改当某个格子被点击时触发的事件处理函数。现在没个格子当中的数据是存储在整个棋盘当中的，所以我们就需要通过一些方法，让格子组件能够修改整个棋盘组件数据的内容。因为每个组件的 state 都是它私有的，所以我们不可以直接在格子组件当中进行修改。</p>
+<p>现在我们需要修改当某个格子被点击时触发的事件处理函数。现在每个格子当中的数据是存储在整个棋盘当中的，所以我们就需要通过一些方法，让格子组件能够修改整个棋盘组件数据的内容。因为每个组件的 state 都是它私有的，所以我们不可以直接在格子组件当中进行修改。</p>
 
 <p>惯例的做法是，我们再通过 props 传递一个父组件当中的事件处理函数到子组件当中。也就是从 Board 组件里传递一个事件处理函数到 Square 当中，我们来把 <code>renderSquare</code> 方法改成下面这样：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span>  <span class="nx">renderSquare</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
