@@ -70,167 +70,142 @@
   <div class="inner-content">
     <h1>Implementation Notes</h1>
     <div class="subHeader"></div>
-    <p>This section is a collection of implementation notes for the <a href="/react/contributing/codebase-overview.html#stack-reconciler">stack reconciler</a>.</p>
+    <h1>实现说明</h1>
 
-<p>It is very technical and assumes a strong understanding of React public API as well as how it&#39;s divided into core, renderers, and the reconciler. If you&#39;re not very familiar with the React codebase, read <a href="/react/contributing/codebase-overview.html">the codebase overview</a> first.</p>
+<p>这部分来源于完成栈识别算法的笔记。它是一份技术文档并假定读者对react的公共api也包括react如何划分为核心，渲染器，识别算法有很深的理解。如果你还不熟react的<a href="https://facebook.github.io/react/contributing/codebase-overview.html">代码库</a>，请首先阅读<a href="https://facebook.github.io/react/contributing/codebase-overview.html">代码库</a>。</p>
 
-<p>It also assumes an understanding of the <a href="/react/blog/2015/12/18/react-components-elements-and-instances.html">differences between React components, their instances, and elements</a>.</p>
+<p>栈识别算法驱动着今天所有使用react构建的产品。它位于<a href="http://wwww.github.com/facebook/react/src/renderers/shared/reconciler">src/renderers/shared/reconciler</a>被React DOM和 React Native使用。</p>
 
-<p>The stack reconciler is powering all the React production code today. It is located in <a href="https://github.com/facebook/react/tree/master/src/renderers/shared/stack"><code>src/renderers/shared/stack/reconciler</code></a> and is used by both React DOM and React Native.</p>
+<h2>视频：从零开始构建React</h2>
 
-<h3>Video: Building React from Scratch</h3>
+<p><a href="https://www.twitter.com/zpao">Paul O&#39;Shannessy</a>关于<a href="https://www.youtube.com/watch?v=_MAD4Oly9yg">如何从零构建react框架</a>的演讲激发了写这篇文档的动力。</p>
 
-<p><a href="https://twitter.com/zpao">Paul O&#39;Shannessy</a> gave a talk about <a href="https://www.youtube.com/watch?v=_MAD4Oly9yg">building React from scratch</a> that largely inspired this document.</p>
+<p>这篇文档和他的演讲简化了真实react的代码库，因此你也许通过熟悉他们两者，可以更好的理解react代码库。</p>
 
-<p>Both this document and his talk are simplifications of the real codebase so you might get a better understanding by getting familiar with both of them.</p>
+<h2>总览</h2>
 
-<h3>Overview</h3>
+<p>这个识别算法并没有公共的API.渲染器像React DOM和React Native使用它有效地更新用户使用react构建的用户界面。</p>
 
-<p>The reconciler itself doesn&#39;t have a public API. <a href="/react/contributing/codebase-overview.html#stack-renderers">Renderers</a> like React DOM and React Native use it to efficiently update the user interface according to the React components written by the user.</p>
+<h2>递归装载</h2>
 
-<h3>Mounting as a Recursive Process</h3>
+<p>让我们思考你第一次装载一个组件:
+<code>javascript
+ReactDOM.render(&lt;App /&gt;, rootEl);
+</code>
+React DOM将传递App给识别算法。 记得App是一个React元素，是一个你要渲染什么的描述,你可以认为它是一个原生对象。
+<code>javascript
+console.log(&lt;App /&gt;);
+// { type: App, props: {} }
+</code>
+这个识别算法将检查App是否是一个类或者是一个函数。如果App是一个函数，这个识别算法将调用<code>App(props)</code>返回React元素。如果App是一个类，这个识别算法将通过<code>new App(props)</code>实例化一个App，然后调用componentWillMount生命周期方法。</p>
 
-<p>Let&#39;s consider the first time you mount a component:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
-</code></pre></div>
-<p>React DOM will pass <code>&lt;App /&gt;</code> along to the reconciler. Remember that <code>&lt;App /&gt;</code> is a React element, that is, a description of <em>what</em> to render. You can think about it as a plain object:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">);</span>
-<span class="c1">// { type: App, props: {} }</span>
-</code></pre></div>
-<p>The reconciler will check if <code>App</code> is a class or a function.</p>
+<p>换句话说，这个识别算法将了解这个元素App将渲染什么。</p>
 
-<p>If <code>App</code> is a function, the reconciler will call <code>App(props)</code> to get the rendered element.</p>
+<p>这个步骤是递归的。App也许渲染一个Greeting组件，Greeting组件也许渲染一个Button组件，等等。这个识别算法将从上之下逐个递归每个用户定义的组件，了解每个组件将渲染什么。</p>
 
-<p>If <code>App</code> is a class, the reconciler will instantiate an <code>App</code> with <code>new App(props)</code>, call the <code>componentWillMount()</code> lifecycle method, and then will call the <code>render()</code> method to get the rendered element.</p>
-
-<p>Either way, the reconciler will learn the element <code>App</code> &quot;rendered to&quot;.</p>
-
-<p>This process is recursive. <code>App</code> may render to a <code>&lt;Greeting /&gt;</code>, <code>Greeting</code> may render to a <code>&lt;Button /&gt;</code>, and so on. The reconciler will &quot;drill down&quot; through user-defined components recursively as it learns what each component renders to.</p>
-
-<p>You can imagine this process as a pseudocode:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// React.Component subclasses have this flag</span>
-  <span class="k">return</span> <span class="p">(</span>
-    <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-    <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isReactComponent</span><span class="p">)</span>
-  <span class="p">);</span>
+<p>你可以用一下的伪代码思考这个过程：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="err">（</span><span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isReactComponent</span><span class="p">);</span>
 <span class="p">}</span>
-
-<span class="c1">// This function takes a React element (e.g. &lt;App /&gt;)</span>
-<span class="c1">// and returns a DOM or Native node representing the mounted tree.</span>
+<span class="c1">// 这个函数将传入一个React Element（如&lt;App/&gt;),并且返回一个DOM或者Native节点代表一个已装载的树</span>
 <span class="kd">function</span> <span class="nx">mount</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
 
-  <span class="c1">// We will determine the rendered element</span>
-  <span class="c1">// by either running the type as function</span>
-  <span class="c1">// or creating an instance and calling render().</span>
-  <span class="kd">var</span> <span class="nx">renderedElement</span><span class="p">;</span>
+  <span class="c1">// 通过识别这个type，调用函数或者调用类创造一个实例，并执行render方法，产生这个待渲染的元素。</span>
+  <span class="kd">var</span> <span class="nx">renderedElement</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Component class</span>
+    <span class="c1">// 组件类</span>
     <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-    <span class="c1">// Set the props</span>
+    <span class="c1">// 设置其属性</span>
     <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">props</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
-    <span class="c1">// Call the lifecycle if necessary</span>
+    <span class="c1">//调用必要的声明周期方法</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">();</span>
     <span class="p">}</span>
-    <span class="c1">// Get the rendered element by calling render()</span>
+    <span class="c1">// 通过调用render方法得到待渲染的元素</span>
     <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="c1">// Component function</span>
+    <span class="c1">// 无状态组件</span>
     <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
   <span class="p">}</span>
-
-  <span class="c1">// This process is recursive because a component may</span>
-  <span class="c1">// return an element with a type of another component.</span>
+  <span class="c1">// 这个步骤是递归的，因为一个组件也许返回另一个包含组件的react元素</span>
   <span class="k">return</span> <span class="nx">mount</span><span class="p">(</span><span class="nx">renderedElement</span><span class="p">);</span>
-
-  <span class="c1">// Note: this implementation is incomplete and recurses infinitely!</span>
-  <span class="c1">// It only handles elements like &lt;App /&gt; or &lt;Button /&gt;.</span>
-  <span class="c1">// It doesn&#39;t handle elements like &lt;div /&gt; or &lt;p /&gt; yet.</span>
+  <span class="c1">// 注意：这不是全部完成并且这个递归是无限递归的，不能终止。它仅可以处理像&lt;App/&gt;和&lt;Button/&gt;这样的自定义元素</span>
+  <span class="c1">// 它还尚不能处理像&lt;div/&gt;或者&lt;/p&gt;这样的宿主元素</span>
 <span class="p">}</span>
-
 <span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span><span class="o">/&gt;</span><span class="p">);</span>
 <span class="nx">rootEl</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 </code></pre></div>
-<blockquote>
-<p><strong>Note:</strong></p>
+<p><strong>注意</strong>: 这确实是伪代码。它和真实的完成并不相似。它将导致栈溢出，因为我们还没有讨论如何停止这个递归。</p>
 
-<p>This really <em>is</em> a pseudo-code. It isn&#39;t similar to the real implementation. It will also cause a stack overflow because we haven&#39;t discussed when to stop the recursion.</p>
-</blockquote>
+<p>让我们回顾下上面这个例子中的一些关键想法：</p>
 
-<p>Let&#39;s recap a few key ideas in the example above:</p>
+<ol>
+<li>React Elements是一个普通对象，表示组件的类型(如App)以及组件的一些属性。</li>
+<li>用户定义的组件（如App)可能是一个类或者是函数，但是他们都返回React elements</li>
+<li>装载是一个递归的过程，在这个过程中，react将使用顶级React元素创造一颗DOM或者Native树</li>
+</ol>
 
-<ul>
-<li>React elements are plain objects representing the component type (e.g. <code>App</code>) and the props.</li>
-<li>User-defined components (e.g. <code>App</code>) can be classes or functions but they all &quot;render to&quot; elements.</li>
-<li>&quot;Mounting&quot; is a recursive process that creates a DOM or Native tree given the top-level React element (e.g. <code>&lt;App /&gt;</code>).</li>
-</ul>
+<h2>装载宿主元素</h2>
 
-<h3>Mounting Host Elements</h3>
+<p>如果我们不渲染任何东西到屏幕上，那么这个步骤将是无用的。</p>
 
-<p>This process would be useless if we didn&#39;t render something to the screen as a result.</p>
+<p>除了用户定义的组合组件，React Elements也可以表示特定平台（&quot;宿主”）组件。例如，Button可以从它的render方法返回一个div。</p>
 
-<p>In addition to user-defined (&quot;composite&quot;) components, React elements may also represent platform-specific (&quot;host&quot;) components. For example, <code>Button</code> might return a <code>&lt;div /&gt;</code> from its render method.</p>
+<p>如果元素的type属性是一个字符串，我们就把它当宿主元素来处理：
+<code>javascript
+console.log(&lt;div/&gt;);
+// {type: &#39;div&#39;, props: {}}
+</code></p>
 
-<p>If element&#39;s <code>type</code> property is a string, we are dealing with a host element:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span> <span class="o">/&gt;</span><span class="p">);</span>
-<span class="c1">// { type: &#39;div&#39;, props: {} }</span>
-</code></pre></div>
-<p>There is no user-defined code associated with host elements.</p>
+<p>宿主元素里不包含用户定义的代码。</p>
 
-<p>When the reconciler encounters a host element, it lets the renderer take care of mounting it. For example, React DOM would create a DOM node.</p>
+<p>当识别算法遇到一个宿主元素时，它让渲染器负责装载它。例如，React DOM将创建一个DOM节点。元素如果有子元素，识别算法像按照上班同样的算法依次装载他们。</p>
 
-<p>If the host element has children, the reconciler recursively mounts them following the same algorithm as above. It doesn&#39;t matter whether children are host (like <code>&lt;div&gt;&lt;hr /&gt;&lt;/div&gt;</code>), composite (like <code>&lt;div&gt;&lt;Button /&gt;&lt;/div&gt;</code>), or both.</p>
+<p>它并不关心子元素是宿主元素（如div,hr)还是用户定义的组合元素(如Button)。依次递归，通过父节点插入子组件产生DOM节点，形成整个完整DOM结构。</p>
 
-<p>The DOM nodes produced by the child components will be appended to the parent DOM node, and recursively, the complete DOM structure will be assembled.</p>
+<p><strong>注意</strong>:</p>
 
-<blockquote>
-<p><strong>Note:</strong></p>
+<p>这个识别算法自身并不只是服务于DOM.装载过程的额外结果（在源代码中有时成为装载影像)依赖于渲染器。可能是一个DOM节点，也可能一个字符串（React DOM server）,或者在React Native中是一系列数字代表Native 视图。</p>
 
-<p>The reconciler itself is not tied to the DOM. The exact result of mounting (sometimes called &quot;mount image&quot; in the source code) depends on the renderer, and can be a DOM node (React DOM), a string (React DOM Server), or a number representing a native view (React Native).</p>
-</blockquote>
-
-<p>If we were to extend the code to handle host elements, it would look like this:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// React.Component subclasses have this flag</span>
+<p>我们扩展上面的代码以处理宿主元素，代码如下：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// React.Component这个父类有这个标志。</span>
   <span class="k">return</span> <span class="p">(</span>
-    <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+    <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
     <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isReactComponent</span><span class="p">)</span>
   <span class="p">);</span>
+  <span class="c1">// 这个函数将仅处理组合类型的元素，比如，它处理&lt;App/&gt;和&lt;Button/&gt;,但不处理&lt;div/&gt;</span>
 <span class="p">}</span>
 
-<span class="c1">// This function only handles elements with a composite type.</span>
-<span class="c1">// For example, it handles &lt;App /&gt; and &lt;Button /&gt;, but not a &lt;div /&gt;.</span>
+<span class="c1">// 这个函数将传入一个React Element（如&lt;App/&gt;),并且返回一个DOM或者Native节点代表一个已装载的树</span>
 <span class="kd">function</span> <span class="nx">mountComposite</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
 
-  <span class="kd">var</span> <span class="nx">renderedElement</span><span class="p">;</span>
+  <span class="c1">// 通过识别这个type，调用函数或者调用类创造一个实例，并执行render方法，产生这个待渲染的元素。</span>
+  <span class="kd">var</span> <span class="nx">renderedElement</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Component class</span>
+    <span class="c1">// 组件类</span>
     <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-    <span class="c1">// Set the props</span>
+    <span class="c1">// 设置其属性</span>
     <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">props</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
-    <span class="c1">// Call the lifecycle if necessary</span>
+    <span class="c1">//调用必要的声明周期方法</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">();</span>
     <span class="p">}</span>
+    <span class="c1">// 通过调用render方法得到待渲染的元素</span>
     <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Component function</span>
+    <span class="c1">// 无状态组件</span>
     <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
   <span class="p">}</span>
-
-  <span class="c1">// This is recursive but we&#39;ll eventually reach the bottom of recursion when</span>
-  <span class="c1">// the element is host (e.g. &lt;div /&gt;) rather than composite (e.g. &lt;App /&gt;):</span>
   <span class="k">return</span> <span class="nx">mount</span><span class="p">(</span><span class="nx">renderedElement</span><span class="p">);</span>
 <span class="p">}</span>
-
-<span class="c1">// This function only handles elements with a host type.</span>
-<span class="c1">// For example, it handles &lt;div /&gt; and &lt;p /&gt; but not an &lt;App /&gt;.</span>
+<span class="c1">// 这个函数仅处理宿主类型元素</span>
+<span class="c1">// 例如，它处理&lt;div/&gt;和&lt;p/&gt;,但不是&lt;App/&gt;</span>
 <span class="kd">function</span> <span class="nx">mountHost</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
@@ -239,65 +214,53 @@
     <span class="nx">children</span> <span class="o">=</span> <span class="p">[</span><span class="nx">children</span><span class="p">];</span>
   <span class="p">}</span>
   <span class="nx">children</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">);</span>
-
-  <span class="c1">// This block of code shouldn&#39;t be in the reconciler.</span>
-  <span class="c1">// Different renderers might initialize nodes differently.</span>
-  <span class="c1">// For example, React Native would create iOS or Android views.</span>
-  <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
+  <span class="c1">// 这部分应该不在这个识别算法中。</span>
+  <span class="c1">// 不同的渲染器应该初始化不同的节点</span>
+  <span class="c1">// 例如，React Native将创建ios或者android视图。</span>
+  <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">docuemnt</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
   <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">props</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">propName</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span> <span class="o">!==</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span> <span class="nx">props</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
+      <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span><span class="nx">props</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
     <span class="p">}</span>
   <span class="p">});</span>
-
-  <span class="c1">// Mount the children</span>
+  <span class="c1">// 装载子元素</span>
   <span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">childElement</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// Children may be host (e.g. &lt;div /&gt;) or composite (e.g. &lt;Button /&gt;).</span>
-    <span class="c1">// We will also mount them recursively:</span>
     <span class="kd">var</span> <span class="nx">childNode</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span><span class="nx">childElement</span><span class="p">);</span>
-
-    <span class="c1">// This line of code is also renderer-specific.</span>
-    <span class="c1">// It would be different depending on the renderer:</span>
     <span class="nx">node</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">childNode</span><span class="p">);</span>
   <span class="p">});</span>
-
-  <span class="c1">// Return the DOM node as mount result.</span>
-  <span class="c1">// This is where the recursion ends.</span>
   <span class="k">return</span> <span class="nx">node</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">mount</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// User-defined components</span>
     <span class="k">return</span> <span class="nx">mountComposite</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Platform-specific components</span>
     <span class="k">return</span> <span class="nx">mountHost</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElemnetById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
+<span class="kd">var</span>  <span class="nx">node</span> <span class="o">=</span> <span class="nx">mount</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span><span class="o">/&gt;</span><span class="p">);</span>
 <span class="nx">rootEl</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 </code></pre></div>
-<p>This is working but still far from how the reconciler is really implemented. The key missing ingredient is support for updates.</p>
+<p>上边的代码可以运行，但是离真实的识别算法完成还很远，关键缺乏的特征是不支持更新。</p>
 
-<h3>Introducing Internal Instances</h3>
+<h2>内部实例介绍</h2>
 
-<p>The key feature of React is that you can re-render everything, and it won&#39;t recreate the DOM or reset the state:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
-<span class="c1">// Should reuse the existing DOM:</span>
+<p>React框架的核心特点是你可以重用一切并且不需要重建dom或者重置状态。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+<span class="c1">// 应该重用之前的DOM</span>
 <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
 </code></pre></div>
-<p>However, our implementation above only knows how to mount the initial tree. It can&#39;t perform updates on it because it doesn&#39;t store all the necessary information, such as all the <code>publicInstance</code>s, or which DOM <code>node</code>s correspond to which components.</p>
+<p>然而，我们上面完成的代码仅仅只知道如何装载初始化树。它不可以执行更新,因为它不储存所有必要的信息，例如所有的实例，或者那个DOM节点对应那个组件。</p>
 
-<p>The stack reconciler codebase solves this by making the <code>mount()</code> function a method and putting it on a class. There are drawbacks to this approach, and we are going in the opposite direction in the <a href="/react/contributing/codebase-overview.html#fiber-reconciler">ongoing rewrite of the reconciler</a>. Nevertheless this is how it works now.</p>
+<p>栈识别算法代码库通过在一个类中编写mount方法来解决这个问题。这种方法有许多缺点并且当前我们正在努力地重写这个识别算法。</p>
 
-<p>Instead of separate <code>mountHost</code> and <code>mountComposite</code> functions, we will create two classes: <code>DOMComponent</code> and <code>CompositeComponent</code>.</p>
+<p>我们将创造两个类：DOMComponent和CompositeComponent，而不是创造mountHost和mountComponent两个函数。</p>
 
-<p>Both classes have a constructor accepting the <code>element</code>, as well as a <code>mount()</code> method returning the mounted node. We will replace a top-level <code>mount()</code> function with a factory that instantiates the correct class:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+<p>这两个类都有一个接受元素的构造函数，其mount方法将返回已装载的节点。 我们将用一个对应类实例化的一个工厂函数取代mount方法。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// User-defined components</span>
@@ -308,116 +271,102 @@
   <span class="p">}</span>  
 <span class="p">}</span>
 </code></pre></div>
-<p>First, let&#39;s consider the implementation of <code>CompositeComponent</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
+<p>首先，让我们思考CompositeComponentd的完成：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isReactComponent</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="p">{</span><span class="nx">type</span><span class="p">}</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">CompositeComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">DOMComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
   <span class="nx">constructor</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">publiceInstance</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
   <span class="p">}</span>
-
-  <span class="nx">getPublicInstance</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// For composite components, expose the class instance.</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span><span class="p">;</span>
+  <span class="nx">getPubliceInstance</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">publiceInstance</span><span class="p">;</span>
   <span class="p">}</span>
-
   <span class="nx">mount</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">currentElement</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">currentElement</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">currentElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
 
-    <span class="kd">var</span> <span class="nx">publicInstance</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">renderedElement</span><span class="p">;</span>
+    <span class="c1">// 通过识别这个type，调用函数或者调用类创造一个实例，并执行render方法，产生这个待渲染的元素。</span>
+    <span class="kd">let</span> <span class="nx">renderedElement</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">renderedComponent</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">))</span> <span class="p">{</span>
-      <span class="c1">// Component class</span>
+      <span class="c1">// 组件类</span>
       <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-      <span class="c1">// Set the props</span>
+      <span class="c1">// 设置其属性</span>
       <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">props</span> <span class="o">=</span> <span class="nx">props</span><span class="p">;</span>
-      <span class="c1">// Call the lifecycle if necessary</span>
+      <span class="c1">//调用必要的声明周期方法</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillMount</span><span class="p">();</span>
       <span class="p">}</span>
+      <span class="c1">// 通过调用render方法得到待渲染的元素</span>
       <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
     <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// Component function</span>
-      <span class="nx">publicInstance</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="c1">// 无状态组件</span>
+      <span class="nx">publiceInstance</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
       <span class="nx">renderedElement</span> <span class="o">=</span> <span class="nx">type</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
     <span class="p">}</span>
-
-    <span class="c1">// Save the public instance</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span> <span class="o">=</span> <span class="nx">publicInstance</span><span class="p">;</span>
-
-    <span class="c1">// Instantiate the child internal instance according to the element.</span>
-    <span class="c1">// It would be a DOMComponent for &lt;div /&gt; or &lt;p /&gt;,</span>
-    <span class="c1">// and a CompositeComponent for &lt;App /&gt; or &lt;Button /&gt;:</span>
-    <span class="kd">var</span> <span class="nx">renderedComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">renderedElement</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span> <span class="o">=</span> <span class="nx">renderedComponent</span><span class="p">;</span>
-
-    <span class="c1">// Mount the rendered output</span>
-    <span class="k">return</span> <span class="nx">renderedComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+    <span class="nx">renderedComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">renderedElement</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span> <span class="o">=</span>  <span class="nx">renderedComponent</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">renderedComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="nx">renderedElement</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This is not much different from our previous <code>mountComposite()</code> implementation, but now we can save some information, such as <code>this.currentElement</code>, <code>this.renderedComponent</code>, and <code>this.publicInstance</code>, for use during updates.</p>
+<p>这和之前mountComposite完成没有太多的区别，但是现在我们可以保存一些信息，比如当前元素，当前已渲染返回的组件，以及当前的组件实例用于更新使用。
+注意 CompositeComponent的实例和用户定义的类实例不是一回事。CompositeComponent是我们识别算法的一部分，并且从来不暴露给用户。
+我们使用这个类通过元素类型来读取用户自定义的类，并且创造它的实例。为了避免困惑，我们把CompositeComponent和DOMComponent的实例称为&quot;内部实例&quot;。
+他们存在是为了我们可以关联一些持久数据给他们。只有渲染器和识别算法能够意识到他们的存在。与此相类似，我们叫用户定义的类实例叫&quot;公开实例&quot;。
+这个公开实例是你在render方法和其他自定义组件方法中作为this使用的。</p>
 
-<p>Note that an instance of <code>CompositeComponent</code> is not the same thing as an instance of the user-supplied <code>element.type</code>. <code>CompositeComponent</code> is an implementation detail of our reconciler, and is never exposed to the user. The user-defined class is the one we read from <code>element.type</code>, and <code>CompositeComponent</code> creates an instance of it.</p>
-
-<p>To avoid the confusion, we will call instances of <code>CompositeComponent</code> and <code>DOMComponent</code> &quot;internal instances&quot;. They exist so we can associate some long-lived data with them. Only the renderer and the reconciler are aware that they exist.</p>
-
-<p>In contrast, we call an instance of the user-defined class a &quot;public instance&quot;. The public instance is what you see as <code>this</code> in the <code>render()</code> and other methods of your custom components.</p>
-
-<p>The <code>mountHost()</code> function, refactored to be a <code>mount()</code> method on <code>DOMComponent</code> class, also looks familiar:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
+<p>这个mountHost函数，重构成DOMComponent的mount方法，看上去相似：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
   <span class="nx">constructor</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
   <span class="p">}</span>
-
   <span class="nx">getPublicInstance</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// For DOM components, only expose the DOM node.</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
   <span class="p">}</span>
-
   <span class="nx">mount</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">props</span><span class="p">.</span><span class="nx">children</span> <span class="o">||</span> <span class="p">[];</span>
+    <span class="kd">let</span> <span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">props</span><span class="p">.</span><span class="nx">children</span> <span class="o">||</span> <span class="p">[];</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">children</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">children</span> <span class="o">=</span> <span class="p">[</span><span class="nx">children</span><span class="p">];</span>
     <span class="p">}</span>
-
-    <span class="c1">// Create and save the node</span>
-    <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">node</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
-
-    <span class="c1">// Set the attributes</span>
-    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">props</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">propName</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span> <span class="o">!==</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span> <span class="nx">props</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">props</span><span class="p">).</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">propName</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span> <span class="o">!=</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span><span class="nx">props</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
       <span class="p">}</span>
+    <span class="p">}));</span>
+    <span class="kd">let</span> <span class="nx">renderedChild</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">instantiateComponent</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">renderedChild</span> <span class="o">=</span> <span class="nx">renderedChild</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">childNodes</span> <span class="o">=</span> <span class="nx">renderedChild</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">child</span> <span class="o">=&gt;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">mount</span><span class="p">());</span>
+    <span class="nx">childNodes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">childN</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">node</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">childN</span><span class="p">);</span>
     <span class="p">});</span>
-
-    <span class="c1">// Create and save the contained children.</span>
-    <span class="c1">// Each of them can be a DOMComponent or a CompositeComponent,</span>
-    <span class="c1">// depending on whether the element type is a string or a function.</span>
-    <span class="kd">var</span> <span class="nx">renderedChildren</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">instantiateComponent</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span> <span class="o">=</span> <span class="nx">renderedChildren</span><span class="p">;</span>
-
-    <span class="c1">// Collect DOM nodes they return on mount</span>
-    <span class="kd">var</span> <span class="nx">childNodes</span> <span class="o">=</span> <span class="nx">renderedChildren</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">child</span> <span class="o">=&gt;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">mount</span><span class="p">());</span>
-    <span class="nx">childNodes</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">childNode</span> <span class="o">=&gt;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">childNode</span><span class="p">));</span>
-
-    <span class="c1">// Return the DOM node as mount result</span>
     <span class="k">return</span> <span class="nx">node</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The main difference after refactoring from <code>mountHost()</code> is that we now keep <code>this.node</code> and <code>this.renderedChildren</code> associated with the internal DOM component instance. We will also use them for applying non-destructive updates in the future.</p>
-
-<p>As a result, each internal instance, composite or host, now points to its child internal instances. To help visualize this, if a functional <code>&lt;App&gt;</code> component renders a <code>&lt;Button&gt;</code> class component, and <code>Button</code> class renders a <code>&lt;div&gt;</code>, the internal instance tree would look like this:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="p">[</span><span class="nx">object</span> <span class="nx">CompositeComponent</span><span class="p">]</span> <span class="p">{</span>
+<p>重构mountHost函数之后的主要区别是我们保持this.node和this.renderedChildren和内部DOM Component实例保持关联。我们未来将使用它们进行无痕更新。最后，无论组合还是宿主的内部实例，现在都可以指向它的子内部实例。如果一个App组件渲染一个Button类并且Button类渲染一个div，内部实例树将像下边这样：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="p">[</span><span class="nx">object</span> <span class="nx">CompositeComponent</span><span class="p">]</span> <span class="p">{</span>
   <span class="nx">currentElement</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span>
   <span class="nx">publicInstance</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nx">renderedComponent</span><span class="o">:</span> <span class="p">[</span><span class="nx">object</span> <span class="nx">CompositeComponent</span><span class="p">]</span> <span class="p">{</span>
@@ -431,455 +380,333 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>In the DOM you would only see the <code>&lt;div&gt;</code>. However the internal instance tree contains both composite and host internal instances.</p>
-
-<p>The composite internal instances need to store:</p>
-
-<ul>
-<li>The current element.</li>
-<li>The public instance if element type is a class.</li>
-<li>The single rendered internal instance. It can be either a <code>DOMComponent</code> or a <code>CompositeComponent</code>.</li>
-</ul>
-
-<p>The host internal instances need to store:</p>
+<p>这个内部实例树包含复合类型和宿主类型内部实例。在DOM结构里你将仅看到<div>
+这个composite内部实例包含以下内容：</p>
 
 <ul>
-<li>The current element.</li>
-<li>The DOM node.</li>
-<li>All the child internal instances. Each of them can be either a <code>DOMComponent</code> or a <code>CompositeComponent</code>.</li>
+<li>当前元素</li>
+<li>元素类型是个类的公开实例</li>
+<li>单个待渲染的内部实例。它可能是一个DOMComponent，也可能是CompositeComponent</li>
 </ul>
 
-<p>If you&#39;re struggling to imagine how an internal instance tree is structured in more complex applications, <a href="https://github.com/facebook/react-devtools">React DevTools</a> can give you a close approximation, as it highlights host instances with grey, and composite instances with purple:</p>
+<p>宿主的内部实例需要储存以下信息：</p>
 
-<p><img src="/react/img/docs/implementation-notes-tree.png" width="500" style="max-width: 100%" alt="React DevTools tree" /></p>
+<ul>
+<li> 当前元素</li>
+<li> 对应的DOM节点</li>
+<li> 所有的子内部实例。他们既可能是一个DOMComponent也可能是一个CompositeComponent</li>
+</ul>
 
-<p>To complete this refactoring, we will introduce a function that mounts a complete tree into a container node, just like <code>ReactDOM.render()</code>. It returns a public instance, also like <code>ReactDOM.render()</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Create the top-level internal instance</span>
+<p>如果你正在努力想想内部复杂程序中内部实例树是什么样子。<a href="https://github.com/facebook/react-devtools">React开发者工具</a>可以给你一个直观的印象。它使用灰色高亮宿主实例，使用紫色高亮复合实例。</p>
+
+<p><img src="https://facebook.github.io/react/img/docs/implementation-notes-tree.png" alt=""></p>
+
+<p>为了完成这次重构，我们将介绍一个函数像ReactDOM.render()来负责装载完整的树到一个容器节点。它也像ReactDOM.render()一样返回一个公开实例。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span><span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">rootComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
-
-  <span class="c1">// Mount the top-level component into the container</span>
-  <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
-  <span class="nx">containerNode</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
-
-  <span class="c1">// Return the public instance it provides</span>
+  <span class="kd">var</span> <span class="nx">rootNode</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+  <span class="nx">containerNode</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">rootNode</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">getPublicInstance</span><span class="p">();</span>
   <span class="k">return</span> <span class="nx">publicInstance</span><span class="p">;</span>
 <span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
-<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
+<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span><span class="o">/&gt;</span><span class="p">,</span><span class="nx">root</span><span class="p">);</span>
 </code></pre></div>
-<h3>Unmounting</h3>
+<h2>卸载</h2>
 
-<p>Now that we have internal instances that hold onto their children and the DOM nodes, we can implement unmounting. For a composite component, unmounting calls a lifecycle hook and recurses.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
-
-  <span class="c1">// ...</span>
-
+<p>现在我们有了可以联系他们孩子和DOM节点的内部实例，我们可以用他们完成卸载。
+对于一个复合组件，调用生命周期方法递归卸载。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
   <span class="nx">unmount</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Call the lifecycle hook if necessary</span>
     <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUnmount</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUnmount</span><span class="p">();</span>
-      <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span> <span class="o">&amp;&amp;</span> <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUnmount</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUnmount</span><span class="p">();</span>
     <span class="p">}</span>
-
-    <span class="c1">// Unmount the single rendered component</span>
     <span class="kd">var</span> <span class="nx">renderedComponent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span><span class="p">;</span>
     <span class="nx">renderedComponent</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>For <code>DOMComponent</code>, unmounting tells each child to unmount:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
-
-  <span class="c1">// ...</span>
-
+<p>对于DOMComponent，卸载时会告诉每个子元素卸载:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
   <span class="nx">unmount</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Unmount all the children</span>
-    <span class="kd">var</span> <span class="nx">renderedChildren</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span><span class="p">;</span>
-    <span class="nx">renderedChildren</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">child</span> <span class="o">=&gt;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">unmount</span><span class="p">());</span>
+    <span class="kd">var</span> <span class="nx">renderedChild</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedChild</span><span class="p">;</span>
+    <span class="nx">renderedChild</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">child</span> <span class="o">=&gt;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">unmount</span><span class="p">());</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>In practice, unmounting DOM components also removes the event listeners and clears some caches, but we will skip those details.</p>
-
-<p>We can now add a new top-level function called <code>unmountTree(containerNode)</code> that is similar to <code>ReactDOM.unmountComponentAtNode()</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">unmountTree</span><span class="p">(</span><span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Read the internal instance from a DOM node:</span>
-  <span class="c1">// (This doesn&#39;t work yet, we will need to change mountTree() to store it.)</span>
-  <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">rootComponent</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">_internalInstance</span><span class="p">;</span>
-
-  <span class="c1">// Unmount the tree and clear the container</span>
+<p>实际上，卸载DOM组件也需要移除事件监听器和清除一些缓存，但是我们将跳过这些细节。
+我们可以增加一个一级函数叫unmountTree(containerNode)，这个函数和ReactDOM.unmountComponentAtNode()类似。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">unmountTree</span><span class="p">(</span><span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">childNode</span> <span class="o">=</span> <span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">rootComponent</span> <span class="o">=</span> <span class="nx">childNode</span><span class="p">.</span><span class="nx">_internalInstance</span><span class="p">;</span>
   <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
   <span class="nx">containerNode</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>In order for this to work, we need to read an internal root instance from a DOM node. We will modify <code>mountTree()</code> to add the <code>_internalInstance</code> property to the root DOM node. We will also teach <code>mountTree()</code> to destroy any existing tree so it can be called multiple times:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Destroy any existing tree</span>
+<p>为了让上面的代码工作，我们需要从DOM节点中读取一个内部根实例。我们将修改mountTree()增加一个_internalInstance属性给根DOM节点。为了让mountTree可以被调用多次，我们也让mountTree来销毁已存在的DOM树。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span><span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">unmountTree</span><span class="p">(</span><span class="nx">containerNode</span><span class="p">);</span>
   <span class="p">}</span>
-
-  <span class="c1">// Create the top-level internal instance</span>
   <span class="kd">var</span> <span class="nx">rootComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
-
-  <span class="c1">// Mount the top-level component into the container</span>
-  <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
-  <span class="nx">containerNode</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
-
-  <span class="c1">// Save a reference to the internal instance</span>
-  <span class="nx">node</span><span class="p">.</span><span class="nx">_internalInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">;</span>
-
-  <span class="c1">// Return the public instance it provides</span>
+  <span class="kd">var</span> <span class="nx">rootNode</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+  <span class="nx">rootNode</span><span class="p">.</span><span class="nx">_internalInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">;</span>
+  <span class="nx">containerNode</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">rootNode</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">getPublicInstance</span><span class="p">();</span>
   <span class="k">return</span> <span class="nx">publicInstance</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Now, running <code>unmountTree()</code>, or running <code>mountTree()</code> repeatedly, removes the old tree and runs the <code>componentWillUnmount()</code> lifecycle hook on components.</p>
+<p>现在重复运行unmountTree()或者运行mountTree()移除旧的dom树，运行componentWillUnmount()生命周期钩子在组件上。</p>
 
-<h3>Updating</h3>
+<h2>更新</h2>
 
-<p>In the previous section, we implemented unmounting. However React wouldn&#39;t be very useful if each prop change unmounted and mounted the whole tree. The goal of the reconciler is to reuse existing instances where possible to preserve the DOM and the state:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
+<p>在前面章节，我们完成了卸载。然而如果当任何属性改变就重新卸载和插入整个DOM树，那么React并没有太大的实用性。识别算法的目标是重用已存在的实例，这些实例保留对应的DOM节点和状态。
+ <code>javascript
+ var rootEl = document.getElementById(&#39;root&#39;);
+ mountTree(&lt;App /&gt;, rootEl);
+ // 应该重用已存在的DOM树
+ mountTree(&lt;App /&gt;, rootEl);
+</code></p>
 
-<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
-<span class="c1">// Should reuse the existing DOM:</span>
-<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
-</code></pre></div>
-<p>We will extend our internal instance contract with one more method. In addition to <code>mount()</code> and <code>unmount()</code>, both <code>DOMComponent</code> and <code>CompositeComponent</code> will implement a new method called <code>receive(nextElement)</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
+<p>我们将增加一个或多个方法来扩展内部实例。除了增加mount和unmount方法外,DOMComponent和CompositeComponent将完成一个叫receive(nextElement)的方法。</p>
 
+<p><code>
+ class CompositeComponent {
+  // ...</p>
+
+<p>receive(nextElement) {
+    // ...
+  }
+}</p>
+
+<p>class DOMComponent {
+  // ...</p>
+
+<p>receive(nextElement) {
+    // ...
+  }
+}
+ </code>
+ Its job is to do whatever is necessary to bring the component (and any of its children) up to date with the description provided by the nextElement.</p>
+
+<p>This is the part that is often described as &quot;virtual DOM diffing&quot; a
+lthough what really happens is that we walk the internal tree recursively and let each internal instance receive an update.</p>
+
+<p>这个函数的职责是将nextElement提供的最新描述给组件或者它的子组件。这部分经常被描述为&quot;虚拟DOM更新&quot;。尽管实际上发生的是我们经常说的内部实例树的递归，同时每个实例树都接受一个更新。</p>
+
+<h2>更新复合组件</h2>
+
+<p>当一个复合组件接受一个新元素时，我们运行componentWillUpdate这个生命周期钩子。</p>
+
+<p>然后我们将用新的属性重新渲染组件并且得到新一个已渲染的元素：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
   <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-
-  <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Its job is to do whatever is necessary to bring the component (and any of its children) up to date with the description provided by the <code>nextElement</code>.</p>
-
-<p>This is the part that is often described as &quot;virtual DOM diffing&quot; although what really happens is that we walk the internal tree recursively and let each internal instance receive an update.</p>
-
-<h3>Updating Composite Components</h3>
-
-<p>When a composite component receives a new element, we run the <code>componentWillUpdate()</code> lifecycle hook.</p>
-
-<p>Then we re-render the component with the new props, and get the next rendered element:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
-
-  <span class="c1">// ...</span>
-
-  <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">prevProps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevRenderedComponent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevRenderedElement</span> <span class="o">=</span> <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
-
-    <span class="c1">// Update *own* element</span>
+    <span class="kd">let</span> <span class="nx">prevProps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">publicInstance</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevRenderedComponent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevRenderedElement</span> <span class="o">=</span> <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">nextProps</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
-
-    <span class="c1">// Figure out what the next render() output is</span>
-    <span class="kd">var</span> <span class="nx">nextRenderedElement</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">nextProps</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">renderedElement</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">))</span> <span class="p">{</span>
-      <span class="c1">// Component class</span>
-      <span class="c1">// Call the lifecycle if necessary</span>
+      <span class="nx">publicInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">type</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">);</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUpdate</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUpdate</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">);</span>
+        <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">componentWillUpdate</span><span class="p">(</span><span class="nx">prevProps</span><span class="p">);</span>
       <span class="p">}</span>
-      <span class="c1">// Update the props</span>
       <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">props</span> <span class="o">=</span> <span class="nx">nextProps</span><span class="p">;</span>
-      <span class="c1">// Re-render</span>
       <span class="nx">nextRenderedElement</span> <span class="o">=</span> <span class="nx">publicInstance</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// Component function</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">type</span> <span class="o">==</span><span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">nextRenderedElement</span> <span class="o">=</span> <span class="nx">type</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">);</span>
     <span class="p">}</span>
-
-    <span class="c1">// ...</span>
-</code></pre></div>
-<p>Next, we can look at the rendered element&#39;s <code>type</code>. If the <code>type</code> has not changed since the last render, the component below can also be updated in place.</p>
-
-<p>For example, if it returned <code>&lt;Button color=&quot;red&quot; /&gt;</code> the first time, and <code>&lt;Button color=&quot;blue&quot; /&gt;</code> the second time, we can just tell the corresponding internal instance to <code>receive()</code> the next element:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span>    <span class="c1">// ...</span>
-
-    <span class="c1">// If the rendered element type has not changed,</span>
-    <span class="c1">// reuse the existing component instance and exit.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">prevRenderedElement</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">nextRenderedElement</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">prevRenderedElement</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="nx">nextRenderedElement</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">receive</span><span class="p">(</span><span class="nx">nextRenderedElement</span><span class="p">);</span>
-      <span class="k">return</span><span class="p">;</span>
     <span class="p">}</span>
-
-    <span class="c1">// ...</span>
-</code></pre></div>
-<p>However, if the next rendered element has a different <code>type</code> than the previously rendered element, we can&#39;t update the internal instance. A <code>&lt;button&gt;</code> can&#39;t &quot;become&quot; an <code>&lt;input&gt;</code>.</p>
-
-<p>Instead, we have to unmount the existing internal instance and mount the new one corresponding to the rendered element type. For example, this is what happens when a component that previously rendered a <code>&lt;button /&gt;</code> renders an <code>&lt;input /&gt;</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span>    <span class="c1">// ...</span>
-
-    <span class="c1">// If we reached this point, we need to unmount the previously</span>
-    <span class="c1">// mounted component, mount the new one, and swap their nodes.</span>
-
-    <span class="c1">// Find the old node because it will need to be replaced</span>
-    <span class="kd">var</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">getHostNode</span><span class="p">();</span>
-
-    <span class="c1">// Unmount the old child and mount a new child</span>
-    <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">nextRenderedComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextRenderedElement</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">nextNode</span> <span class="o">=</span> <span class="nx">nextRenderedComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
-
-    <span class="c1">// Replace the reference to the child</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span> <span class="o">=</span> <span class="nx">nextRenderedComponent</span><span class="p">;</span>
-
-    <span class="c1">// Replace the old node with the new one</span>
-    <span class="c1">// Note: this is renderer-specific code and</span>
-    <span class="c1">// ideally should live outside of CompositeComponent:</span>
-    <span class="nx">prevNode</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">nextNode</span><span class="p">,</span> <span class="nx">prevNode</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>To sum this up, when a composite component receives a new element, it may either delegate the update to its rendered internal instance, or unmount it and mount a new one in its place.</p>
+<p>接下来，我们看下一渲染元素的类型。如果这个类型从上次渲染至今都没改变过，那么组件接下来就可以保持自身更新，而不是完全替换。</p>
 
-<p>There is another condition under which a component will re-mount rather than receive an element, and that is when the element&#39;s <code>key</code> has changed. We don&#39;t discuss <code>key</code> handling in this document because it adds more complexity to an already complex tutorial.</p>
+<p>例如，如果你第一次返回的是&lt;<strong>Button</strong> color=&quot;red&quot;/&gt;&gt;并且第二次返回的是&lt;<strong>Button</strong> color=&quot;blue&quot;&gt;，
+我们仅可以告诉对应的内部实例通过receive方法来接受下个元素。</p>
 
-<p>Note that we needed to add a method called <code>getHostNode()</code> to the internal instance contract so that it&#39;s possible to locate the platform-specific node and replace it during the update. Its implementation is straightforward for both classes:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
+<p>然而，如果下一个已渲染的元素和之前已渲染的元素有不同的type，我们不能更新内部实例。一个&lt;<strong>button</strong>&gt;不可能&quot;变成&quot;一个&lt;<strong>input</strong>&gt;。相反，我们必须卸载已存在的内部实例同时按照已渲染元素类型对应装载一个新的内部实例。
+例如，这种情况发生在当一个&lt;<strong>button</strong>&gt;要渲染成&lt;<strong>input</strong>/&gt;</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span> <span class="k">else</span> <span class="p">{</span>
+   <span class="kd">let</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">getHostNode</span><span class="p">();</span>
+   <span class="nx">prevRenderedComponent</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
+   <span class="kd">let</span> <span class="nx">nextRenderedComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextRenderedElement</span><span class="p">);</span>
+   <span class="kd">let</span> <span class="nx">nextNode</span> <span class="o">=</span> <span class="nx">nextRenderedComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+   <span class="c1">// 替换掉原来引用的子组件</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span> <span class="o">=</span> <span class="nx">nextRenderedComponent</span><span class="p">;</span>
+   <span class="c1">// 用新的节点替换到之前的节点</span>
+   <span class="c1">// 注意这是特殊的渲染器代码，理想情况下，应该把这些代码放在复合组件之外。</span>
+   <span class="nx">prevNode</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">nextNode</span><span class="p">,</span> <span class="nx">prevNode</span><span class="p">);</span>
+ <span class="p">}</span>
+</code></pre></div>
+<p>综上所述，当一个复合组件接受一个新元素时，如果新元素的类型和之前的元素类型一样，那么就直接调用自身的receive方法进行更新，否则需要卸载掉原来的内部实例，在原来的地方插入一个新的元素。</p>
 
+<p>还有另外一种情况，组件会重新装载而不是接受一个新元素。这种情况是元素的key已经已经变化的时候。因为这个文档已经很复杂了，我们不想在这已经复杂的文档中，在去讨论如何处理元素key。</p>
+
+<p>为了我们可以在更新期间，锁定特定平台代码并且替换掉它，现在我们需要增加在内部实例中增加一个叫getHostNode的方法。它的完成在DOMComponent和CompositeComponent中是一致的。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
   <span class="nx">getHostNode</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// Ask the rendered component to provide it.</span>
-    <span class="c1">// This will recursively drill down any composites.</span>
+    <span class="c1">// 已渲染的组件会提供它，并且递归向下钻取任何复合组件</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedComponent</span><span class="p">.</span><span class="nx">getHostNode</span><span class="p">();</span>
   <span class="p">}</span>
 <span class="p">}</span>
-
 <span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-
   <span class="nx">getHostNode</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
-  <span class="p">}</span>  
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3>Updating Host Components</h3>
+<h2>更新宿主组件</h2>
 
-<p>Host component implementations, such as <code>DOMComponent</code>, update differently. When they receive an element, they need to update the underlying platform-specific view. In case of React DOM, this means updating the DOM attributes:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-
-  <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevElement</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevProps</span> <span class="o">=</span> <span class="nx">prevElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">nextProps</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>    
-    <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span> <span class="o">=</span> <span class="nx">nextElement</span><span class="p">;</span>
-
-    <span class="c1">// Remove old attributes.</span>
+<p>宿主组件的更新方式是不同的，如DOMComponent。当他们接受一个元素时，他们需要更新背后特定平台的视图。
+以React DOM为例，这意味着更新DOM节点的属性。
+然后，宿主组件需要更新他们的子节点。不像复合组件仅包含最多一个子节点。在下面这个简单的例子中，我们使用一个内部实例数组并不断迭代它。通过判断接受的元素类型和之前的元素类型是否相同来决定是更新还是取代内部实例。
+真实的识别算法也考虑元素的key并且通过它来跟踪移动实现元素的插入和删除，但是在这里我们暂时不讨论这个逻辑。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
+  <span class="nx">receive</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">prevProps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">nextProps</span> <span class="o">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevChildren</span> <span class="o">=</span> <span class="nx">prevProps</span><span class="p">.</span><span class="nx">children</span>  <span class="o">||</span> <span class="p">[];</span>
+    <span class="kd">let</span> <span class="nx">nextChildren</span> <span class="o">=</span> <span class="nx">nextProps</span><span class="p">.</span><span class="nx">children</span>  <span class="o">||</span> <span class="p">[];</span>
+    <span class="kd">let</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevRenderedChildren</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">currentElement</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">prevProps</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">propName</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span> <span class="o">!==</span> <span class="s1">&#39;children&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">nextProps</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">propName</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nx">node</span><span class="p">.</span><span class="nx">removeAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">propName</span><span class="o">!=</span><span class="s1">&#39;children&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">nextProps</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">propName</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">node</span><span class="p">.</span><span class="nx">removeAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span><span class="nx">prevProps</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
       <span class="p">}</span>
     <span class="p">});</span>
-    <span class="c1">// Set next attributes.</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">propName</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span> <span class="o">!==</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span> <span class="nx">nextProps</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">propName</span><span class="o">!=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">propName</span><span class="p">,</span><span class="nx">nextProps</span><span class="p">[</span><span class="nx">propName</span><span class="p">]);</span>
       <span class="p">}</span>
     <span class="p">});</span>
-
-    <span class="c1">// ...</span>
-</code></pre></div>
-<p>Then, host components need to update their children. Unlike composite components, they might contain more than a single child.</p>
-
-<p>In this simplified example, we use an array of internal instances and iterate over it, either updating or replacing the internal instances depending on whether the received <code>type</code> matches their previous <code>type</code>. The real reconciler also takes element&#39;s <code>key</code> in the account and track moves in addition to insertions and deletions, but we will omit this logic.</p>
-
-<p>We collect DOM operations on children in a list so we can execute them in batch:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span>    <span class="c1">// ...</span>
-
-    <span class="c1">// These are arrays of React elements:</span>
-    <span class="kd">var</span> <span class="nx">prevChildren</span> <span class="o">=</span> <span class="nx">prevProps</span><span class="p">.</span><span class="nx">children</span> <span class="o">||</span> <span class="p">[];</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">prevChildren</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">prevChildren</span> <span class="o">=</span> <span class="p">[</span><span class="nx">prevChildren</span><span class="p">];</span>
     <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">nextChildren</span> <span class="o">=</span> <span class="nx">nextProps</span><span class="p">.</span><span class="nx">children</span> <span class="o">||</span> <span class="p">[];</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">nextChildren</span> <span class="o">=</span> <span class="p">[</span><span class="nx">nextChildren</span><span class="p">];</span>
     <span class="p">}</span>
-    <span class="c1">// These are arrays of internal instances:</span>
-    <span class="kd">var</span> <span class="nx">prevRenderedChildren</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">nextRenderedChildren</span> <span class="o">=</span> <span class="p">[];</span>
-
-    <span class="c1">// As we iterate over children, we will add operations to the array.</span>
-    <span class="kd">var</span> <span class="nx">operationQueue</span> <span class="o">=</span> <span class="p">[];</span>
-
-    <span class="c1">// Note: the section below is extremely simplified!</span>
-    <span class="c1">// It doesn&#39;t handle reorders, children with holes, or keys.</span>
-    <span class="c1">// It only exists to illustrate the overall flow, not the specifics.</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">nextChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// Try to get an existing internal instance for this child</span>
-      <span class="kd">var</span> <span class="nx">prevChild</span> <span class="o">=</span> <span class="nx">prevRenderedChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-
-      <span class="c1">// If there is no internal instance under this index,</span>
-      <span class="c1">// a child has been appended to the end. Create a new</span>
-      <span class="c1">// internal instance, mount it, and use its node.</span>
+    <span class="kd">let</span> <span class="nx">nextRenderedChildren</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">let</span> <span class="nx">operationQueue</span>  <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">nextChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">prevChild</span> <span class="o">=</span> <span class="nx">prevRenderedChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
       <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">prevChild</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">nextChild</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-        <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">nextChild</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
-
-        <span class="c1">// Record that we need to append a node</span>
+        <span class="kd">let</span> <span class="nx">nextChild</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="kd">let</span> <span class="nx">childNode</span> <span class="o">=</span> <span class="nx">nextChild</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
         <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;ADD&#39;</span><span class="p">,</span> <span class="nx">node</span><span class="p">});</span>
         <span class="nx">nextRenderedChildren</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">nextChild</span><span class="p">);</span>
         <span class="k">continue</span><span class="p">;</span>
       <span class="p">}</span>
-
-      <span class="c1">// We can only update the instance if its element&#39;s type matches.</span>
-      <span class="c1">// For example, &lt;Button size=&quot;small&quot; /&gt; can be updated to</span>
-      <span class="c1">// &lt;Button size=&quot;large&quot; /&gt; but not to an &lt;App /&gt;.</span>
-      <span class="kd">var</span> <span class="nx">canUpdate</span> <span class="o">=</span> <span class="nx">prevChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">type</span><span class="p">;</span>
-
-      <span class="c1">// If we can&#39;t update an existing instance, we have to unmount it</span>
-      <span class="c1">// and mount a new one instead of it.</span>
+      <span class="kd">var</span> <span class="nx">canUpdate</span> <span class="o">=</span> <span class="nx">preChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">type</span><span class="p">;</span>
       <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">canUpdate</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">prevChild</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">prevChild</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
         <span class="nx">prevChild</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
-
-        <span class="kd">var</span> <span class="nx">nextChild</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-        <span class="kd">var</span> <span class="nx">nextNode</span> <span class="o">=</span> <span class="nx">nextChild</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
-
-        <span class="c1">// Record that we need to swap the nodes</span>
-        <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;REPLACE&#39;</span><span class="p">,</span> <span class="nx">prevNode</span><span class="p">,</span> <span class="nx">nextNode</span><span class="p">});</span>
+        <span class="kd">let</span> <span class="nx">nextChild</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="kd">let</span> <span class="nx">nextNode</span> <span class="o">=</span> <span class="nx">nextChild</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+        <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;REPLACE&#39;</span><span class="p">,</span><span class="nx">prevNode</span><span class="o">:</span><span class="nx">prevNode</span><span class="p">,</span><span class="nx">nextNode</span><span class="o">:</span><span class="nx">nextNode</span><span class="p">});</span>
         <span class="nx">nextRenderedChildren</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">nextChild</span><span class="p">);</span>
         <span class="k">continue</span><span class="p">;</span>
       <span class="p">}</span>
-
-      <span class="c1">// If we can update an existing internal instance,</span>
-      <span class="c1">// just let it receive the next element and handle its own update.</span>
       <span class="nx">prevChild</span><span class="p">.</span><span class="nx">receive</span><span class="p">(</span><span class="nx">nextChildren</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
       <span class="nx">nextRenderedChildren</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">prevChild</span><span class="p">);</span>
     <span class="p">}</span>
-
-    <span class="c1">// Finally, unmount any children that don&#39;t exist:</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">nextChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">prevChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-     <span class="kd">var</span> <span class="nx">prevChild</span> <span class="o">=</span> <span class="nx">prevRenderedChildren</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
-     <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">prevChild</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
-     <span class="nx">prevChild</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
-
-     <span class="c1">// Record that we need to remove the node</span>
-     <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;REMOVE&#39;</span><span class="p">,</span> <span class="nx">node</span><span class="p">});</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">nextChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span> <span class="nx">prevChildren</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">iprevChild</span> <span class="o">=</span> <span class="nx">prevRenderedChildren</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+      <span class="kd">let</span> <span class="nx">iprevNode</span> <span class="o">=</span> <span class="nx">iprevChild</span><span class="p">.</span><span class="nx">node</span><span class="p">;</span>
+      <span class="nx">iprevNode</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span>
+      <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span><span class="s1">&#39;REMOVE&#39;</span><span class="p">,</span><span class="nx">node</span><span class="o">:</span><span class="nx">iprevNode</span><span class="p">});</span>
     <span class="p">}</span>
-
-    <span class="c1">// Point the list of rendered children to the updated version.</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">renderedChildren</span> <span class="o">=</span> <span class="nx">nextRenderedChildren</span><span class="p">;</span>
-
-    <span class="c1">// ...</span>
-</code></pre></div>
-<p>As the last step, we execute the DOM operations. Again, the real reconciler code is more complex because it also handles moves:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span>    <span class="c1">// ...</span>
-
-    <span class="c1">// Process the operation queue.</span>
-    <span class="k">while</span> <span class="p">(</span><span class="nx">operationQueue</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">operation</span> <span class="o">=</span> <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-      <span class="k">switch</span> <span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="s1">&#39;ADD&#39;</span><span class="o">:</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-      <span class="k">case</span> <span class="s1">&#39;REPLACE&#39;</span><span class="o">:</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">nextNode</span><span class="p">,</span> <span class="nx">operation</span><span class="p">.</span><span class="nx">prevNode</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-      <span class="k">case</span> <span class="s1">&#39;REMOVE&#39;</span><span class="o">:</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
+    <span class="c1">// 最后一步，我们执行DOM操作。另外真实的识别算法也处理了移动这种情况，所以其更复杂。</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">operationQueue</span><span class="p">.</span><span class="nx">length</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">operation</span> <span class="o">=</span> <span class="nx">operationQueue</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+      <span class="k">switch</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">&#39;ADD&#39;</span><span class="o">:</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">&#39;REPLACE&#39;</span><span class="o">:</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">prevNode</span><span class="p">,</span><span class="nx">operation</span><span class="p">.</span><span class="nx">nextNode</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">&#39;REMOVE&#39;</span><span class="o">:</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">operation</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
       <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>And that is it for updating host components.</p>
+<h2>更新</h2>
 
-<h3>Top-Level Updates</h3>
-
-<p>Now that both <code>CompositeComponent</code> and <code>DOMComponent</code> implement the <code>receive(nextElement)</code> method, we can change the top-level <code>mountTree()</code> function to use it when the element <code>type</code> is the same as it was the last time:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Check for an existing tree</span>
+<p>现在包括符合组件和宿主组件都完成了receive方法，我们可以改变以及函数mountTree仅当元素类型和最后一次相同时使用</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">mountTree</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span><span class="nx">containerNode</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevRootComponent</span> <span class="o">=</span> <span class="nx">prevNode</span><span class="p">.</span><span class="nx">_internalInstance</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">prevElement</span> <span class="o">=</span> <span class="nx">prevRootComponent</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
-
-    <span class="c1">// If we can, reuse the existing root component</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">prevElement</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">prevRootComponent</span><span class="p">.</span><span class="nx">receive</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">prevNode</span> <span class="o">=</span> <span class="nx">containerNode</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevrootComponent</span> <span class="o">=</span> <span class="nx">prevNode</span><span class="p">.</span><span class="nx">_internalInstance</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">prevElement</span> <span class="o">=</span> <span class="nx">prevrootComponent</span><span class="p">.</span><span class="nx">currentElement</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">prevElement</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="nx">element</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">prevrootComponent</span><span class="p">.</span><span class="nx">receive</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
       <span class="k">return</span><span class="p">;</span>
     <span class="p">}</span>
-
-    <span class="c1">// Otherwise, unmount the existing tree</span>
     <span class="nx">unmountTree</span><span class="p">(</span><span class="nx">containerNode</span><span class="p">);</span>
   <span class="p">}</span>
-
-  <span class="c1">// ...</span>
-
+  <span class="kd">let</span> <span class="nx">rootComponent</span> <span class="o">=</span> <span class="nx">instantiateComponent</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">rootNode</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">mount</span><span class="p">();</span>
+  <span class="kd">let</span> <span class="nx">publicInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">.</span><span class="nx">getPublicInstance</span><span class="p">();</span>
+  <span class="nx">rootNode</span><span class="p">.</span><span class="nx">_internalInstance</span> <span class="o">=</span> <span class="nx">rootComponent</span><span class="p">;</span>
+  <span class="nx">containerNode</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">rootNode</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">publicInstance</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Now calling <code>mountTree()</code> two times with the same type isn&#39;t destructive:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
-
-<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
-<span class="c1">// Reuses the existing DOM:</span>
-<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+<p>现在我们使用同样的type调用mountTree两次，第二次直接重用了第一次。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">let</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
+<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span><span class="o">/&gt;</span><span class="p">,</span><span class="nx">rootEl</span><span class="p">);</span>
+<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span><span class="o">/&gt;</span><span class="p">,</span><span class="nx">rootEl</span><span class="p">);</span>
 </code></pre></div>
-<p>These are the basics of how React works internally.</p>
+<p>这些基本展现了react内部是如何运作的。</p>
 
-<h3>What We Left Out</h3>
+<h2>我们还没有提什么</h2>
 
-<p>This document is simplified compared to the real codebase. There are a few important aspects we didn&#39;t address:</p>
-
-<ul>
-<li><p>Components can render <code>null</code>, and the reconciler can handle &quot;empty slots&quot; in arrays and rendered output.</p></li>
-<li><p>The reconciler also reads <code>key</code> from the elements, and uses it to establish which internal instance corresponds to which element in an array. A bulk of complexity in the actual React implementation is related to that.</p></li>
-<li><p>In addition to composite and host internal instance classes, there are also classes for &quot;text&quot; and &quot;empty&quot; components. They represent text nodes and the &quot;empty slots&quot; you get by rendering <code>null</code>.</p></li>
-<li><p>Renderers use <a href="/react/contributing/codebase-overview.html#dynamic-injection">injection</a> to pass the host internal class to the reconciler. For example, React DOM tells the reconciler to use <code>ReactDOMComponent</code> as the host internal instance implementation.</p></li>
-<li><p>The logic for updating the list of children is extracted into a mixin called <code>ReactMultiChild</code> which is used by the host internal instance class implementations both in React DOM and React Native.</p></li>
-<li><p>The reconciler also implements support for <code>setState()</code> in composite components. Multiple updates inside event handlers get batched into a single update.</p></li>
-<li><p>The reconciler also takes care of attaching and detaching refs to composite components and host nodes.</p></li>
-<li><p>Lifecycle hooks that are called after the DOM is ready, such as <code>componentDidMount()</code> and <code>componentDidUpdate()</code>, get collected into &quot;callback queues&quot; and are executed in a single batch.</p></li>
-<li><p>React puts information about the current update into an internal object called &quot;transaction&quot;. Transactions are useful for keeping track of the queue of pending lifecycle hooks, the current DOM nesting for the warnings, and anything else that is &quot;global&quot; to a specific update. Transactions also ensure React &quot;cleans everything up&quot; after updates. For example, the transaction class provided by React DOM restores the input selection after any update.</p></li>
-</ul>
-
-<h3>Jumping into the Code</h3>
+<p>这份文档简化了真实的代码库。有一些方面很重要，但是我们并没有提及：</p>
 
 <ul>
-<li><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/dom/client/ReactMount.js"><code>ReactMount</code></a> is where the code like <code>mountTree()</code> and <code>unmountTree()</code> from this tutorial lives. It takes care of mounting and unmounting top-level components. <a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/native/ReactNativeMount.js"><code>ReactNativeMount</code></a> is its React Native analog.</li>
-<li><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/dom/shared/ReactDOMComponent.js"><code>ReactDOMComponent</code></a> is the equivalent of <code>DOMComponent</code> in this tutorial. It implements the host component class for React DOM renderer. <a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/native/ReactNativeBaseComponent.js"><code>ReactNativeBaseComponent</code></a> is its React Native analog.</li>
-<li><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactCompositeComponent.js"><code>ReactCompositeComponent</code></a> is the equivalent of <code>CompositeComponent</code> in this tutorial. It handles calling user-defined components and maintaining their state.</li>
-<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/instantiateReactComponent.js"><code>instantiateReactComponent</code></a> contains the switch that picks the right internal instance class to construct for an element. It is equivalent to <code>instantiateComponent()</code> in this tutorial.</p></li>
-<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactReconciler.js"><code>ReactReconciler</code></a> is a wrapper with <code>mountComponent()</code>, <code>receiveComponent()</code>, and <code>unmountComponent()</code> methods. It calls the underlying implementations on the internal instances, but also includes some code around them that is shared by all internal instance implementations.</p></li>
-<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactChildReconciler.js"><code>ReactChildReconciler</code></a> implements the logic for mounting, updating, and unmounting children according to the <code>key</code> of their elements.</p></li>
-<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactMultiChild.js"><code>ReactMultiChild</code></a> implements processing the operation queue for child insertions, deletions, and moves independently of the renderer.</p></li>
-<li><p><code>mount()</code>, <code>receive()</code>, and <code>unmount()</code> are really called <code>mountComponent()</code>, <code>receiveComponent()</code>, and <code>unmountComponent()</code> in React codebase for legacy reasons, but they receive elements.</p></li>
-<li><p>Properties on the internal instances start with an underscore, e.g. <code>_currentElement</code>. They are considered to be read-only public fields throughout the codebase.</p></li>
+<li><p>组件可以渲染null,并且识别算法可以处理数组中空的字符并且能够渲染输出结果。</p></li>
+<li><p>这种识别算法也从元素中读取key并且使用它可以和数组中的元素对应起来，来实现元素的移动。关于这部分真实的React代码完成是很复杂的。</p></li>
+<li><p>渲染器使用<a href="https://facebook.github.io/react/contributing/codebase-overview.html#dynamic-injection">依赖注入</a>传宿主内部实例给识别算法。例如，React DOM告诉识别算法使用ReactDOMComponent作为宿主内部实例的完成。</p></li>
+<li><p>更新子节点列表的逻辑被抽出到一个叫ReactMutiChild的方法集中，被React DOM和React Native使用。</p></li>
+<li><p>识别算法也完成了在复合组件中进行状态操作。在事件监听器中的多次更新都会被放到一次更新中。</p></li>
+<li><p>识别算法也负责增加和移除refs给复合组件和宿主节点。</p></li>
+<li><p>在DOM就绪后如componentDidMount和componentDidUpdate声明周期钩子就会被增加到回调序列中，在一次批处理中被全部执行。</p></li>
+<li><p>React放当前更新到一个叫&quot;transaction&#39;的内部对象中。Transactions在跟踪声明周期钩子队列方面很有用，当前DOM嵌套错误警告，任何特定的全局更新。Transactions也确保React在更新后清空一切。例如，被React DOM提供的事务类将在任何更新后，重新存储输入的东西。</p></li>
 </ul>
 
-<h3>Future Directions</h3>
+<h2>跳着看代码</h2>
 
-<p>Stack reconciler has inherent limitations such as being synchronous and unable to interrupt the work or split it in chunks. There is a work in progress on the <a href="/react/contributing/codebase-overview.html#fiber-reconciler">new Fiber reconciler</a> with a <a href="https://github.com/acdlite/react-fiber-architecture">completely different architecture</a>. In the future, we intend to replace stack reconciler with it, but at the moment it is far from feature parity.</p>
+<ul>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/dom/client/ReactMount.js">ReactMount</a>处可以发现本章节中提到的mountTree和unmountTree函数。它负责装载和卸载顶级类。<a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/native/ReactNativeMount.js">ReactNativeMount</a>完成了React Native中同样的功能。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/dom/shared/ReactDOMComponent.js">ReactDOMComponent</a>是类同玉本章节中提到的DOMComponent。它完成了供React DOM渲染器使用的宿主组件类。<a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/native/ReactNativeBaseComponent.js">ReactNativeBaseComponent</a>完成了React Native中同样的功能。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactCompositeComponent.js">ReactCompositeComponent</a>是等价于本章节中的CompositeComponent组件。它处理用户定义的组件并维护他们的状态。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/instantiateReactComponent.js">instantiateReactComponent</a>负责为元素选择正确的正确的内部实例来初始化。它等同于本章节中的instantiateComponent。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactReconciler.js">ReactReconciler</a> 是mountComponent,receiveComponent和unmountComponent方法的一个封装。它是内部实例背后的完成，但也包括一些辅助内部实例完成的一些代码。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactChildReconciler.js">ReactChildReconciler</a>实现了根据key来进行装载，更新，卸载的逻辑。</p></li>
+<li><p><a href="https://github.com/facebook/react/blob/83381c1673d14cd16cf747e34c945291e5518a86/src/renderers/shared/stack/reconciler/ReactMultiChild.js">ReactMultiChild</a>通过渲染器实来对子元素进行插入，删除和移动的操作队列的处理</p></li>
+<li><p>由于遗留原因mount,receive,unmount方法在React代码库中被称作mountComponent,receiveComponent和unmountComponent,并且他们也接受元素。</p></li>
+<li><p>在内部实例的属性像underscore一样带有前置下划线。在整个代码库公开部分，他们被认为是只读的。</p></li>
+</ul>
 
-<h3>Next Steps</h3>
+<h2>将来的方向</h2>
 
-<p>Read the <a href="/react/contributing/design-principles.html">next section</a> to learn about the guiding principles we use for React development.</p>
+<p>栈识别算法有其内在的局限性比如其是同步的,不能中断当前操作,也不能将操作分块。新的Fiber识别算法还在开发当中，其架构和栈识别算法完全不同。将来，我们倾向用它取代栈识别算法，但是在那一刻到来前还有许多工作要做。</p>
+
+<h2>下一步</h2>
+
+<p>读下一章节来了解我们在开发React时使用的指导准则。</p>
 
 
     <div class="docs-prevnext">
