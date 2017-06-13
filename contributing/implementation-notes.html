@@ -86,16 +86,14 @@
 
 <h2>递归装载</h2>
 
-<p>让我们思考你第一次装载一个组件:
-<code>javascript
-ReactDOM.render(&lt;App /&gt;, rootEl);
-</code>
-React DOM将传递App给识别算法。 记得App是一个React元素，是一个你要渲染什么的描述,你可以认为它是一个原生对象。
-<code>javascript
-console.log(&lt;App /&gt;);
-// { type: App, props: {} }
-</code>
-这个识别算法将检查App是否是一个类或者是一个函数。如果App是一个函数，这个识别算法将调用<code>App(props)</code>返回React元素。如果App是一个类，这个识别算法将通过<code>new App(props)</code>实例化一个App，然后调用componentWillMount生命周期方法。</p>
+<p>让我们思考你第一次装载一个组件:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+</code></pre></div>
+<p>React DOM将传递App给识别算法。 记得App是一个React元素，是一个你要渲染什么的描述,你可以认为它是一个原生对象。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">);</span>
+<span class="c1">// { type: App, props: {} }</span>
+</code></pre></div>
+<p>这个识别算法将检查App是否是一个类或者是一个函数。如果App是一个函数，这个识别算法将调用<code>App(props)</code>返回React元素。如果App是一个类，这个识别算法将通过<code>new App(props)</code>实例化一个App，然后调用componentWillMount生命周期方法。</p>
 
 <p>换句话说，这个识别算法将了解这个元素App将渲染什么。</p>
 
@@ -152,12 +150,10 @@ console.log(&lt;App /&gt;);
 
 <p>除了用户定义的组合组件，React Elements也可以表示特定平台（&quot;宿主”）组件。例如，Button可以从它的render方法返回一个div。</p>
 
-<p>如果元素的type属性是一个字符串，我们就把它当宿主元素来处理：
-<code>javascript
-console.log(&lt;div/&gt;);
-// {type: &#39;div&#39;, props: {}}
-</code></p>
-
+<p>如果元素的type属性是一个字符串，我们就把它当宿主元素来处理：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">/&gt;</span><span class="p">);</span>
+<span class="c1">// {type: &#39;div&#39;, props: {}}</span>
+</code></pre></div>
 <p>宿主元素里不包含用户定义的代码。</p>
 
 <p>当识别算法遇到一个宿主元素时，它让渲染器负责装载它。例如，React DOM将创建一个DOM节点。元素如果有子元素，识别算法像按照上班同样的算法依次装载他们。</p>
@@ -322,11 +318,15 @@ console.log(&lt;div/&gt;);
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>这和之前mountComposite完成没有太多的区别，但是现在我们可以保存一些信息，比如当前元素，当前已渲染返回的组件，以及当前的组件实例用于更新使用。
-注意 CompositeComponent的实例和用户定义的类实例不是一回事。CompositeComponent是我们识别算法的一部分，并且从来不暴露给用户。
-我们使用这个类通过元素类型来读取用户自定义的类，并且创造它的实例。为了避免困惑，我们把CompositeComponent和DOMComponent的实例称为&quot;内部实例&quot;。
-他们存在是为了我们可以关联一些持久数据给他们。只有渲染器和识别算法能够意识到他们的存在。与此相类似，我们叫用户定义的类实例叫&quot;公开实例&quot;。
-这个公开实例是你在render方法和其他自定义组件方法中作为this使用的。</p>
+<p>这和之前mountComposite完成没有太多的区别，但是现在我们可以保存一些信息，比如当前元素，当前已渲染返回的组件，以及当前的组件实例用于更新使用。</p>
+
+<p>注意 CompositeComponent的实例和用户定义的类实例不是一回事。CompositeComponent是我们识别算法的一部分，并且从来不暴露给用户。</p>
+
+<p>我们使用这个类通过元素类型来读取用户自定义的类，并且创造它的实例。为了避免困惑，我们把CompositeComponent和DOMComponent的实例称为&quot;内部实例&quot;。</p>
+
+<p>他们存在是为了我们可以关联一些持久数据给他们。只有渲染器和识别算法能够意识到他们的存在。与此相类似，我们叫用户定义的类实例叫&quot;公开实例&quot;。</p>
+
+<p>这个公开实例是你在render方法和其他自定义组件方法中作为this使用的。</p>
 
 <p>这个mountHost函数，重构成DOMComponent的mount方法，看上去相似：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
@@ -459,38 +459,29 @@ console.log(&lt;div/&gt;);
 
 <h2>更新</h2>
 
-<p>在前面章节，我们完成了卸载。然而如果当任何属性改变就重新卸载和插入整个DOM树，那么React并没有太大的实用性。识别算法的目标是重用已存在的实例，这些实例保留对应的DOM节点和状态。
- <code>javascript
- var rootEl = document.getElementById(&#39;root&#39;);
- mountTree(&lt;App /&gt;, rootEl);
- // 应该重用已存在的DOM树
- mountTree(&lt;App /&gt;, rootEl);
-</code></p>
-
+<p>在前面章节，我们完成了卸载。然而如果当任何属性改变就重新卸载和插入整个DOM树，那么React并没有太大的实用性。识别算法的目标是重用已存在的实例，这些实例保留对应的DOM节点和状态。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">var</span> <span class="nx">rootEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">);</span>
+<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+<span class="c1">// 应该重用已存在的DOM树</span>
+<span class="nx">mountTree</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nx">rootEl</span><span class="p">);</span>
+</code></pre></div>
 <p>我们将增加一个或多个方法来扩展内部实例。除了增加mount和unmount方法外,DOMComponent和CompositeComponent将完成一个叫receive(nextElement)的方法。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span> <span class="kr">class</span> <span class="nx">CompositeComponent</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
 
-<p><code>
- class CompositeComponent {
-  // ...</p>
+  <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-<p>receive(nextElement) {
-    // ...
-  }
-}</p>
+<span class="kr">class</span> <span class="nx">DOMComponent</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
 
-<p>class DOMComponent {
-  // ...</p>
-
-<p>receive(nextElement) {
-    // ...
-  }
-}
- </code>
- Its job is to do whatever is necessary to bring the component (and any of its children) up to date with the description provided by the nextElement.</p>
-
-<p>This is the part that is often described as &quot;virtual DOM diffing&quot; a
-lthough what really happens is that we walk the internal tree recursively and let each internal instance receive an update.</p>
-
+  <span class="nx">receive</span><span class="p">(</span><span class="nx">nextElement</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>这个函数的职责是将nextElement提供的最新描述给组件或者它的子组件。这部分经常被描述为&quot;虚拟DOM更新&quot;。尽管实际上发生的是我们经常说的内部实例树的递归，同时每个实例树都接受一个更新。</p>
 
 <h2>更新复合组件</h2>
