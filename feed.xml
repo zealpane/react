@@ -8,27 +8,27 @@
 		
 			<item>
 				<title>React v15.5.0</title>
-				<description>&lt;p&gt;It&amp;#39;s been exactly one year since the last breaking change to React. Our next major release, React 16, will include some exciting improvements, including a &lt;a href=&quot;https://www.youtube.com/watch?v=ZCuYPiUIONs&quot;&gt;complete rewrite&lt;/a&gt; of React&amp;#39;s internals. &lt;a href=&quot;/react/contributing/design-principles.html#stability&quot;&gt;We take stability seriously&lt;/a&gt;, and are committed to bringing those improvements to all of our users with minimal effort.&lt;/p&gt;
+				<description>&lt;p&gt;自上次更新React已经是一年前了。我们下一次的重要发布，React 16，将包含一些让人兴奋的提升，包含一个&lt;a href=&quot;https://www.youtube.com/watch?v=ZCuYPiUIONs&quot;&gt;完全重写&lt;/a&gt;的React内核。&lt;a href=&quot;/react/contributing/design-principles.html#stability&quot;&gt;我们认真考虑了稳定性&lt;/a&gt;，并致力于以最小的改动将这些特性带给我们的用户。&lt;/p&gt;
 
-&lt;p&gt;To that end, today we&amp;#39;re releasing React 15.5.0.&lt;/p&gt;
+&lt;p&gt;最后，我们发布了React 15.5.0。&lt;/p&gt;
 
-&lt;h3&gt;New Deprecation Warnings&lt;/h3&gt;
+&lt;h3&gt;新的弃用警告&lt;/h3&gt;
 
-&lt;p&gt;The biggest change is that we&amp;#39;ve extracted &lt;code&gt;React.PropTypes&lt;/code&gt; and &lt;code&gt;React.createClass&lt;/code&gt; into their own packages. Both are still accessible via the main &lt;code&gt;React&lt;/code&gt; object, but using either will log a one-time deprecation warning to the console when in development mode. This will enable future code size optimizations.&lt;/p&gt;
+&lt;p&gt;最大的改变是我们将&lt;code&gt;React.PropTypes&lt;/code&gt;和&lt;code&gt;React.createClass&lt;/code&gt; 移到他们的自己的包。二者仍然可以通过主要的&lt;code&gt;React&lt;/code&gt;独享访问，但是在开发模式下，使用其中的一个将在控制台上打印一个过时的弃用警告。这将会让之后代码大小有所优化。&lt;/p&gt;
 
-&lt;p&gt;These warnings will not affect the behavior of your application. However, we realize they may cause some frustration, particularly if you use a testing framework that treats &lt;code&gt;console.error&lt;/code&gt; as a failure.&lt;/p&gt;
+&lt;p&gt;这些警告并不会影响你的应用行为。然而，我们意识到他们可能会造成一些困惑，尤其是你使用的测试框架将&lt;code&gt;console.error&lt;/code&gt;视为失败时。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Adding new warnings is not something we do lightly.&lt;/strong&gt; Warnings in React are not mere suggestions — they are integral to our strategy of keeping as many people as possible on the latest version of React. We never add warnings without providing an incremental path forward.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;添加新警告并不是我们轻易做的。&lt;/strong&gt; 警告在React中不仅仅是建议 - 它们是我们能够让尽可能多地人使用最新版React的策略的组成部分。我们从不在不增加路径的情况下增加警告。&lt;/p&gt;
 
-&lt;p&gt;So while the warnings may cause frustration in the short-term, we believe &lt;strong&gt;prodding developers to migrate their codebases now prevents greater frustration in the future&lt;/strong&gt;. Proactively fixing warnings ensures you are prepared for the next major release. If your app produces zero warnings in 15.5, it should continue to work in 16 without any changes.&lt;/p&gt;
+&lt;p&gt;因此，当警告可能在短期内造成困惑，我们相信&lt;strong&gt;能刺激开发者在当前迁移代码库而防止在未来产生更大困惑&lt;/strong&gt;。提前修复警告确保你已为下一个重要发布做好了准备。若你的应用在15.5时产生了0个警告，那么在16中应该能够继续工作而无需任何改变。&lt;/p&gt;
 
-&lt;p&gt;For each of these new deprecations, we&amp;#39;ve provided a codemod to automatically migrate your code. They are available as part of the &lt;a href=&quot;https://github.com/reactjs/react-codemod&quot;&gt;react-codemod&lt;/a&gt; project.&lt;/p&gt;
+&lt;p&gt;关于每一项新的弃用，我们已经提供了一份代码修改（codemod）以自动迁移你的代码。它们已可以利用来作为 &lt;a href=&quot;https://github.com/reactjs/react-codemod&quot;&gt;react-codemod&lt;/a&gt;项目的部分。&lt;/p&gt;
 
-&lt;h3&gt;Migrating from React.PropTypes&lt;/h3&gt;
+&lt;h3&gt;从React.PropTypes迁移&lt;/h3&gt;
 
-&lt;p&gt;Prop types are a feature for runtime validation of props during development. We&amp;#39;ve extracted the built-in prop types to a separate package to reflect the fact that not everybody uses them.&lt;/p&gt;
+&lt;p&gt;属性类型是用于在开发期间对属性进行运行时校验的一项特性。我们已将内建的属性类型提取到一个独立的包中以反映是否并非每个人都会使用的事实。&lt;/p&gt;
 
-&lt;p&gt;In 15.5, instead of accessing &lt;code&gt;PropTypes&lt;/code&gt; from the main &lt;code&gt;React&lt;/code&gt; object, install the &lt;code&gt;prop-types&lt;/code&gt; package and import them from there:&lt;/p&gt;
+&lt;p&gt;在15.5中，不再是从&lt;code&gt;React&lt;/code&gt;主对象中访问 &lt;code&gt;PropTypes&lt;/code&gt; ，而是安装&lt;code&gt;prop-types&lt;/code&gt;包并从中引入他们：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Before (15.4 and below)&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;react&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -56,20 +56,20 @@
 &lt;span class=&quot;hll&quot;&gt;  &lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PropTypes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isRequired&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;https://github.com/reactjs/react-codemod#react-proptypes-to-prop-types&quot;&gt;codemod&lt;/a&gt; for this change performs this conversion automatically. Basic usage:&lt;/p&gt;
+&lt;p&gt;对于这一改变，&lt;a href=&quot;https://github.com/reactjs/react-codemod#react-proptypes-to-prop-types&quot;&gt;codemo&lt;/a&gt; 自动处理这一转换。基础用法：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;jscodeshift -t react-codemod/transforms/React-PropTypes-to-prop-types.js &amp;lt;path&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;propTypes&lt;/code&gt;, &lt;code&gt;contextTypes&lt;/code&gt;, and &lt;code&gt;childContextTypes&lt;/code&gt; APIs will work exactly as before. The only change is that the built-in validators now live in a separate package.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;propTypes&lt;/code&gt;， &lt;code&gt;contextTypes&lt;/code&gt; 和 &lt;code&gt;childContextTypes&lt;/code&gt;仍将和以前一样。唯一的改变是以前内建的的验证器现在位于独立的包内。&lt;/p&gt;
 
-&lt;p&gt;You may also consider using &lt;a href=&quot;https://flow.org/&quot;&gt;Flow&lt;/a&gt; to statically type check your JavaScript code, including &lt;a href=&quot;https://flow.org/en/docs/frameworks/react/#setup-flow-with-react-a-classtoc-idtoc-setup-flow-with-react-hreftoc-setup-flow-with-reacta&quot;&gt;React components&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;你也可能考虑使用 &lt;a href=&quot;https://flow.org/&quot;&gt;Flow&lt;/a&gt;来静态地检查你的JavaScript代码类型，包括&lt;a href=&quot;https://flow.org/en/docs/frameworks/react/#setup-flow-with-react-a-classtoc-idtoc-setup-flow-with-react-hreftoc-setup-flow-with-reacta&quot;&gt;React 组件&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h3&gt;Migrating from React.createClass&lt;/h3&gt;
+&lt;h3&gt;从React.crateClass迁移&lt;/h3&gt;
 
-&lt;p&gt;When React was initially released, there was no idiomatic way to create classes in JavaScript, so we provided our own: &lt;code&gt;React.createClass&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;当React首次发布时，在JavaScript中并没有通用的方式创建类，因此我们提供我们一个自定义方法：&lt;code&gt;React.createClass&lt;/code&gt;。&lt;/p&gt;
 
-&lt;p&gt;Later, classes were added to the language as part of ES2015, so we added the ability to create React components using JavaScript classes. &lt;strong&gt;Along with functional components, JavaScript classes are now the &lt;a href=&quot;/react/docs/components-and-props.html#functional-and-class-components&quot;&gt;preferred way to create components in React&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;而后，类被添加进该语言中作为ES2015的一部分，因此我们增加了使用JavaScript的类来创建React组件的能力。&lt;strong&gt;与函数式组件一起，JavaScript类现在都是&lt;a href=&quot;/react/docs/components-and-props.html#functional-and-class-components&quot;&gt;在React创建组件的首选方式&lt;/a&gt;。&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;For your existing &lt;code&gt;createClass&lt;/code&gt; components, we recommend that you migrate them to JavaScript classes. However, if you have components that rely on mixins, converting to classes may not be immediately feasible. If so, &lt;code&gt;create-react-class&lt;/code&gt; is available on npm as a drop-in replacement:&lt;/p&gt;
+&lt;p&gt;对于已经存在的 &lt;code&gt;createClass&lt;/code&gt; 组件，我们建议你将它们迁移到JavaScript类。然而，若你的组件依赖于混合（mixins），迁移至类可能不会立即可行。若是如此，&lt;code&gt;create-react-class&lt;/code&gt; 作为一个顺带的替换方案已在npm上可用：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Before (15.4 and below)&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;react&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
@@ -91,42 +91,42 @@
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your components will continue to work the same as they did before.&lt;/p&gt;
+&lt;p&gt;你的组件仍然能够和之前一样继续工作。&lt;/p&gt;
 
-&lt;p&gt;The &lt;a href=&quot;https://github.com/reactjs/react-codemod#explanation-of-the-new-es2015-class-transform-with-property-initializers&quot;&gt;codemod&lt;/a&gt; for this change attempts to convert a &lt;code&gt;createClass&lt;/code&gt; component to a JavaScript class, with a fallback to &lt;code&gt;create-react-class&lt;/code&gt; if necessary. It has converted thousands of components internally at Facebook.&lt;/p&gt;
+&lt;p&gt;对于这一变化，&lt;a href=&quot;https://github.com/reactjs/react-codemod#explanation-of-the-new-es2015-class-transform-with-property-initializers&quot;&gt;codemo&lt;/a&gt; 尝试转换&lt;code&gt;createClass&lt;/code&gt;组件为一个JavaScript类，并在必要时回退到&lt;code&gt;create-react-class&lt;/code&gt;。该方案已处理了Facebook内部数千计的组件。&lt;/p&gt;
 
-&lt;p&gt;Basic usage:&lt;/p&gt;
+&lt;p&gt;基本用法：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;jscodeshift -t react-codemod/transforms/class.js path/to/components
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Discontinuing support for React Addons&lt;/h3&gt;
+&lt;h3&gt;不再支持的React附件&lt;/h3&gt;
 
-&lt;p&gt;We&amp;#39;re discontinuing active maintenance of React Addons packages. In truth, most of these packages haven&amp;#39;t been actively maintained in a long time. They will continue to work indefinitely, but we recommend migrating away as soon as you can to prevent future breakages.&lt;/p&gt;
+&lt;p&gt;我们将停止维护React附件包。真实地，大多数包已经有很长时间没有维护了。它们仍将持续继续工作，但我们建议尽快迁移以防止将来的破坏。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-create-fragment&lt;/strong&gt; – React 16 will have first-class support for fragments, at which point this package won&amp;#39;t be necessary. We recommend using arrays of keyed elements instead.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-css-transition-group&lt;/strong&gt; - Use &lt;a href=&quot;https://github.com/reactjs/react-transition-group&quot;&gt;react-transition-group/CSSTransitionGroup&lt;/a&gt; instead. Version 1.1.1 provides a drop-in replacement.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-linked-state-mixin&lt;/strong&gt; - Explicitly set the &lt;code&gt;value&lt;/code&gt; and &lt;code&gt;onChange&lt;/code&gt; handler instead.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-pure-render-mixin&lt;/strong&gt; - Use &lt;a href=&quot;/react/docs/react-api.html#react.purecomponent&quot;&gt;&lt;code&gt;React.PureComponent&lt;/code&gt;&lt;/a&gt; instead.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-shallow-compare&lt;/strong&gt; - Use &lt;a href=&quot;/react/docs/react-api.html#react.purecomponent&quot;&gt;&lt;code&gt;React.PureComponent&lt;/code&gt;&lt;/a&gt; instead.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-transition-group&lt;/strong&gt; - Use &lt;a href=&quot;https://github.com/reactjs/react-transition-group&quot;&gt;react-transition-group/TransitionGroup&lt;/a&gt; instead. Version 1.1.1 provides a drop-in replacement.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-addons-update&lt;/strong&gt; - Use &lt;a href=&quot;https://github.com/kolodny/immutability-helper&quot;&gt;immutability-helper&lt;/a&gt; instead, a drop-in replacement.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;react-linked-input&lt;/strong&gt; - Explicitly set the &lt;code&gt;value&lt;/code&gt; and &lt;code&gt;onChange&lt;/code&gt; handler instead.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-create-fragment&lt;/strong&gt; - React 16将优先支持碎片，在这点上该包已不再必要。我们推荐使用键控元素的数组。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-css-transition-group&lt;/strong&gt;。使用&lt;a href=&quot;https://github.com/reactjs/react-transition-group&quot;&gt;react-transition-group/CSSTransitionGroup&lt;/a&gt;。1.1.1版本提供了插入式的替代方案。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-linked-state-mixin&lt;/strong&gt; 直接设置&lt;code&gt;value&lt;/code&gt;和&lt;code&gt;onChange&lt;/code&gt;处理器&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-pure-render-mixin&lt;/strong&gt; - 使用&lt;a href=&quot;/react/docs/react-api.html#react.purecomponent&quot;&gt;&lt;code&gt;React.PureComponent&lt;/code&gt;&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-shallow-compare&lt;/strong&gt; - 使用&lt;a href=&quot;/react/docs/react-api.html#react.purecomponent&quot;&gt;&lt;code&gt;React.PureComponent&lt;/code&gt;&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-transition-group&lt;/strong&gt; 使用&lt;a href=&quot;https://github.com/reactjs/react-transition-group&quot;&gt;react-transition-group/TransitionGroup&lt;/a&gt;。1.1.1版本提供了一个插入式的替代方案。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-addons-update&lt;/strong&gt; - 使用&lt;a href=&quot;https://github.com/kolodny/immutability-helper&quot;&gt;immutability-helper&lt;/a&gt;，一个插入式替代方案。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;react-linked-input&lt;/strong&gt; - 直接设置&lt;code&gt;value&lt;/code&gt;和&lt;code&gt;onChange&lt;/code&gt;处理器。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;We&amp;#39;re also discontinuing support for the &lt;code&gt;react-with-addons&lt;/code&gt; UMD build. It will be removed in React 16.&lt;/p&gt;
+&lt;p&gt;我们也放弃对于&lt;code&gt;react-with-addons&lt;/code&gt;UMD构建的支持。其将在React 16中被移除。&lt;/p&gt;
 
-&lt;h3&gt;React Test Utils&lt;/h3&gt;
+&lt;h3&gt;React测试套件&lt;/h3&gt;
 
-&lt;p&gt;Currently, the React Test Utils live inside &lt;code&gt;react-addons-test-utils&lt;/code&gt;. As of 15.5, we&amp;#39;re deprecating that package and moving them to &lt;code&gt;react-dom/test-utils&lt;/code&gt; instead:&lt;/p&gt;
+&lt;p&gt;当前，React 测试套件位于&lt;code&gt;react-addons-test-utils&lt;/code&gt;内。在15.5中，我们将其从包中独立出去，并将它们迁移至&lt;code&gt;react-dom/test-utils&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Before (15.4 and below)&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TestUtils&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;react-addons-test-utils&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;// After (15.5)&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;TestUtils&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;react-dom/test-utils&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This reflects the fact that what we call the Test Utils are really a set of APIs that wrap the DOM renderer.&lt;/p&gt;
+&lt;p&gt;这反应了我们所说的测试套件实际上是一套包装了DOM渲染器的API。&lt;/p&gt;
 
-&lt;p&gt;The exception is shallow rendering, which is not DOM-specific. The shallow renderer has been moved to &lt;code&gt;react-test-renderer/shallow&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;浅渲染是一个例外，其并不是DOM规范。浅渲染器已被移至&lt;code&gt;react-test-renderer/shallow&lt;/code&gt;。&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Before (15.4 and below)&lt;/span&gt;
 &lt;span class=&quot;hll&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createRenderer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;react-addons-test-utils&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/span&gt;
@@ -135,9 +135,9 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;hr&gt;
 
-&lt;h2&gt;Acknowledgements&lt;/h2&gt;
+&lt;h2&gt;感谢&lt;/h2&gt;
 
-&lt;p&gt;A special thank you to these folks for transferring ownership of npm package names:&lt;/p&gt;
+&lt;p&gt;特别感谢这些人转让npm包名称的所有权：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/developit&quot;&gt;Jason Miller&lt;/a&gt;&lt;/li&gt;
@@ -147,77 +147,77 @@
 
 &lt;hr&gt;
 
-&lt;h2&gt;Installation&lt;/h2&gt;
+&lt;h2&gt;安装&lt;/h2&gt;
 
-&lt;p&gt;We recommend using &lt;a href=&quot;https://yarnpkg.com/&quot;&gt;Yarn&lt;/a&gt; or &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt; for managing front-end dependencies. If you&amp;#39;re new to package managers, the &lt;a href=&quot;https://yarnpkg.com/en/docs/getting-started&quot;&gt;Yarn documentation&lt;/a&gt; is a good place to get started.&lt;/p&gt;
+&lt;p&gt;我们推荐使用&lt;a href=&quot;https://yarnpkg.com/&quot;&gt;Yarn&lt;/a&gt;或&lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt;来管理前端依赖。若你是初次接触包管理器，&lt;a href=&quot;https://yarnpkg.com/en/docs/getting-started&quot;&gt;Yarn documentation&lt;/a&gt;是一个不错的起点。&lt;/p&gt;
 
-&lt;p&gt;To install React with Yarn, run:&lt;/p&gt;
+&lt;p&gt;通过Yarn安装React，运行：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;yarn add react@^15.5.0 react-dom@^15.5.0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To install React with npm, run:&lt;/p&gt;
+&lt;p&gt;通过npm安装React，运行：&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;npm install --save react@^15.5.0 react-dom@^15.5.0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We recommend using a bundler like &lt;a href=&quot;https://webpack.js.org/&quot;&gt;webpack&lt;/a&gt; or &lt;a href=&quot;http://browserify.org/&quot;&gt;Browserify&lt;/a&gt; so you can write modular code and bundle it together into small packages to optimize load time.&lt;/p&gt;
+&lt;p&gt;我们推荐如&lt;a href=&quot;https://webpack.js.org/&quot;&gt;webpack&lt;/a&gt; 或 &lt;a href=&quot;http://browserify.org/&quot;&gt;Browserify&lt;/a&gt;打包器，以让你可以编写模块化代码并将其打包到一起放在一个小的包内以优化加载时间。&lt;/p&gt;
 
-&lt;p&gt;Remember that by default, React runs extra checks and provides helpful warnings in development mode. When deploying your app, make sure to &lt;a href=&quot;/react/docs/installation.html#development-and-production-versions&quot;&gt;compile it in production mode&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;记住默认情况下，React在开发模式下运行会带有额外检查并提供有用的警告。当部署你的应用时，确保其&lt;a href=&quot;/react/docs/installation.html#development-and-production-versions&quot;&gt;在生产模式编译&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;In case you don&amp;#39;t use a bundler, we also provide pre-built bundles in the npm packages which you can &lt;a href=&quot;/react/docs/installation.html#using-a-cdn&quot;&gt;include as script tags&lt;/a&gt; on your page:&lt;/p&gt;
+&lt;p&gt;万一你未使用打包器，我们也提供了一个预先构建好的包在npm上，你可以在你的页面中&lt;a href=&quot;/react/docs/installation.html#using-a-cdn&quot;&gt;通过script标签引入&lt;/a&gt;。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;React&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react.js&quot;&gt;react/dist/react.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react.min.js&quot;&gt;react/dist/react.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
+带警告的开发版本：&lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react.js&quot;&gt;react/dist/react.js&lt;/a&gt;&lt;br&gt;
+用于生产的压缩版本：&lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react.min.js&quot;&gt;react/dist/react.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;React with Add-Ons&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react-with-addons.js&quot;&gt;react/dist/react-with-addons.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react-with-addons.min.js&quot;&gt;react/dist/react-with-addons.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React DOM&lt;/strong&gt; (include React in the page before React DOM)&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom.js&quot;&gt;react-dom/dist/react-dom.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom.min.js&quot;&gt;react-dom/dist/react-dom.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React DOM Server&lt;/strong&gt; (include React in the page before React DOM Server)&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom-server.js&quot;&gt;react-dom/dist/react-dom-server.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom-server.min.js&quot;&gt;react-dom/dist/react-dom-server.min.js&lt;/a&gt;&lt;/li&gt;
+带警告的开发版本：&lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react-with-addons.js&quot;&gt;react/dist/react-with-addons.js&lt;/a&gt;&lt;br&gt;
+用于生产的压缩版本：&lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react-with-addons.min.js&quot;&gt;react/dist/react-with-addons.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;React DOM&lt;/strong&gt; (在React DOM之前引入React)&lt;br&gt;
+带警告的开发版本：&lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom.js&quot;&gt;react-dom/dist/react-dom.js&lt;/a&gt;&lt;br&gt;
+用于生产的压缩版本：&lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom.min.js&quot;&gt;react-dom/dist/react-dom.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;React DOM Server&lt;/strong&gt; (React DOM Server之前引入React)&lt;br&gt;
+带警告的开发版本：&lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom-server.js&quot;&gt;react-dom/dist/react-dom-server.js&lt;/a&gt;&lt;br&gt;
+用于生产的压缩版本：&lt;a href=&quot;https://unpkg.com/react-dom@15.5.0/dist/react-dom-server.min.js&quot;&gt;react-dom/dist/react-dom-server.min.js&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;We&amp;#39;ve also published version &lt;code&gt;15.5.0&lt;/code&gt; of the &lt;code&gt;react&lt;/code&gt;, &lt;code&gt;react-dom&lt;/code&gt;, and addons packages on npm and the &lt;code&gt;react&lt;/code&gt; package on bower.&lt;/p&gt;
+&lt;p&gt;我们还在npm上发布了&lt;code&gt;react&lt;/code&gt;，&lt;code&gt;react-dom&lt;/code&gt;及附件包的&lt;code&gt;15.5.0&lt;/code&gt;版本以及在bower上的&lt;code&gt;react&lt;/code&gt;包。&lt;/p&gt;
 
 &lt;hr&gt;
 
-&lt;h2&gt;Changelog&lt;/h2&gt;
+&lt;h2&gt;修改日志&lt;/h2&gt;
 
 &lt;h2&gt;15.5.0 (April 7, 2017)&lt;/h2&gt;
 
 &lt;h3&gt;React&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Added a deprecation warning for &lt;code&gt;React.createClass&lt;/code&gt;. Points users to create-react-class instead. (&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/commit/d9a4fa4f51c6da895e1655f32255cf72c0fe620e&quot;&gt;d9a4fa4&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Added a deprecation warning for &lt;code&gt;React.PropTypes&lt;/code&gt;. Points users to prop-types instead. (&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/commit/043845ce75ea0812286bbbd9d34994bb7e01eb28&quot;&gt;043845c&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when using &lt;code&gt;ReactDOM&lt;/code&gt; together with &lt;code&gt;ReactDOMServer&lt;/code&gt;. (&lt;a href=&quot;https://github.com/wacii&quot;&gt;@wacii&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/9005&quot;&gt;#9005&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed issue with Closure Compiler. (&lt;a href=&quot;https://github.com/anmonteiro&quot;&gt;@anmonteiro&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/8895&quot;&gt;#8895&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Another fix for Closure Compiler. (&lt;a href=&quot;https://github.com/Shastel&quot;&gt;@Shastel&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/8882&quot;&gt;#8882&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Added component stack info to invalid element type warning. (&lt;a href=&quot;https://github.com/n3tr&quot;&gt;@n3tr&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/8495&quot;&gt;#8495&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;为&lt;code&gt;React.createClass&lt;/code&gt;增加一个独立的警告。将用户指向create-react-class。（&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/commit/d9a4fa4f51c6da895e1655f32255cf72c0fe620e&quot;&gt;d9a4fa4&lt;/a&gt;的提交）&lt;/li&gt;
+&lt;li&gt;为&lt;code&gt;React.PropTypes&lt;/code&gt;增加一个独立的警告。将用户指向prop-types。（&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/commit/043845ce75ea0812286bbbd9d34994bb7e01eb28&quot;&gt;043845c&lt;/a&gt;的提交）&lt;/li&gt;
+&lt;li&gt;修复同时使用&lt;code&gt;ReactDOM&lt;/code&gt;和&lt;code&gt;ReactDOMServer&lt;/code&gt;。（&lt;a href=&quot;https://github.com/wacii&quot;&gt;@wacii&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9005&quot;&gt;#9005&lt;/a&gt;提的PR）&lt;/li&gt;
+&lt;li&gt;修复关于Closure Compiler的问题。（&lt;a href=&quot;https://github.com/Shastel&quot;&gt;@Shastel&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8882&quot;&gt;#8882&lt;/a&gt;提的PR）&lt;/li&gt;
+&lt;li&gt;另一个关于Closure Compiler的修复。（&lt;a href=&quot;https://github.com/Shastel&quot;&gt;@Shastel&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8882&quot;&gt;#8882&lt;/a&gt;提的PR）&lt;/li&gt;
+&lt;li&gt;为无效的元素类型警告增加组件栈信息。（&lt;a href=&quot;https://github.com/n3tr&quot;&gt;@n3tr&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8495&quot;&gt;#8495&lt;/a&gt;提的PR）&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3&gt;React DOM&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Fixed Chrome bug when backspacing in number inputs. (&lt;a href=&quot;https://github.com/nhunzaker&quot;&gt;@nhunzaker&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/7359&quot;&gt;#7359&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Added &lt;code&gt;react-dom/test-utils&lt;/code&gt;, which exports the React Test Utils. (&lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;修正当在数字输入中回退时的Chrome bug。(&lt;a href=&quot;https://github.com/nhunzaker&quot;&gt;@nhunzaker&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/7359&quot;&gt;#7359&lt;/a&gt;提的PR)&lt;/li&gt;
+&lt;li&gt;增加&lt;code&gt;react-dom/test-utils&lt;/code&gt;，暴露React测试套件。(&lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3&gt;React Test Renderer&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Fixed bug where &lt;code&gt;componentWillUnmount&lt;/code&gt; was not called for children. (&lt;a href=&quot;https://github.com/gre&quot;&gt;@gre&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/8512&quot;&gt;#8512&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Added &lt;code&gt;react-test-renderer/shallow&lt;/code&gt;, which exports the shallow renderer. (&lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;修复子组件不会调用&lt;code&gt;componentWillUnmount&lt;/code&gt;。（&lt;a href=&quot;https://github.com/gre&quot;&gt;@gre&lt;/a&gt; 在 [#8512](https://github.com/facebook/react/pull/8512]提的PR）&lt;/li&gt;
+&lt;li&gt;增加 &lt;code&gt;react-test-renderer/shallow&lt;/code&gt;，暴露浅渲染器。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3&gt;React Addons&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Last release for addons; they will no longer be actively maintained.&lt;/li&gt;
-&lt;li&gt;Removed &lt;code&gt;peerDependencies&lt;/code&gt; so that addons continue to work indefinitely. (&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; and &lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/commit/8a06cd7a786822fce229197cac8125a551e8abfa&quot;&gt;8a06cd7&lt;/a&gt; and &lt;a href=&quot;https://github.com/facebook/react/commit/67a8db3650d724a51e70be130e9008806402678a&quot;&gt;67a8db3&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Updated to remove references to &lt;code&gt;React.createClass&lt;/code&gt; and &lt;code&gt;React.PropTypes&lt;/code&gt; (&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/commit/12a96b94823d6b6de6b1ac13bd576864abd50175&quot;&gt;12a96b9&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;react-addons-test-utils&lt;/code&gt; is deprecated. Use &lt;code&gt;react-dom/test-utils&lt;/code&gt; and &lt;code&gt;react-test-renderer/shallow&lt;/code&gt; instead. (&lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;最后一次发布附件；他们将不再被维护&lt;/li&gt;
+&lt;li&gt;移除&lt;code&gt;peerDependencies&lt;/code&gt;以让附件能够无限期继续工作。（&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/commit/8a06cd7a786822fce229197cac8125a551e8abfa&quot;&gt;8a06cd7&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/facebook/react/commit/67a8db3650d724a51e70be130e9008806402678a&quot;&gt;67a8db3&lt;/a&gt;的提交）&lt;/li&gt;
+&lt;li&gt;更新以移除&lt;code&gt;React.createClass&lt;/code&gt; 和 &lt;code&gt;React.PropTypes&lt;/code&gt; 的引用。（&lt;a href=&quot;https://github.com/acdlite&quot;&gt;@acdlite&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/commit/12a96b94823d6b6de6b1ac13bd576864abd50175&quot;&gt;12a96b9&lt;/a&gt;的提交）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;react-addons-test-utils&lt;/code&gt;被移除。使用&lt;code&gt;react-dom/test-utils&lt;/code&gt; 和 &lt;code&gt;react-test-renderer/shallow&lt;/code&gt; 代替。（&lt;a href=&quot;https://github.com/bvaughn&quot;&gt;@bvaughn&lt;/a&gt;）&lt;/li&gt;
 &lt;/ul&gt;
 </description>
 				<pubDate>2017-04-07T00:00:00-07:00</pubDate>
