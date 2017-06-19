@@ -7,7 +7,7 @@
 		<atom:link href="https://facebook.github.io/react/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>React v15.5.0</title>
+				<title>React v15.6.0</title>
 				<description>&lt;p&gt;今天我们发布了React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。&lt;/p&gt;
 
 &lt;h2&gt;改进Inputs&lt;/h2&gt;
