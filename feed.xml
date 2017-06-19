@@ -8,6 +8,97 @@
 		
 			<item>
 				<title>React v15.5.0</title>
+				<description>&lt;p&gt;今天我们发布了React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。&lt;/p&gt;
+
+&lt;h2&gt;改进Inputs&lt;/h2&gt;
+
+&lt;p&gt;在React 15.6.0，输入框的&lt;code&gt;onChange&lt;/code&gt;事件稍微可靠了点并能够处理更多边界条件，涵盖以下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;当单选按钮被点击但未改变时事件未触发（&lt;a href=&quot;https://github.com/facebook/react/issues/1471&quot;&gt;issue 1471&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;用方向键（arrow keys）修改&lt;code&gt;范围（range）&lt;/code&gt;类型的输入框（&lt;a href=&quot;https://github.com/facebook/react/issues/554&quot;&gt;issue 554&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;在IE 11复制文本到文本框中（&lt;a href=&quot;https://github.com/facebook/react/issues/7211&quot;&gt;issue 7211&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;在IE 11自动填充（&lt;a href=&quot;https://github.com/facebook/react/issues/6614&quot;&gt;issue 6614&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;在IE 11中通过&amp;#39;x&amp;#39;键或右键&amp;#39;删除&amp;#39;清空输入框（&lt;a href=&quot;https://github.com/facebook/react/issues/6822&quot;&gt;issue 6822&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;在IE 11中渲染输入框中已存在字符时事件未触发（&lt;a href=&quot;https://github.com/facebook/react/issues/2185&quot;&gt;issue 2185&lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;感谢&lt;a href=&quot;https://github.com/jquense&quot;&gt;Jason Quense&lt;/a&gt;以及其他帮助解决上述问题和提出PR的各位。&lt;/p&gt;
+
+&lt;h2&gt;更少嘈杂的弃用警告&lt;/h2&gt;
+
+&lt;p&gt;我们还为之后的弃用引入了一系列新的警告。这些并不会影响大多数用户，更多细节可以查看下面的修改日志。&lt;/p&gt;
+
+&lt;p&gt;自上次发布之后，我们从社区得到了一些有价值的反馈，弃用警告会产生噪音并使得测试失败。&lt;strong&gt;在React 15.6，我们采用&lt;code&gt;console.warn&lt;/code&gt;而不是&lt;code&gt;console.error&lt;/code&gt;来对弃用警告进行降级处理&lt;/strong&gt;。我们的其他警告将仍使用&lt;code&gt;console.error&lt;/code&gt;因为他们面对的可能是引发异常的棘手问题。不同于我们其他警告，弃用警告可以延期修复并且不会在发布环节对你的引用造成问题。我们认为降低弃用警告的紧急程度将会让你在下个版本的升级中更为容易。感谢参与这一问题讨论的各位。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;我们推荐使用&lt;a href=&quot;https://yarnpkg.com/&quot;&gt;Yarn&lt;/a&gt;或&lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt;来管理前端依赖。若你是初次接触包管理器，&lt;a href=&quot;https://yarnpkg.com/en/docs/getting-started&quot;&gt;Yarn documentation&lt;/a&gt;是一个不错的起点。&lt;/p&gt;
+
+&lt;p&gt;通过Yarn安装React，运行：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;yarn add react@^15.6.0 react-dom@^15.6.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;通过npm安装React，运行：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&lt;/span&gt;npm install --save react@^15.6.0 react-dom@^15.6.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;我们推荐如&lt;a href=&quot;https://webpack.js.org/&quot;&gt;webpack&lt;/a&gt; 或 &lt;a href=&quot;http://browserify.org/&quot;&gt;Browserify&lt;/a&gt;打包器，以让你可以编写模块化代码并将其打包到一起放在一个小的包内以优化加载时间。&lt;/p&gt;
+
+&lt;p&gt;记住默认情况下，React在开发模式下运行会带有额外检查并提供有用的警告。当部署你的应用时，确保其&lt;a href=&quot;/react/docs/installation.html#development-and-production-versions&quot;&gt;在生产模式编译&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;万一你未使用打包器，我们也提供了一个预先构建好的包在npm上，你可以在你的页面中&lt;a href=&quot;/react/docs/installation.html#using-a-cdn&quot;&gt;通过script标签引入&lt;/a&gt;：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;React&lt;/strong&gt;&lt;br/&gt;
+带警告的开发版本: &lt;a href=&quot;https://unpkg.com/react@15.6.0/dist/react.js&quot;&gt;react/dist/react.js&lt;/a&gt;&lt;br/&gt;
+用于生产的压缩版本: &lt;a href=&quot;https://unpkg.com/react@15.6.0/dist/react.min.js&quot;&gt;react/dist/react.min.js&lt;/a&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;React with Add-Ons&lt;/strong&gt;&lt;br/&gt;
+带警告的开发版本: &lt;a href=&quot;https://unpkg.com/react@15.6.0/dist/react-with-addons.js&quot;&gt;react/dist/react-with-addons.js&lt;/a&gt;&lt;br/&gt;
+用于生产的压缩版本: &lt;a href=&quot;https://unpkg.com/react@15.5.0/dist/react-with-addons.min.js&quot;&gt;react/dist/react-with-addons.min.js&lt;/a&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;React DOM&lt;/strong&gt; (页面中在React DOM之前引入React) &lt;br/&gt;
+带警告的开发版本: &lt;a href=&quot;https://unpkg.com/react-dom@15.6.0/dist/react-dom.js&quot;&gt;react-dom/dist/react-dom.js&lt;/a&gt;&lt;br/&gt;
+用于生产的压缩版本: &lt;a href=&quot;https://unpkg.com/react-dom@15.6.0/dist/react-dom.min.js&quot;&gt;react-dom/dist/react-dom.min.js&lt;/a&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;React DOM Server&lt;/strong&gt; (页面中在React DOM Server之前引入React)&lt;br/&gt;
+带警告的开发版本: &lt;a href=&quot;https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.js&quot;&gt;react-dom/dist/react-dom-server.js&lt;/a&gt;&lt;br/&gt;
+用于生产的压缩版本: &lt;a href=&quot;https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.min.js&quot;&gt;react-dom/dist/react-dom-server.min.js&lt;/a&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;我们还在npm上发布了&lt;code&gt;react&lt;/code&gt;，&lt;code&gt;react-dom&lt;/code&gt;及附件包的&lt;code&gt;15.5.0&lt;/code&gt;版本以及在bower上的&lt;code&gt;react&lt;/code&gt;包。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;修改日志&lt;/h2&gt;
+
+&lt;h2&gt;15.6.0 (June 13, 2017)&lt;/h2&gt;
+
+&lt;h3&gt;React&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;采用&lt;code&gt;console.warn&lt;/code&gt;而不是&lt;code&gt;console.error&lt;/code&gt;来降级处理弃用警告。(&lt;a href=&quot;https://github.com/flarnie&quot;&gt;@flarnie&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9753&quot;&gt;#9753&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;为&lt;code&gt;React.createClass&lt;/code&gt;增加弃用警告。将用户指向&lt;code&gt;create-react-class&lt;/code&gt;。(&lt;a href=&quot;https://github.com/flarnie&quot;&gt;@flarnie&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9771&quot;&gt;#9771&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;增加弃用警告并为&lt;code&gt;React.DOM&lt;/code&gt;工厂辅助方法分离为新模块。(&lt;a href=&quot;https://github.com/nhunzaker&quot;&gt;@nhunzaker&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8356&quot;&gt;#8356&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;React.createMixin&lt;/code&gt;的弃用警告辅助方法将不再使用。(&lt;a href=&quot;https://github.com/aweary&quot;&gt;@aweary&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8853&quot;&gt;#8853&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;React DOM&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在&lt;code&gt;style&lt;/code&gt;属性中增加CSS变量支持。 (&lt;a href=&quot;https://github.com/aweary&quot;&gt;@aweary&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9302&quot;&gt;#9302&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;增加CSS网格(Grid)样式属性支持。(&lt;a href=&quot;https://github.com/ericsakmar&quot;&gt;@ericsakmar&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9185&quot;&gt;#9185&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;修复输入框改变可变值类型异常。(&lt;a href=&quot;https://github.com/mhunzaker&quot;&gt;@nhunzaker&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9806&quot;&gt;#9806&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;修复在某些输入场景下&lt;code&gt;onChange&lt;/code&gt;未触发的问题。(&lt;a href=&quot;https://github.com/jquense&quot;&gt;@jquense&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/8575&quot;&gt;#8575&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;修复控制数字输入框错误允许期间的异常。(&lt;a href=&quot;https://github.com/nhunzaker&quot;&gt;@nhunzaker&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9584&quot;&gt;#9584&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;li&gt;修复性能记录(performance entry)被清除的bug。(&lt;a href=&quot;https://github.com/chrisui&quot;&gt;@chrisui&lt;/a&gt; 在 &lt;a href=&quot;https://github.com/facebook/react/pull/9451&quot;&gt;#9451&lt;/a&gt; 的提交)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+				<pubDate>2017-06-13T00:00:00-07:00</pubDate>
+				<link>https://facebook.github.io/react/blog/2017/06/13/react-v15.6.0.html</link>
+				<guid isPermaLink="true">https://facebook.github.io/react/blog/2017/06/13/react-v15.6.0.html</guid>
+			</item>
+		
+			<item>
+				<title>React v15.5.0</title>
 				<description>&lt;p&gt;自上次更新React已经是一年前了。我们下一次的重要发布，React 16，将包含一些让人兴奋的提升，包含一个&lt;a href=&quot;https://www.youtube.com/watch?v=ZCuYPiUIONs&quot;&gt;完全重写&lt;/a&gt;的React内核。&lt;a href=&quot;/react/contributing/design-principles.html#stability&quot;&gt;我们认真考虑了稳定性&lt;/a&gt;，并致力于以最小的改动将这些特性带给我们的用户。&lt;/p&gt;
 
 &lt;p&gt;最后，我们发布了React 15.5.0。&lt;/p&gt;
@@ -1764,46 +1855,6 @@ Minified build for production: &lt;a href=&quot;https://fb.me/react-dom-15.0.0.m
 				<pubDate>2016-04-07T00:00:00-07:00</pubDate>
 				<link>https://facebook.github.io/react/blog/2016/04/07/react-v15.html</link>
 				<guid isPermaLink="true">https://facebook.github.io/react/blog/2016/04/07/react-v15.html</guid>
-			</item>
-		
-			<item>
-				<title>React v0.14.8</title>
-				<description>&lt;p&gt;We have already released two release candidates for React 15, and the final version is coming soon.&lt;/p&gt;
-
-&lt;p&gt;However &lt;a href=&quot;https://github.com/iancmyers&quot;&gt;Ian Christian Myers&lt;/a&gt; discovered a memory leak related to server rendering in React 0.14 and &lt;a href=&quot;https://github.com/facebook/react/pull/6060&quot;&gt;contributed a fix&lt;/a&gt;. While this memory leak has already been fixed in a different way in the React 15 release candidates, we decided to cut another 0.14 release that contains just this fix.&lt;/p&gt;
-
-&lt;p&gt;The release is now available for download:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;React&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-0.14.8.js&quot;&gt;https://fb.me/react-0.14.8.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-0.14.8.min.js&quot;&gt;https://fb.me/react-0.14.8.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React with Add-Ons&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-with-addons-0.14.8.js&quot;&gt;https://fb.me/react-with-addons-0.14.8.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-with-addons-0.14.8.min.js&quot;&gt;https://fb.me/react-with-addons-0.14.8.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React DOM&lt;/strong&gt; (include React in the page before React DOM)&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-dom-0.14.8.js&quot;&gt;https://fb.me/react-dom-0.14.8.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-dom-0.14.8.min.js&quot;&gt;https://fb.me/react-dom-0.14.8.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React DOM Server&lt;/strong&gt; (include React in the page before React DOM Server)&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-dom-server-0.14.8.js&quot;&gt;https://fb.me/react-dom-server-0.14.8.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-dom-server-0.14.8.min.js&quot;&gt;https://fb.me/react-dom-server-0.14.8.min.js&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We&amp;#39;ve also published version &lt;code&gt;0.14.8&lt;/code&gt; of the &lt;code&gt;react&lt;/code&gt;, &lt;code&gt;react-dom&lt;/code&gt;, and addons packages on npm and the &lt;code&gt;react&lt;/code&gt; package on bower.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2&gt;Changelog&lt;/h2&gt;
-
-&lt;h3&gt;React&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fixed memory leak when rendering on the server&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-				<pubDate>2016-03-29T00:00:00-07:00</pubDate>
-				<link>https://facebook.github.io/react/blog/2016/03/29/react-v0.14.8.html</link>
-				<guid isPermaLink="true">https://facebook.github.io/react/blog/2016/03/29/react-v0.14.8.html</guid>
 			</item>
 		
 	</channel>

@@ -72,6 +72,8 @@
     <h3>近期文章</h3>
     <ul>
       
+        <li><a href="/react/blog/2017/06/13/react-v15.6.0.html">React v15.5.0</a></li>
+      
         <li><a href="/react/blog/2017/04/07/react-v15.5.0.html">React v15.5.0</a></li>
       
         <li><a href="/react/blog/2016/11/16/react-v15.4.0.html">React v15.4.0</a></li>
@@ -90,14 +92,125 @@
       
         <li><a href="/react/blog/2016/04/07/react-v15.html">React v15.0</a></li>
       
-        <li><a href="/react/blog/2016/03/29/react-v0.14.8.html">React v0.14.8</a></li>
-      
       <li><a href="/react/blog/all.html">All posts ...</a></li>
     </ul>
   </div>
 </div>
 
   <div class="inner-content">
+    
+      <div class="post-list-item">
+        
+
+<h1>
+
+  <a href="/react/blog/2017/06/13/react-v15.6.0.html">React v15.5.0</a>
+
+</h1>
+
+<p class="meta">
+  June 13, 2017
+  by
+  
+    
+      
+    
+    
+  
+</p>
+
+<hr>
+
+<div class="post">
+  <p>今天我们发布了React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。</p>
+
+<h2>改进Inputs</h2>
+
+<p>在React 15.6.0，输入框的<code>onChange</code>事件稍微可靠了点并能够处理更多边界条件，涵盖以下：</p>
+
+<ul>
+<li>当单选按钮被点击但未改变时事件未触发（<a href="https://github.com/facebook/react/issues/1471">issue 1471</a>）</li>
+<li>用方向键（arrow keys）修改<code>范围（range）</code>类型的输入框（<a href="https://github.com/facebook/react/issues/554">issue 554</a>）</li>
+<li>在IE 11复制文本到文本框中（<a href="https://github.com/facebook/react/issues/7211">issue 7211</a>）</li>
+<li>在IE 11自动填充（<a href="https://github.com/facebook/react/issues/6614">issue 6614</a>）</li>
+<li>在IE 11中通过&#39;x&#39;键或右键&#39;删除&#39;清空输入框（<a href="https://github.com/facebook/react/issues/6822">issue 6822</a>）</li>
+<li>在IE 11中渲染输入框中已存在字符时事件未触发（<a href="https://github.com/facebook/react/issues/2185">issue 2185</a>）</li>
+</ul>
+
+<p>感谢<a href="https://github.com/jquense">Jason Quense</a>以及其他帮助解决上述问题和提出PR的各位。</p>
+
+<h2>更少嘈杂的弃用警告</h2>
+
+<p>我们还为之后的弃用引入了一系列新的警告。这些并不会影响大多数用户，更多细节可以查看下面的修改日志。</p>
+
+<p>自上次发布之后，我们从社区得到了一些有价值的反馈，弃用警告会产生噪音并使得测试失败。<strong>在React 15.6，我们采用<code>console.warn</code>而不是<code>console.error</code>来对弃用警告进行降级处理</strong>。我们的其他警告将仍使用<code>console.error</code>因为他们面对的可能是引发异常的棘手问题。不同于我们其他警告，弃用警告可以延期修复并且不会在发布环节对你的引用造成问题。我们认为降低弃用警告的紧急程度将会让你在下个版本的升级中更为容易。感谢参与这一问题讨论的各位。</p>
+
+<hr>
+
+<h2>安装</h2>
+
+<p>我们推荐使用<a href="https://yarnpkg.com/">Yarn</a>或<a href="https://www.npmjs.com/">npm</a>来管理前端依赖。若你是初次接触包管理器，<a href="https://yarnpkg.com/en/docs/getting-started">Yarn documentation</a>是一个不错的起点。</p>
+
+<p>通过Yarn安装React，运行：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>yarn add react@^15.6.0 react-dom@^15.6.0
+</code></pre></div>
+<p>通过npm安装React，运行：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>npm install --save react@^15.6.0 react-dom@^15.6.0
+</code></pre></div>
+<p>我们推荐如<a href="https://webpack.js.org/">webpack</a> 或 <a href="http://browserify.org/">Browserify</a>打包器，以让你可以编写模块化代码并将其打包到一起放在一个小的包内以优化加载时间。</p>
+
+<p>记住默认情况下，React在开发模式下运行会带有额外检查并提供有用的警告。当部署你的应用时，确保其<a href="/react/docs/installation.html#development-and-production-versions">在生产模式编译</a>。</p>
+
+<p>万一你未使用打包器，我们也提供了一个预先构建好的包在npm上，你可以在你的页面中<a href="/react/docs/installation.html#using-a-cdn">通过script标签引入</a>：</p>
+
+<ul>
+<li><strong>React</strong><br/>
+带警告的开发版本: <a href="https://unpkg.com/react@15.6.0/dist/react.js">react/dist/react.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react@15.6.0/dist/react.min.js">react/dist/react.min.js</a><br/></li>
+<li><strong>React with Add-Ons</strong><br/>
+带警告的开发版本: <a href="https://unpkg.com/react@15.6.0/dist/react-with-addons.js">react/dist/react-with-addons.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react@15.5.0/dist/react-with-addons.min.js">react/dist/react-with-addons.min.js</a><br/></li>
+<li><strong>React DOM</strong> (页面中在React DOM之前引入React) <br/>
+带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom.js">react-dom/dist/react-dom.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom.min.js">react-dom/dist/react-dom.min.js</a><br/></li>
+<li><strong>React DOM Server</strong> (页面中在React DOM Server之前引入React)<br/>
+带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.js">react-dom/dist/react-dom-server.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.min.js">react-dom/dist/react-dom-server.min.js</a><br/></li>
+</ul>
+
+<p>我们还在npm上发布了<code>react</code>，<code>react-dom</code>及附件包的<code>15.5.0</code>版本以及在bower上的<code>react</code>包。</p>
+
+<hr>
+
+<h2>修改日志</h2>
+
+<h2>15.6.0 (June 13, 2017)</h2>
+
+<h3>React</h3>
+
+<ul>
+<li>采用<code>console.warn</code>而不是<code>console.error</code>来降级处理弃用警告。(<a href="https://github.com/flarnie">@flarnie</a> 在 <a href="https://github.com/facebook/react/pull/9753">#9753</a> 的提交)</li>
+<li>为<code>React.createClass</code>增加弃用警告。将用户指向<code>create-react-class</code>。(<a href="https://github.com/flarnie">@flarnie</a> 在 <a href="https://github.com/facebook/react/pull/9771">#9771</a> 的提交)</li>
+<li>增加弃用警告并为<code>React.DOM</code>工厂辅助方法分离为新模块。(<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/8356">#8356</a> 的提交)</li>
+<li><code>React.createMixin</code>的弃用警告辅助方法将不再使用。(<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/8853">#8853</a> 的提交)</li>
+</ul>
+
+<h3>React DOM</h3>
+
+<ul>
+<li>在<code>style</code>属性中增加CSS变量支持。 (<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/9302">#9302</a> 的提交)</li>
+<li>增加CSS网格(Grid)样式属性支持。(<a href="https://github.com/ericsakmar">@ericsakmar</a> 在 <a href="https://github.com/facebook/react/pull/9185">#9185</a> 的提交)</li>
+<li>修复输入框改变可变值类型异常。(<a href="https://github.com/mhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9806">#9806</a> 的提交)</li>
+<li>修复在某些输入场景下<code>onChange</code>未触发的问题。(<a href="https://github.com/jquense">@jquense</a> 在 <a href="https://github.com/facebook/react/pull/8575">#8575</a> 的提交)</li>
+<li>修复控制数字输入框错误允许期间的异常。(<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9584">#9584</a> 的提交)</li>
+<li>修复性能记录(performance entry)被清除的bug。(<a href="https://github.com/chrisui">@chrisui</a> 在 <a href="https://github.com/facebook/react/pull/9451">#9451</a> 的提交)</li>
+</ul>
+
+</div>
+
+
+
+      </div>
     
       <div class="post-list-item">
         
@@ -907,189 +1020,6 @@ I think we should just treat arrays of elements as a frag. This is useful for co
 </ul>
 
 <p>We can&#39;t wait to share the new code with you and are working as fast as we can to do so!</p>
-
-</div>
-
-
-
-      </div>
-    
-      <div class="post-list-item">
-        
-
-<h1>
-
-  <a href="/react/blog/2016/07/22/create-apps-with-no-configuration.html">Create Apps with No Configuration</a>
-
-</h1>
-
-<p class="meta">
-  July 22, 2016
-  by
-  
-    
-      <a href="https://twitter.com/dan_abramov">Dan Abramov</a>
-    
-    
-  
-</p>
-
-<hr>
-
-<div class="post">
-  <p><strong><a href="https://github.com/facebookincubator/create-react-app">Create React App</a></strong> is a new officially supported way to create single-page React applications. It offers a modern build setup with no configuration.</p>
-
-<h2>Getting Started</h2>
-
-<h3>Installation</h3>
-
-<p>First, install the global package:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>npm install -g create-react-app
-</code></pre></div>
-<p>Node.js 4.x or higher is required.</p>
-
-<h3>Creating an App</h3>
-
-<p>Now you can use it to create a new app:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span></span>create-react-app hello-world
-</code></pre></div>
-<p>This will take a while as npm installs the transitive dependencies, but once it’s done, you will see a list of commands you can run in the created folder:</p>
-
-<p><img src="/react/img/blog/create-apps-with-no-configuration/created-folder.png" alt="created folder"></p>
-
-<h3>Starting the Server</h3>
-
-<p>Run <code>npm start</code> to launch the development server. The browser will open automatically with the created app’s URL.</p>
-
-<p><img src="/react/img/blog/create-apps-with-no-configuration/compiled-successfully.png" alt="compiled successfully"></p>
-
-<p>Create React App uses both Webpack and Babel under the hood.<br>
-The console output is tuned to be minimal to help you focus on the problems:</p>
-
-<p><img src="/react/img/blog/create-apps-with-no-configuration/failed-to-compile.png" alt="failed to compile"></p>
-
-<p>ESLint is also integrated so lint warnings are displayed right in the console:</p>
-
-<p><img src="/react/img/blog/create-apps-with-no-configuration/compiled-with-warnings.png" alt="compiled with warnings"></p>
-
-<p>We only picked a small subset of lint rules that often lead to bugs.</p>
-
-<h3>Building for Production</h3>
-
-<p>To build an optimized bundle, run <code>npm run build</code>:</p>
-
-<p><img src="/react/img/blog/create-apps-with-no-configuration/npm-run-build.png" alt="npm run build"></p>
-
-<p>It is minified, correctly envified, and the assets include content hashes for caching.</p>
-
-<h3>One Dependency</h3>
-
-<p>Your <code>package.json</code> contains only a single build dependency and a few scripts:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="p">{</span>
-  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;hello-world&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&quot;react&quot;</span><span class="o">:</span> <span class="s2">&quot;^15.2.1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;react-dom&quot;</span><span class="o">:</span> <span class="s2">&quot;^15.2.1&quot;</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;devDependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&quot;react-scripts&quot;</span><span class="o">:</span> <span class="s2">&quot;0.1.0&quot;</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">&quot;start&quot;</span><span class="o">:</span> <span class="s2">&quot;react-scripts start&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;react-scripts build&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;eject&quot;</span><span class="o">:</span> <span class="s2">&quot;react-scripts eject&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>We take care of updating Babel, ESLint, and Webpack to stable compatible versions so you can update a single dependency to get them all.</p>
-
-<h3>Zero Configuration</h3>
-
-<p>It is worth repeating: there are no configuration files or complicated folder structures. The tool only generates the files you need to build your app.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>hello-world/
-  README.md
-  index.html
-  favicon.ico
-  node_modules/
-  package.json
-  src/
-    App.css
-    App.js
-    index.css
-    index.js
-    logo.svg
-</code></pre></div>
-<p>All the build settings are preconfigured and can’t be changed. Some features, such as testing, are currently missing. This is an intentional limitation, and we recognize it might not work for everybody. And this brings us to the last point.</p>
-
-<h3>No Lock-In</h3>
-
-<p>We first saw this feature in <a href="https://github.com/eanplatter/enclave">Enclave</a>, and we loved it. We talked to <a href="https://twitter.com/EanPlatter">Ean</a>, and he was excited to collaborate with us. He already sent a few pull requests!</p>
-
-<p>“Ejecting” lets you leave the comfort of Create React App setup at any time. You run a single command, and all the build dependencies, configs, and scripts are moved right into your project. At this point you can customize everything you want, but effectively you are forking our configuration and going your own way. If you’re experienced with build tooling and prefer to fine-tune everything to your taste, this lets you use Create React App as a boilerplate generator.</p>
-
-<p>We expect that at early stages, many people will “eject” for one reason or another, but as we learn from them, we will make the default setup more and more compelling while still providing no configuration.</p>
-
-<h2>Try It Out!</h2>
-
-<p>You can find <a href="https://github.com/facebookincubator/create-react-app"><strong>Create React App</strong></a> with additional instructions on GitHub.</p>
-
-<p>This is an experiment, and only time will tell if it becomes a popular way of creating and building React apps, or fades into obscurity.</p>
-
-<p>We welcome you to participate in this experiment. Help us build the React tooling that more people can use. We are always <a href="https://github.com/facebookincubator/create-react-app/issues/11">open to feedback</a>.</p>
-
-<h2>The Backstory</h2>
-
-<p>React was one of the first libraries to embrace transpiling JavaScript. As a result, even though you can <a href="https://github.com/facebook/react/blob/3fd582643ef3d222a00a0c756292c15b88f9f83c/examples/basic-jsx/index.html">learn React without any tooling</a>, the React ecosystem has commonly become associated with an overwhelming explosion of tools.</p>
-
-<p>Eric Clemmons called this phenomenon the “<a href="https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4">JavaScript Fatigue</a>”:</p>
-
-<blockquote>
-<p>Ultimately, the problem is that by choosing React (and inherently JSX), you’ve unwittingly opted into a confusing nest of build tools, boilerplate, linters, &amp; time-sinks to deal with before you ever get to create anything.</p>
-</blockquote>
-
-<p>It is tempting to write code in ES2015 and JSX. It is sensible to use a bundler to keep the codebase modular, and a linter to catch the common mistakes. It is nice to have a development server with fast rebuilds, and a command to produce optimized bundles for production.</p>
-
-<p>Combining these tools requires some experience with each of them. Even so, it is far too easy to get dragged into fighting small incompatibilities, unsatisfied peerDependencies, and illegible configuration files.</p>
-
-<p>Many of those tools are plugin platforms and don’t directly acknowledge each other’s existence. They leave it up to the users to wire them together. The tools mature and change independently, and tutorials quickly get out of date.</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Marc was almost ready to implement his &quot;hello world&quot; React app <a href="https://t.co/ptdg4yteF1">pic.twitter.com/ptdg4yteF1</a></p>&mdash; Thomas Fuchs (@thomasfuchs) <a href="https://twitter.com/thomasfuchs/status/708675139253174273">March 12, 2016</a></blockquote>
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>This doesn’t mean those tools aren’t great. To many of us, they have become indispensable, and we very much appreciate the effort of their maintainers. They already have too much on their plates to worry about the state of the React ecosystem.</p>
-
-<p>Still, we knew it was frustrating to spend days setting up a project when all you wanted was to learn React. We wanted to fix this.</p>
-
-<h2>Could We Fix This?</h2>
-
-<p>We found ourselves in an unusual dilemma.</p>
-
-<p>So far, <a href="/react/contributing/design-principles.html#dogfooding">our strategy</a> has been to only release the code that we are using at Facebook. This helped us ensure that every project is battle-tested and has clearly defined scope and priorities.</p>
-
-<p>However, tooling at Facebook is different than at many smaller companies. Linting, transpilation, and packaging are all handled by powerful remote development servers, and product engineers don’t need to configure them. While we wish we could give a dedicated server to every user of React, even Facebook cannot scale that well!</p>
-
-<p>The React community is very important to us. We knew that we couldn’t fix the problem within the limits of our open source philosophy. This is why we decided to make an exception, and to ship something that we didn’t use ourselves, but that we thought would be useful to the community.</p>
-
-<h2>The Quest for a React <abbr title="Command Line Interface">CLI</abbr></h2>
-
-<p>Having just attended <a href="http://embercamp.com/">EmberCamp</a> a week ago, I was excited about <a href="https://ember-cli.com/">Ember CLI</a>. Ember users have a great “getting started” experience thanks to a curated set of tools united under a single command-line interface. I have heard similar feedback about <a href="https://github.com/elm-lang/elm-reactor">Elm Reactor</a>.</p>
-
-<p>Providing a cohesive curated experience is valuable by itself, even if the user could in theory assemble those parts themselves. Kathy Sierra <a href="http://seriouspony.com/blog/2013/7/24/your-app-makes-me-fat">explains it best</a>:</p>
-
-<blockquote>
-<p>If your UX asks the user to make <em>choices</em>, for example, even if those choices are both clear and useful, the act of <em>deciding</em> is a cognitive drain. And not just <em>while</em> they’re deciding... even <em>after</em> we choose, an unconscious cognitive background thread is slowly consuming/leaking resources, “Was <em>that</em> the right choice?”</p>
-</blockquote>
-
-<p>I never tried to write a command-line tool for React apps, and neither has <a href="https://twitter.com/vjeux">Christopher</a>. We were chatting on Messenger about this idea, and we decided to work together on it for a week as a hackathon project.</p>
-
-<p>We knew that such projects traditionally haven’t been very successful in the React ecosystem. Christopher told me that multiple “React CLI” projects have started and failed at Facebook. The community tools with similar goals also exist, but so far they have not yet gained enough traction.</p>
-
-<p>Still, we decided it was worth another shot. Christopher and I created a very rough proof of concept on the weekend, and <a href="https://twitter.com/lacker">Kevin</a> soon joined us.</p>
-
-<p>We invited some of the community members to collaborate with us, and we have spent this week working on this tool. We hope that you’ll enjoy using it! <a href="https://github.com/facebookincubator/create-react-app/issues/11">Let us know what you think.</a></p>
-
-<p>We would like to express our gratitude to <a href="https://twitter.com/mxstbr">Max Stoiber</a>, <a href="https://twitter.com/jbscript">Jonny Buchanan</a>, <a href="https://twitter.com/eanplatter">Ean Platter</a>, <a href="https://github.com/tylermcginnis">Tyler McGinnis</a>, <a href="https://github.com/kentcdodds">Kent C. Dodds</a>, and <a href="https://twitter.com/ericclemmons">Eric Clemmons</a> for their early feedback, ideas, and contributions.</p>
 
 </div>
 

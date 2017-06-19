@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>React v15.5.0 - React Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="React v15.5.0 - React Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://discountry.github.io/react/blog/2017/06/13/react-v15.6.0.html">
+  <meta property="og:image" content="https://discountry.github.io/react/img/logo_og.png">
+  <meta property="og:description" content="今天我们发布了React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。
+">
+  <meta property="fb:app_id" content="623268441017527">
+
+  <link rel="shortcut icon" href="/react/favicon.ico">
+  <link rel="alternate" type="application/rss+xml" title="React" href="https://facebook.github.io/react/feed.xml">
+
+  <link rel="stylesheet" href="/react/css/syntax.css">
+  <link rel="stylesheet" href="/react/css/codemirror.css">
+  <link rel="stylesheet" href="/react/css/react.css">
+
+  <script src="https://use.typekit.net/qfl6nyj.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+  <!--[if lte IE 8]>
+  <script src="https://unpkg.com/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://unpkg.com/es5-shim@4.5.9/es5-shim.min.js"></script>
+  <script src="https://unpkg.com/es5-shim@4.5.9/es5-sham.min.js"></script>
+  <![endif]-->
+  <script src="https://cdn.bootcss.com/codemirror/5.15.2/codemirror.min.js"></script>
+  <script src="https://cdn.bootcss.com/codemirror/5.15.2/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdn.bootcss.com/codemirror/5.15.2/mode/xml/xml.min.js"></script>
+  <script src="https://cdn.bootcss.com/codemirror/5.15.2/mode/jsx/jsx.min.js"></script>
+  <script src="https://cdn.bootcss.com/react/15.5.4/react.min.js"></script>
+  <script src="https://cdn.bootcss.com/react/15.5.4/react-dom.min.js"></script>
+  <script src="https://cdn.bootcss.com/babel-standalone/6.15.0/babel.min.js"></script>
+  <script src="/react/js/live_editor.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="nav-main">
+  <div class="wrap">
+    <a class="nav-home" href="/react/">
+      <img class="nav-logo" src="/react/img/logo.svg" width="36" height="36">
+      React
+    </a>
+    <div class="nav-lists">
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/react/docs/hello-world.html">文档</a></li>
+        <li><a href="/react/tutorial/tutorial.html">教程</a></li>
+        <li><a href="/react/community/support.html">社区</a></li>
+        <li><a href="/react/blog/" class="active">博客</a></li>
+      </ul>
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/discountry/react" target="_blank">参与翻译</a></li>
+        <li><a href="https://github.com/facebook/react" target="_blank">GitHub</a></li>
+        <li><a href="https://github.com/facebook/react/releases" target="_blank">v15.6.0</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+    <section class="content wrap blogContent">
+
+  <div class="inner-content">
+    
+
+<h1>
+
+  React v15.5.0
+
+</h1>
+
+<p class="meta">
+  June 13, 2017
+  by
+  
+    
+      
+    
+    
+  
+</p>
+
+<hr>
+
+<div class="post">
+  <p>今天我们发布了React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。</p>
+
+<h2>改进Inputs</h2>
+
+<p>在React 15.6.0，输入框的<code>onChange</code>事件稍微可靠了点并能够处理更多边界条件，涵盖以下：</p>
+
+<ul>
+<li>当单选按钮被点击但未改变时事件未触发（<a href="https://github.com/facebook/react/issues/1471">issue 1471</a>）</li>
+<li>用方向键（arrow keys）修改<code>范围（range）</code>类型的输入框（<a href="https://github.com/facebook/react/issues/554">issue 554</a>）</li>
+<li>在IE 11复制文本到文本框中（<a href="https://github.com/facebook/react/issues/7211">issue 7211</a>）</li>
+<li>在IE 11自动填充（<a href="https://github.com/facebook/react/issues/6614">issue 6614</a>）</li>
+<li>在IE 11中通过&#39;x&#39;键或右键&#39;删除&#39;清空输入框（<a href="https://github.com/facebook/react/issues/6822">issue 6822</a>）</li>
+<li>在IE 11中渲染输入框中已存在字符时事件未触发（<a href="https://github.com/facebook/react/issues/2185">issue 2185</a>）</li>
+</ul>
+
+<p>感谢<a href="https://github.com/jquense">Jason Quense</a>以及其他帮助解决上述问题和提出PR的各位。</p>
+
+<h2>更少嘈杂的弃用警告</h2>
+
+<p>我们还为之后的弃用引入了一系列新的警告。这些并不会影响大多数用户，更多细节可以查看下面的修改日志。</p>
+
+<p>自上次发布之后，我们从社区得到了一些有价值的反馈，弃用警告会产生噪音并使得测试失败。<strong>在React 15.6，我们采用<code>console.warn</code>而不是<code>console.error</code>来对弃用警告进行降级处理</strong>。我们的其他警告将仍使用<code>console.error</code>因为他们面对的可能是引发异常的棘手问题。不同于我们其他警告，弃用警告可以延期修复并且不会在发布环节对你的引用造成问题。我们认为降低弃用警告的紧急程度将会让你在下个版本的升级中更为容易。感谢参与这一问题讨论的各位。</p>
+
+<hr>
+
+<h2>安装</h2>
+
+<p>我们推荐使用<a href="https://yarnpkg.com/">Yarn</a>或<a href="https://www.npmjs.com/">npm</a>来管理前端依赖。若你是初次接触包管理器，<a href="https://yarnpkg.com/en/docs/getting-started">Yarn documentation</a>是一个不错的起点。</p>
+
+<p>通过Yarn安装React，运行：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>yarn add react@^15.6.0 react-dom@^15.6.0
+</code></pre></div>
+<p>通过npm安装React，运行：</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>npm install --save react@^15.6.0 react-dom@^15.6.0
+</code></pre></div>
+<p>我们推荐如<a href="https://webpack.js.org/">webpack</a> 或 <a href="http://browserify.org/">Browserify</a>打包器，以让你可以编写模块化代码并将其打包到一起放在一个小的包内以优化加载时间。</p>
+
+<p>记住默认情况下，React在开发模式下运行会带有额外检查并提供有用的警告。当部署你的应用时，确保其<a href="/react/docs/installation.html#development-and-production-versions">在生产模式编译</a>。</p>
+
+<p>万一你未使用打包器，我们也提供了一个预先构建好的包在npm上，你可以在你的页面中<a href="/react/docs/installation.html#using-a-cdn">通过script标签引入</a>：</p>
+
+<ul>
+<li><strong>React</strong><br/>
+带警告的开发版本: <a href="https://unpkg.com/react@15.6.0/dist/react.js">react/dist/react.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react@15.6.0/dist/react.min.js">react/dist/react.min.js</a><br/></li>
+<li><strong>React with Add-Ons</strong><br/>
+带警告的开发版本: <a href="https://unpkg.com/react@15.6.0/dist/react-with-addons.js">react/dist/react-with-addons.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react@15.5.0/dist/react-with-addons.min.js">react/dist/react-with-addons.min.js</a><br/></li>
+<li><strong>React DOM</strong> (页面中在React DOM之前引入React) <br/>
+带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom.js">react-dom/dist/react-dom.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom.min.js">react-dom/dist/react-dom.min.js</a><br/></li>
+<li><strong>React DOM Server</strong> (页面中在React DOM Server之前引入React)<br/>
+带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.js">react-dom/dist/react-dom-server.js</a><br/>
+用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.0/dist/react-dom-server.min.js">react-dom/dist/react-dom-server.min.js</a><br/></li>
+</ul>
+
+<p>我们还在npm上发布了<code>react</code>，<code>react-dom</code>及附件包的<code>15.5.0</code>版本以及在bower上的<code>react</code>包。</p>
+
+<hr>
+
+<h2>修改日志</h2>
+
+<h2>15.6.0 (June 13, 2017)</h2>
+
+<h3>React</h3>
+
+<ul>
+<li>采用<code>console.warn</code>而不是<code>console.error</code>来降级处理弃用警告。(<a href="https://github.com/flarnie">@flarnie</a> 在 <a href="https://github.com/facebook/react/pull/9753">#9753</a> 的提交)</li>
+<li>为<code>React.createClass</code>增加弃用警告。将用户指向<code>create-react-class</code>。(<a href="https://github.com/flarnie">@flarnie</a> 在 <a href="https://github.com/facebook/react/pull/9771">#9771</a> 的提交)</li>
+<li>增加弃用警告并为<code>React.DOM</code>工厂辅助方法分离为新模块。(<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/8356">#8356</a> 的提交)</li>
+<li><code>React.createMixin</code>的弃用警告辅助方法将不再使用。(<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/8853">#8853</a> 的提交)</li>
+</ul>
+
+<h3>React DOM</h3>
+
+<ul>
+<li>在<code>style</code>属性中增加CSS变量支持。 (<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/9302">#9302</a> 的提交)</li>
+<li>增加CSS网格(Grid)样式属性支持。(<a href="https://github.com/ericsakmar">@ericsakmar</a> 在 <a href="https://github.com/facebook/react/pull/9185">#9185</a> 的提交)</li>
+<li>修复输入框改变可变值类型异常。(<a href="https://github.com/mhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9806">#9806</a> 的提交)</li>
+<li>修复在某些输入场景下<code>onChange</code>未触发的问题。(<a href="https://github.com/jquense">@jquense</a> 在 <a href="https://github.com/facebook/react/pull/8575">#8575</a> 的提交)</li>
+<li>修复控制数字输入框错误允许期间的异常。(<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9584">#9584</a> 的提交)</li>
+<li>修复性能记录(performance entry)被清除的bug。(<a href="https://github.com/chrisui">@chrisui</a> 在 <a href="https://github.com/facebook/react/pull/9451">#9451</a> 的提交)</li>
+</ul>
+
+</div>
+
+
+  <div class="fb-like" data-send="true" data-width="650" data-show-faces="false"></div>
+
+
+  </div>
+  <div class="nav-docs nav-blog">
+  <div class="nav-docs-section">
+    <h3>近期文章</h3>
+    <ul>
+      
+        <li><a href="/react/blog/2017/06/13/react-v15.6.0.html" class="active">React v15.5.0</a></li>
+      
+        <li><a href="/react/blog/2017/04/07/react-v15.5.0.html" class="active">React v15.5.0</a></li>
+      
+        <li><a href="/react/blog/2016/11/16/react-v15.4.0.html">React v15.4.0</a></li>
+      
+        <li><a href="/react/blog/2016/09/28/our-first-50000-stars.html">Our First 50,000 Stars</a></li>
+      
+        <li><a href="/react/blog/2016/08/05/relay-state-of-the-state.html">Relay: State of the State</a></li>
+      
+        <li><a href="/react/blog/2016/07/22/create-apps-with-no-configuration.html">Create Apps with No Configuration</a></li>
+      
+        <li><a href="/react/blog/2016/07/13/mixins-considered-harmful.html">Mixins Considered Harmful</a></li>
+      
+        <li><a href="/react/blog/2016/07/11/introducing-reacts-error-code-system.html">Introducing React's Error Code System</a></li>
+      
+        <li><a href="/react/blog/2016/04/08/react-v15.0.1.html">React v15.0.1</a></li>
+      
+        <li><a href="/react/blog/2016/04/07/react-v15.html">React v15.0</a></li>
+      
+      <li><a href="/react/blog/all.html">All posts ...</a></li>
+    </ul>
+  </div>
+</div>
+
+</section>
+
+
+    <footer class="nav-footer">
+  <section class="sitemap">
+    <a href="/react/" class="nav-home">
+    </a>
+    <div>
+      <h5><a href="/react/docs/">文档</a></h5>
+      <a href="/react/docs/hello-world.html">快速开始</a>
+      <a href="/react/docs/thinking-in-react.html">React 理念</a>
+      <a href="/react/tutorial/tutorial.html">上手教程</a>
+      <a href="/react/docs/jsx-in-depth.html">高级指引</a>
+    </div>
+    <div>
+      <h5><a href="/react/community/support.html">社区</a></h5>
+      <a href="http://stackoverflow.com/questions/tagged/reactjs" target="_blank">Stack Overflow</a>
+      <a href="https://discuss.reactjs.org/" target="_blank">论坛</a>
+      <a href="https://discord.gg/0ZcbPKXt5bZjGY5n" target="_blank">Reactiflux Chat</a>
+      <a href="https://www.facebook.com/react" target="_blank">Facebook</a>
+      <a href="https://twitter.com/reactjs" target="_blank">Twitter</a>
+    </div>
+    <div>
+      <h5><a href="/react/community/support.html">资源</a></h5>
+      <a href="/react/community/conferences.html">讨论会</a>
+      <a href="/react/community/videos.html">视频</a>
+      <a href="https://github.com/facebook/react/wiki/Examples" target="_blank">示例</a>
+      <a href="https://github.com/facebook/react/wiki/Complementary-Tools" target="_blank">开发工具</a>
+    </div>
+    <div>
+      <h5>更多</h5>
+      <a href="/react/blog/">博客</a>
+      <a href="https://github.com/facebook/react" target="_blank">GitHub</a>
+      <a href="http://facebook.github.io/react-native/" target="_blank">React Native</a>
+      <a href="/react/acknowledgements.html">致谢</a>
+    </div>
+  </section>
+  <a href="https://code.facebook.com/projects/" target="_blank" class="fbOpenSource">
+    <img src="/react/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/>
+  </a>
+  <section class="copyright">
+    Copyright © 2017 Facebook Inc.
+      <br />
+    <a href="https://zhuanlan.zhihu.com/icode">从零学习前端开发</a>翻译组
+  </section>
+</footer>
+
+  </div>
+
+  <div id="fb-root"></div>
+  <script src="/react/js/anchor-links.js"></script>
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?c98750dd376fe6b44c1b507c53c7bbba";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+</body>
+</html>
