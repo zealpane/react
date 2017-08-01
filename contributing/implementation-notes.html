@@ -153,19 +153,22 @@
 <p>如果元素的type属性是一个字符串，我们就把它当宿主元素来处理：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">/&gt;</span><span class="p">);</span>
 <span class="c1">// {type: &#39;div&#39;, props: {}}</span>
-</code></pre></div>
-<p>宿主元素里不包含用户定义的代码。</p>
+<span class="sb">``` </span>
 
-<p>当识别算法遇到一个宿主元素时，它让渲染器负责装载它。例如，React DOM将创建一个DOM节点。元素如果有子元素，识别算法像按照上班同样的算法依次装载他们。</p>
+<span class="sb">宿主元素里不包含用户定义的代码。</span>
 
-<p>它并不关心子元素是宿主元素（如div,hr)还是用户定义的组合元素(如Button)。依次递归，通过父节点插入子组件产生DOM节点，形成整个完整DOM结构。</p>
+<span class="sb">当识别算法遇到一个宿主元素时，它让渲染器负责装载它。例如，React DOM将创建一个DOM节点。元素如果有子元素，识别算法像按照上班同样的算法依次装载他们。</span>
 
-<p><strong>注意</strong>:</p>
+<span class="sb">它并不关心子元素是宿主元素（如div,hr)还是用户定义的组合元素(如Button)。依次递归，通过父节点插入子组件产生DOM节点，形成整个完整DOM结构。</span>
 
-<p>这个识别算法自身并不只是服务于DOM.装载过程的额外结果（在源代码中有时成为装载影像)依赖于渲染器。可能是一个DOM节点，也可能一个字符串（React DOM server）,或者在React Native中是一系列数字代表Native 视图。</p>
+<span class="sb">**注意**:</span>
 
-<p>我们扩展上面的代码以处理宿主元素，代码如下：</p>
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+<span class="sb">这个识别算法自身并不只是服务于DOM.装载过程的额外结果（在源代码中有时成为装载影像)依赖于渲染器。可能是一个DOM节点，也可能一个字符串（React DOM server）,或者在React Native中是一系列数字代表Native 视图。</span>
+
+<span class="sb">我们扩展上面的代码以处理宿主元素，代码如下：</span>
+
+<span class="sb">```</span><span class="nx">javascript</span>
+<span class="kd">function</span> <span class="nx">isClass</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// React.Component这个父类有这个标志。</span>
   <span class="k">return</span> <span class="p">(</span>
     <span class="nb">Boolean</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
@@ -378,7 +381,7 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>这个内部实例树包含复合类型和宿主类型内部实例。在DOM结构里你将仅看到<div>
+<p>这个内部实例树包含复合类型和宿主类型内部实例。在DOM结构里你将仅看到<code>&lt;div&gt;</code>
 这个composite内部实例包含以下内容：</p>
 
 <ul>
