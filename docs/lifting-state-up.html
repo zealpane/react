@@ -78,7 +78,7 @@
 
 <p>这部分内容当中，我们会创建一个温度计算器来计算水是否会在给定的温度下烧开。</p>
 
-<p>开始呢，我们先创建一个名为 <code>BoilingVerdict</code> 的组件。它会接受 <code>celsius</code> 这个温度变量最为它的 prop 属性，最后根据温度判断返回内容：</p>
+<p>开始呢，我们先创建一个名为 <code>BoilingVerdict</code> 的组件。它会接受 <code>celsius</code> 这个温度变量作为它的 prop 属性，最后根据温度判断返回内容：</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">BoilingVerdict</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">props</span><span class="p">.</span><span class="nx">celsius</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
 <span class="hll">    <span class="k">return</span> <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">水会烧开</span><span class="o">&lt;</span><span class="err">/p&gt;;</span>
