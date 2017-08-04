@@ -452,7 +452,7 @@
 
 <p><strong>当你遇到需要同时获取多个子组件数据，或者两个组件之间需要相互通讯的情况时，把子组件的 state 数据提升至其共同的父组件当中保存。之后父组件可以通过 props 将状态数据传递到子组件当中。这样应用当中的状态数据就能够更方便地交流共享了。</strong></p>
 
-<p>像这种提升组件状态的情形在重构 React 组件时经常会遇到。我们趁现在也就来实践一下，在 Board 组件的构造函数中初始化一个包含9个空值的数组作为状态数据，并将这9个数组中的元素分别传递到对应的9个 Square 组件当中。</p>
+<p>像这种提升组件状态的情形在重构 React 组件时经常会遇到。我们趁现在也就来实践一下，在 Board 组件的构造函数中初始化一个包含9个空值的数组作为状态数据，并将这个数组中的9个元素分别传递到对应的9个 Square 组件当中。</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">Board</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
 <span class="hll">  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="hll">    <span class="kr">super</span><span class="p">();</span>
