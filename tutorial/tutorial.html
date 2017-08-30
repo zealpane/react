@@ -812,9 +812,9 @@
 
 <p><a href="https://codepen.io/gaearon/pen/LyyXgK?editors=0010">查看此步完整代码示例。</a></p>
 
-<h2>保存历史纪录</h2>
+<h2>保存历史记录</h2>
 
-<p>接下来我们一起来实现保存棋局每一步的历史记录的功能。在现有的代码逻辑中，我们已经是在每走一步棋之后就返回一个新的 <code>squares</code> 数组了，所以想要保存历史纪录也非常简单。</p>
+<p>接下来我们一起来实现保存棋局每一步的历史记录的功能。在现有的代码逻辑中，我们已经是在每走一步棋之后就返回一个新的 <code>squares</code> 数组了，所以想要保存历史记录也非常简单。</p>
 
 <p>我们计划通过一个数组对象来保存每一步的状态数据：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="nx">history</span> <span class="o">=</span> <span class="p">[</span>
@@ -835,7 +835,7 @@
   <span class="c1">// ...</span>
 <span class="p">]</span>
 </code></pre></div>
-<p>我们期望在顶层的 Game 组件中展示一个链接每一步历史纪录的列表。所以就像我们之前将 state 从 Square 组件提升到 Board 中一样，现在我们把 Board 中的状态数据再提升到 Game 组件中来。</p>
+<p>我们期望在顶层的 Game 组件中展示一个链接每一步历史记录的列表。所以就像我们之前将 state 从 Square 组件提升到 Board 中一样，现在我们把 Board 中的状态数据再提升到 Game 组件中来。</p>
 
 <p>首先在 Game 组件的构造函数中初始化我们需要的状态数据：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kr">class</span> <span class="nx">Game</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
@@ -927,7 +927,7 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Game 组件的 <code>render</code> 方法现在则要负责获取最近一步的历史纪录（当前棋局状态），以及计算出游戏进行的状态（是否有人获胜）。</p>
+<p>Game 组件的 <code>render</code> 方法现在则要负责获取最近一步的历史记录（当前棋局状态），以及计算出游戏进行的状态（是否有人获胜）。</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
 <span class="hll">    <span class="kr">const</span> <span class="nx">history</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">history</span><span class="p">;</span>
 </span><span class="hll">    <span class="kr">const</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">history</span><span class="p">[</span><span class="nx">history</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
@@ -981,7 +981,7 @@
 </code></pre></div>
 <p>之后，我们需要将 Board 组件里的 <code>handleClick</code> 移动到 Game 组件当中。你可以直接把它剪切粘贴过来。</p>
 
-<p>不过为了实现我们新的历史纪录的功能，还需要稍微修改一下我们的代码，让 <code>handleClick</code> 在每次触发时，添加当前的棋局状态数据到 <code>histroy</code> 当中。</p>
+<p>不过为了实现我们新的历史记录的功能，还需要稍微修改一下我们的代码，让 <code>handleClick</code> 在每次触发时，添加当前的棋局状态数据到 <code>histroy</code> 当中。</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span>  <span class="nx">handleClick</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
 <span class="hll">    <span class="kr">const</span> <span class="nx">history</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">history</span><span class="p">;</span>
 </span><span class="hll">    <span class="kr">const</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">history</span><span class="p">[</span><span class="nx">history</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
@@ -1002,9 +1002,9 @@
 
 <p><a href="https://codepen.io/gaearon/pen/EmmOqJ?editors=0010">查看此步完整代码示例。</a></p>
 
-<h3>展示每步历史纪录链接</h3>
+<h3>展示每步历史记录链接</h3>
 
-<p>现在我们来试着展示每一步棋的历史纪录链接。在教程的开始我们提到过，React 元素事实上都是 JS 当中的对象，我们可以把元素当作参数或定义到变量中使用。在 React 当中渲染多个重复的项目时，我们一般都以数组的方式传递 React 元素。最基本的方法是使用数组的 map 方法，我们试着来修改 Game 组件的 <code>render</code> 方法吧：</p>
+<p>现在我们来试着展示每一步棋的历史记录链接。在教程的开始我们提到过，React 元素事实上都是 JS 当中的对象，我们可以把元素当作参数或定义到变量中使用。在 React 当中渲染多个重复的项目时，我们一般都以数组的方式传递 React 元素。最基本的方法是使用数组的 map 方法，我们试着来修改 Game 组件的 <code>render</code> 方法吧：</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">history</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">history</span><span class="p">;</span>
     <span class="kr">const</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">history</span><span class="p">[</span><span class="nx">history</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
@@ -1046,7 +1046,7 @@
 </code></pre></div>
 <p><a href="https://codepen.io/gaearon/pen/EmmGEa?editors=0010">查看此步完整代码示例。</a></p>
 
-<p>对于每一步的历史纪录，我们都创建了一个带 <code>&lt;a&gt;</code> 链接的 <code>&lt;li&gt;</code> 列表项。目前链接还没指向任何地方，别着急我们后面会继续实现切换至对应棋步的功能。有了我们现有的代码，已经能渲染出一个列表了，不过你留心的话，就会在控制台看到警告：</p>
+<p>对于每一步的历史记录，我们都创建了一个带 <code>&lt;a&gt;</code> 链接的 <code>&lt;li&gt;</code> 列表项。目前链接还没指向任何地方，别着急我们后面会继续实现切换至对应棋步的功能。有了我们现有的代码，已经能渲染出一个列表了，不过你留心的话，就会在控制台看到警告：</p>
 
 <blockquote>
 <p>Warning:
