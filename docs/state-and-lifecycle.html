@@ -375,7 +375,7 @@
   <span class="nx">counter</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">increment</span><span class="p">,</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>要修复它，请使用第二种形式的 <code>setState()</code> 来接受一个函数而不是一个对象。 该函数将接收先前的状态作为第一个参数，将需要更新的值作为第二个参数：</p>
+<p>要修复它，请使用第二种形式的 <code>setState()</code> 来接受一个函数而不是一个对象。 该函数将接收先前的状态作为第一个参数，将此次更新被应用时的props做为第二个参数：</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// Correct</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">((</span><span class="nx">prevState</span><span class="p">,</span> <span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span>
   <span class="nx">counter</span><span class="o">:</span> <span class="nx">prevState</span><span class="p">.</span><span class="nx">counter</span> <span class="o">+</span> <span class="nx">props</span><span class="p">.</span><span class="nx">increment</span>
