@@ -279,7 +279,7 @@
 </code></pre></div>
 <p><a href="https://codepen.io/gaearon/pen/wgedvV?editors=0010">在 CodePen 上尝试.</a></p>
 
-<p>还要注意的是如果我们想要使用ES6当中的<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names">computed property name</a>语法来更新与给定输入名称相对应的状态键：</p>
+<p>注意我们如何使用ES6当中的<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names">计算属性名</a>语法来更新与给定输入名称相对应的状态键：</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
 <span class="hll">  <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="nx">value</span>
 </span><span class="p">});</span>
@@ -289,7 +289,7 @@
 <span class="hll"><span class="nx">partialState</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 </span><span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">(</span><span class="nx">partialState</span><span class="p">);</span>
 </code></pre></div>
-<p>同样由于setState()自动将部分状态合并到当前状态<a href="/react/docs/state-and-lifecycle.html#state-updates-are-merged">merges a partial state into the current state</a>，因此我们只需要在已经更改的部分调用它。</p>
+<p>同样由于 <code>setState()</code> 自动<a href="/react/docs/state-and-lifecycle.html#%E7%8A%B6%E6%80%81%E6%9B%B4%E6%96%B0%E5%90%88%E5%B9%B6">将部分状态合并到当前状态</a>，因此我们只需要使用发生变化的部分调用它。</p>
 
 <h2>受控组件的替代方法</h2>
 
