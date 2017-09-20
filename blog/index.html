@@ -72,6 +72,8 @@
     <h3>近期文章</h3>
     <ul>
       
+        <li><a href="/react/blog/2017/09/08/dom-attributes-in-react-16.html">DOM Attributes in React 16</a></li>
+      
         <li><a href="/react/blog/2017/07/26/error-handle-in-react-16.html">Error Handle in React 16</a></li>
       
         <li><a href="/react/blog/2017/06/13/react-v15.6.0.html">React v15.6.0</a></li>
@@ -90,14 +92,181 @@
       
         <li><a href="/react/blog/2016/07/11/introducing-reacts-error-code-system.html">Introducing React's Error Code System</a></li>
       
-        <li><a href="/react/blog/2016/04/08/react-v15.0.1.html">React v15.0.1</a></li>
-      
       <li><a href="/react/blog/all.html">All posts ...</a></li>
     </ul>
   </div>
 </div>
 
   <div class="inner-content">
+    
+      <div class="post-list-item">
+        
+
+<h1>
+
+  <a href="/react/blog/2017/09/08/dom-attributes-in-react-16.html">DOM Attributes in React 16</a>
+
+</h1>
+
+<p class="meta">
+  September  8, 2017
+  by
+  
+    
+      <a href="https://twitter.com/dan_abramov">Dan Abramov</a>
+    
+    
+  
+</p>
+
+<hr>
+
+<div class="post">
+  <p>过去，React 习惯于忽视未知的 DOM 属性。若你在 JSX 中写了一个 React 无法识别的元素， React 将会忽略他。例如这样：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// Your code:</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">mycustomattribute</span><span class="o">=</span><span class="s2">&quot;something&quot;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>在 React 15 中将会在 DOM 节点中渲染一个空的 div:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// React 15 output:</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>在 React 16 中，我们做了一些改变。未知特性会在 DOM 节点的末尾：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// React 16 output:</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">mycustomattribute</span><span class="o">=</span><span class="s2">&quot;something&quot;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<h2>为何要改变？</h2>
+
+<p>React 为 DOM 提供了以 JavaScript 为核心的 API。由于 React 组件总是带有自定义以及 DOM 相关的 props，其使得 React 使用小驼峰命名会更易理解，类似于 DOM 的 API：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">tabIndex</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>这并未改变。然而，过去这一方式强制我们在库中维护一个合法的 DOM 元素白名单：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
+<span class="nx">summary</span><span class="o">:</span> <span class="s1">&#39;summary&#39;</span><span class="p">,</span>
+<span class="nx">tabIndex</span><span class="o">:</span> <span class="s1">&#39;tabindex&#39;</span>
+<span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;target&#39;</span><span class="p">,</span>
+<span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+<span class="c1">// ...</span>
+</code></pre></div>
+<p>这一方是有两个弊端：</p>
+
+<ul>
+<li><p>你无法<a href="https://github.com/facebook/react/issues/140">传自定义属性</a>。而这对于未标准化的浏览器相关的属性，尝试新的DOM API以及集成一些独特的第三方库。</p></li>
+<li><p>属性列表不断地增长，但 大部分 React 独有的属性命名已在 DOM 中合法。移除白名单的大部分属性能够稍微减少库的大小。</p></li>
+</ul>
+
+<p>随着新版本发布，这些问题都将解决。在 React 16 中，你可以传递自定义属性给所有的 HTML 和 SVG 元素，同时 React 也不必在将所有的属性白名单包含进生产版本里。</p>
+
+<p><strong>注意，对于已知属性，你仍需要使用规范的 React 命名。</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// Yes, please</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">tabIndex</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="o">/&gt;</span>
+
+<span class="c1">// Warning: Invalid DOM property `tabindex`. Did you mean `tabIndex`?</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">tabindex</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>换句话说，你在 React 中使用 DOM 组件的方式并没有改变，但现在你有了新方式。</p>
+
+<h2>应该在属性中存储数据？</h2>
+
+<p>不。我们不鼓励奖数据存放在 DOM 属性中。即使你不得不，使用 <code>data-</code>
+可能会是更好的方式，但大多数情况下数据应被保存在 React 组件状态或额外存储。</p>
+
+<p>然而，若你需要使用非标准化的或是新的 DOM 属性那新特性将会十分方便，或若你需要与依赖这些新特性的第三方库进行整合。</p>
+
+<h2>Data 和 ARIA 属性</h2>
+
+<p>和之前一样，React 能够让你随意地传递 <code>data-</code> 和 <code>aria-</code>：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">data</span><span class="o">-</span><span class="nx">foo</span><span class="o">=</span><span class="s2">&quot;42&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">button</span> <span class="nx">aria</span><span class="o">-</span><span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Close&quot;</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">onClose</span><span class="p">}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>这并没有改变。</p>
+
+<p><a href="/react/docs/accessibility.html">可访问性</a> 非常重要，因此即使 React 16 能够传递任何属性，其仍然会在开发模式下验证 <code>aria-</code> props 是否正确命名，就像之前 React 15 一样。</p>
+
+<h2>迁移路径</h2>
+
+<p>自一年多前的 <a href="https://github.com/facebook/react/releases/tag/v15.2.0">React 15.2.0</a> 发布，我们已将<a href="/react/warnings/unknown-prop.html">关于未知属性的一个警告</a> 包含在内。大量的第三方库也已进行代码升级。若你的应用在 React 15.2.0 或更高版本中并未产生警告，那么这一改变并不需要修改你应用中的代码。</p>
+
+<p>若你仍意外地传递非 DOM props 到 DOM 组件中，在 React 16 你将会在 DOM 中开始看到这些特性，例如：</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">myData</span><span class="o">=</span><span class="s1">&#39;[Object object]&#39;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>这在一定程度上是安全的（浏览器将会忽略他们）但当你看到他们时，我们建议你修复这些问题。一个潜在的问题是若你传递一个实现了自定义的 <code>toString()</code> 或 <code>valueOf()</code> 方法的对象将会抛出异常。另一个可能的问题是合法的 HTML 元素如 <code>align</code> 和 <code>valign</code> 现在会被传递给 DOM。它们过去则是被忽略，因为React 并不支持它们。</p>
+
+<p>为避免这些问题，在升级到 React 16 之前，我们建议你修复你在 React 15中看到的这些警告。</p>
+
+<h2>变更细节</h2>
+
+<p>我们已做了一些其他调整已让行为能够更加可预测并能致力于让你不犯错。我们无法预期这些改变可能会破坏实际应用。</p>
+
+<p><strong>这些变更仅影响 DOM 组件 如 <code>&lt;div&gt;</code>，而不会影响你自己的组件。</strong></p>
+
+<p>下列是变更的细节。</p>
+
+<ul>
+<li><p><strong>带有字符，数字或对象值得未知属性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">mycustomattribute</span><span class="o">=</span><span class="s2">&quot;value&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">mycustomattribute</span><span class="o">=</span><span class="p">{</span><span class="mi">42</span><span class="p">}</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">mycustomattribute</span><span class="o">=</span><span class="p">{</span><span class="nx">myObject</span><span class="p">}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 15：警告并忽略。
+React 16：将值转换成字符串并传递给组件。</p>
+
+<p><em>注意：以 <code>on</code> 开始的特性并不会被传递而是抛出异常因为这可能是一个潜在的安全漏洞。</em></p></li>
+<li><p><strong>带有不同规范的 React 命名的已知属性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">tabindex</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 15：警告并忽略。
+React 16：警告但会将其转换为字符串并传递给组件。</p>
+
+<p><em>注意：永远对支持的特性使用规范的 React 命名规则。</em></p></li>
+<li><p><strong>带有布尔值的非布尔值特性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 15：将布尔值转换为字符串并传递给组件
+React 16：警告并忽略。</p></li>
+<li><p><strong>带有函数的非事件特性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="kd">function</span><span class="p">()</span> <span class="p">{}}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 15：将函数转换为字符串并传递给组件。
+React 16：警告并忽略。</p></li>
+<li><p><strong>带有 Symbol 的属性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">Symbol</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 15：崩溃。
+React 16：警告并忽略。</p></li>
+<li><p><strong>带有 <code>NaN</code> 值的属性：</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">tabIndex</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span> <span class="o">/</span> <span class="mi">0</span><span class="p">}</span> <span class="o">/&gt;</span>
+</code></pre></div>
+<p>React 16：将 <code>NaN</code> 转换为字符串并传递给组件。
+React 16：警告并忽略。</p></li>
+</ul>
+
+<p>随这一测试版的发布，我们也为所有已知元素<a href="https://github.com/facebook/react/blob/master/fixtures/attribute-behavior/AttributeTableSnapshot.md">创建一个自动生成的表单</a>以追踪潜在的问题。</p>
+
+<h2>试一试</h2>
+
+<p>你可以在 <a href="https://codepen.io/gaearon/pen/gxNVdP?editors=0010">CodePen</a> 尝试这些变更。其使用 React 16 RC 版本，你也可以 <a href="https://github.com/facebook/react/issues/10294">在你的项目中帮助我们测试 RC</a>。</p>
+
+<h2>感谢</h2>
+
+<p>这一努力大部分由一位 <a href="https://github.com/nhunzaker">Nathan Hunzaker</a> 所推动， <a href="https://github.com/facebook/react/pulls?q=is%3Apr+author%3Anhunzaker+is%3Aclosed">其是一位高产的 React 外部贡献者</a>。</p>
+
+<p>你可以在过去一年的历程里在下列几个 PR 的这个问题上发现他的工作：
+<a href="https://github.com/facebook/react/pull/6459">#6459</a>、<a href="https://github.com/facebook/react/pull/7311">#7311</a>、<a href="https://github.com/facebook/react/pull/10229">#10229</a>、<a href="https://github.com/facebook/react/pull/10397">#10397</a>、<a href="https://github.com/facebook/react/pull/10385">#10385</a> 和 <a href="https://github.com/facebook/react/pull/10470">#10470</a>。</p>
+
+<p>在一个受欢迎的项目中核心的调整需要花费大量时间和研究。Nathan 展示了坚定的决心并承诺完成这一调整，我们非常感谢他的这一工作及其他的贡献。</p>
+
+<p>我们也想要感谢 <a href="https://github.com/aweary">Brandon Dail</a> 和 <a href="https://github.com/jquense">Jason Quense</a> 在这一年中无私地帮助维护 React 项目。</p>
+
+<h2>未来计划</h2>
+
+<p>我们还未调整 <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements">自定义元素</a> 如何在 React 16 中工作，但关于设置属性而非特性已经有了一些<a href="https://github.com/facebook/react/issues/7249">讨论</a>，我们可能在 React 17 中在回过头来看看。若你愿意提供帮助，随时都可以来提。</p>
+
+</div>
+
+
+
+      </div>
     
       <div class="post-list-item">
         
@@ -776,262 +945,6 @@ Minified build for production: <a href="https://unpkg.com/react-dom@15.4.0/dist/
 <li><code>ReactTestRenderer.create()</code> now accepts <code>{createNodeMock: element =&gt; mock}</code> as an optional argument so you can mock refs with snapshot testing.<br>
 <small>(<a href="https://github.com/Aweary">@Aweary</a> in <a href="https://github.com/facebook/react/pull/7649">#7649</a> and <a href="https://github.com/facebook/react/pull/8261">#8261</a>)</small></li>
 </ul>
-
-</div>
-
-
-
-      </div>
-    
-      <div class="post-list-item">
-        
-
-<h1>
-
-  <a href="/react/blog/2016/09/28/our-first-50000-stars.html">Our First 50,000 Stars</a>
-
-</h1>
-
-<p class="meta">
-  September 28, 2016
-  by
-  
-    
-      <a href="https://twitter.com/vjeux">Vjeux</a>
-    
-    
-  
-</p>
-
-<hr>
-
-<div class="post">
-  <p>Just three and a half years ago we open sourced a little JavaScript library called React. The journey since that day has been incredibly exciting.</p>
-
-<h2>Commemorative T-Shirt</h2>
-
-<p>In order to celebrate 50,000 GitHub stars, <a href="http://www.maggieappleton.com/">Maggie Appleton</a> from <a href="http://egghead.io/">egghead.io</a> has designed us a special T-shirt, which will be available for purchase from Teespring <strong>only for a week</strong> through Thursday, October 6. Maggie also wrote <a href="https://www.behance.net/gallery/43269677/Reacts-50000-Stars-Shirt">a blog post</a> showing all the different concepts she came up with before settling on the final design.</p>
-
-<p><a target="_blank" href="https://teespring.com/react-50000-stars"><img src="/react/img/blog/react-50k-tshirt.jpg" width="650" height="340" alt="React 50k Tshirt" /></a></p>
-
-<p>The T-shirts are super soft using American Apparel&#39;s tri-blend fabric; we also have kids and toddler T-shirts and baby onesies available.</p>
-
-<ul>
-<li><a href="https://teespring.com/react-50000-stars">Adult T-shirts (straight-cut and fitted)</a></li>
-<li><a href="https://teespring.com/react-50000-stars-kids">Kids T-shirts</a></li>
-<li><a href="https://teespring.com/react-50000-stars-toddler">Toddler T-Shirts</a></li>
-<li><a href="https://teespring.com/react-50000-stars-baby">Baby Onesies</a></li>
-</ul>
-
-<p>Proceeds from the shirts will be donated to <a href="http://www.code2040.org/">CODE2040</a>, a nonprofit that creates access, awareness, and opportunities in technology for underrepresented minorities with a specific focus on Black and Latinx talent.</p>
-
-<h2>Archeology</h2>
-
-<p>We&#39;ve spent a lot of time trying to explain the concepts behind React and the problems it attempts to solve, but we haven&#39;t talked much about how React evolved before being open sourced. This milestone seemed like as good a time as any to dig through the earliest commits and share some of the more important moments and fun facts.</p>
-
-<p>The story begins in our ads org, where we were building incredibly sophisticated client side web apps using an internal MVC framework called <a href="http://web.archive.org/web/20130608154901/http://shaneosullivan.github.io/boltjs/intro.html">BoltJS</a>. Here&#39;s a sample of what some Bolt code looked like:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">var</span> <span class="nx">CarView</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;javelin/core&#39;</span><span class="p">).</span><span class="nx">createClass</span><span class="p">({</span>
-  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;CarView&#39;</span><span class="p">,</span>
-  <span class="nx">extend</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;container&#39;</span><span class="p">).</span><span class="nx">Container</span><span class="p">,</span>
-  <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">wheels</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
-  <span class="p">},</span>
-  <span class="nx">declare</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">childViews</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="nx">content</span><span class="o">:</span> <span class="s1">&#39;I have &#39;</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="nx">ref</span><span class="o">:</span> <span class="s1">&#39;wheelView&#39;</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="nx">content</span><span class="o">:</span> <span class="s1">&#39; wheels&#39;</span> <span class="p">}</span>
-      <span class="p">]</span>
-    <span class="p">};</span>
-  <span class="p">},</span>
-  <span class="nx">setWheels</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wheels</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">findRef</span><span class="p">(</span><span class="s1">&#39;wheelView&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">wheels</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="nx">getWheels</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">findRef</span><span class="p">(</span><span class="s1">&#39;wheelView&#39;</span><span class="p">).</span><span class="nx">getContent</span><span class="p">();</span>
-  <span class="p">},</span>
-<span class="p">});</span>
-
-<span class="kd">var</span> <span class="nx">car</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CarView</span><span class="p">();</span>
-<span class="nx">car</span><span class="p">.</span><span class="nx">setWheels</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<span class="nx">car</span><span class="p">.</span><span class="nx">placeIn</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
-<span class="c1">//&lt;div&gt;</span>
-<span class="c1">//  &lt;div&gt;I have &lt;/div&gt;</span>
-<span class="c1">//  &lt;div&gt;3&lt;/div&gt;</span>
-<span class="c1">//  &lt;div&gt; wheels&lt;/div&gt;</span>
-<span class="c1">//&lt;/div&gt;</span>
-</code></pre></div>
-<p>Bolt introduced a number of APIs and features that would eventually make their way into React including <code>render</code>, <code>createClass</code>, and <code>refs</code>. Bolt introduced the concept of <code>refs</code> as a way to create references to nodes that can be used imperatively. This was relevant for legacy interoperability and incremental adoption, and while React would eventually strive to be a lot more functional, <code>refs</code> proved to be a very useful way to break out of the functional paradigm when the need arose.</p>
-
-<p>But as our applications grew more and more sophisticated, our Bolt codebases got pretty complicated. Recognizing some of the framework&#39;s shortcomings, <a href="https://twitter.com/jordwalke">Jordan Walke</a> started experimenting with a side-project called <a href="https://github.com/jordwalke/FaxJs">FaxJS</a>. His goal was to solve many of the same problems as Bolt, but in a very different way. This is actually where most of React&#39;s fundamentals were born, including props, state, re-evaluating large portions of the tree to “diff” the UI, server-side rendering, and a basic concept of components.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">TestProject</span><span class="p">.</span><span class="nx">PersonDisplayer</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">structure</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">Div</span><span class="p">({</span>
-      <span class="nx">classSet</span><span class="o">:</span> <span class="p">{</span> <span class="nx">personDisplayerContainer</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
-      <span class="nx">titleDiv</span><span class="o">:</span> <span class="nx">Div</span><span class="p">({</span>
-        <span class="nx">classSet</span><span class="o">:</span> <span class="p">{</span> <span class="nx">personNameTitle</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
-      <span class="p">}),</span>
-      <span class="nx">nestedAgeDiv</span><span class="o">:</span> <span class="nx">Div</span><span class="p">({</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="s1">&#39;Interests: &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">interests</span>
-      <span class="p">})</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
-<span class="p">};</span>
-</code></pre></div>
-<h2>FBolt is Born</h2>
-
-<p>Through his FaxJS experiment, Jordan became convinced that functional APIs  — which discouraged mutation —  offered a better, more scalable way to build user interfaces. He imported his library into Facebook&#39;s codebase in March of 2012 and renamed it “FBolt”, signifying an extension of Bolt where components are written in a functional programming style. Or maybe “FBolt” was a nod to FaxJS – he didn&#39;t tell us! ;)</p>
-
-<p>The interoperability between FBolt and Bolt allowed us to experiment with replacing just one component at a time with more functional component APIs. We could test the waters of this new functional paradigm, without having to go all in. We started with the components that were clearly best expressed functionally and then we would later continue to push the boundaries of what we could express as functions.</p>
-
-<p>Realizing that FBolt wouldn&#39;t be a great name for the library when used on its own, Jordan Walke and <a href="https://twitter.com/tomocchino">Tom Occhino</a> decided on a new name: “React.” After Tom sent out the diff to rename everything to React, Jordan commented:</p>
-
-<blockquote>
-<p>Jordan Walke:
-I might add for the sake of discussion, that many systems advertise some kind of reactivity, but they usually require that you set up some kind of point-to-point listeners and won&#39;t work on structured data. This API reacts to any state or property changes, and works with data of any form (as deeply structured as the graph itself) so I think the name is fitting.</p>
-</blockquote>
-
-<p>Most of Tom&#39;s other commits at the time were on the first version of <a href="https://github.com/graphql/graphiql">GraphiQL</a>, a project which was recently open sourced.</p>
-
-<h2>Adding JSX</h2>
-
-<p>Since about 2010 Facebook has been using an extension of PHP called <a href="https://www.facebook.com/notes/facebook-engineering/xhp-a-new-way-to-write-php/294003943919/">XHP</a>, which enables engineers to create UIs using XML literals right inside their PHP code. It was first introduced to help prevent XSS holes but ended up being an excellent way to structure applications with custom components.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">final</span> <span class="kr">class</span> <span class="o">:</span><span class="nx">a</span><span class="o">:</span><span class="nx">post</span> <span class="kr">extends</span> <span class="o">:</span><span class="nx">x</span><span class="o">:</span><span class="nx">element</span> <span class="p">{</span>
-  <span class="nx">attribute</span> <span class="o">:</span><span class="nx">a</span><span class="p">;</span>
-  <span class="kr">protected</span> <span class="kd">function</span> <span class="nx">render</span><span class="p">()</span><span class="o">:</span> <span class="nx">XHPRoot</span> <span class="p">{</span>
-    <span class="nx">$anchor</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">a</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">getChildren</span><span class="p">()}</span><span class="o">&lt;</span><span class="err">/a&gt;;</span>
-    <span class="nx">$form</span> <span class="o">=</span> <span class="p">(</span>
-      <span class="o">&lt;</span><span class="nx">form</span>
-        <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span>
-        <span class="nx">action</span><span class="o">=</span><span class="p">{</span><span class="nx">$this</span><span class="o">-&gt;:</span><span class="nx">href</span><span class="p">}</span>
-        <span class="nx">target</span><span class="o">=</span><span class="p">{</span><span class="nx">$this</span><span class="o">-&gt;:</span><span class="nx">target</span><span class="p">}</span>
-        <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;postLink&quot;</span>
-      <span class="o">&gt;</span><span class="p">{</span><span class="nx">$anchor</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/form&gt;</span>
-    <span class="p">);</span>
-    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">transferAllAttributes</span><span class="p">(</span><span class="nx">$anchor</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">$form</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Before Jordan&#39;s work had even made its way into the Facebook codebase, Adam Hupp implemented an XHP-like concept for JavaScript, written in Haskell. This system enabled you to write the following inside a JavaScript file:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="o">:</span><span class="nx">example</span><span class="o">:</span><span class="nx">hello</span><span class="p">(</span><span class="nx">attrib</span><span class="p">,</span> <span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="p">(</span>
-    <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;special&quot;</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Hello</span><span class="p">,</span> <span class="nx">World</span><span class="o">!&lt;</span><span class="err">/h1&gt;</span>
-      <span class="p">{</span><span class="nx">children</span><span class="p">}</span>
-    <span class="o">&lt;</span><span class="err">/div&gt;</span>
-  <span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>It would compile the above into the following normal ES3-compatible JavaScript:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">jsx_example_hello</span><span class="p">(</span><span class="nx">attrib</span><span class="p">,</span> <span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="p">(</span>
-    <span class="nx">S</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="o">:</span> <span class="s2">&quot;special&quot;</span><span class="p">},</span> <span class="p">[</span>
-      <span class="nx">S</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">]),</span>
-      <span class="nx">children</span>
-    <span class="p">]</span>
-  <span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>In this prototype, <code>S.create</code> would immediately create and return a DOM node. Most of the conversations on this prototype revolved around the performance characteristics of <code>innerHTML</code> versus creating DOM nodes directly. At the time, it would have been less than ideal to push developers universally in the direction of creating DOM nodes directly since it did not perform as well, especially in Firefox and IE. Facebook&#39;s then-CTO <a href="https://twitter.com/btaylor">Bret Taylor</a> chimed in on the discussion at the time in favor of <code>innerHTML</code> over <code>document.createElement</code>:</p>
-
-<blockquote>
-<p>Bret Taylor:
-If you are not convinced about innerHTML, here is a small microbenchmark. It is about the same in Chrome. innerHTML is about 30% faster in the latest version of Firefox (much more in previous versions), and about 90% faster in IE8.</p>
-</blockquote>
-
-<p>This work was eventually abandoned but was revived after React made its way into the codebase. Jordan sidelined the previous performance discussions by introducing the concept of a “Virtual DOM,” though its eventual name didn&#39;t exist yet.</p>
-
-<blockquote>
-<p>Jordan Walke:
-For the first step, I propose that we do the easiest, yet most general transformation possible. My suggestion is to simply map xml expressions to function call expressions.</p>
-
-<ul>
-<li><code>&lt;x&gt;&lt;/x&gt;</code> becomes <code>x( )</code></li>
-<li><code>&lt;x height=12&gt;&lt;/x&gt;</code> becomes <code>x( {height:12} )</code></li>
-<li><code>&lt;x&gt; &lt;y&gt; &lt;/y&gt; &lt;/x&gt;</code> becomes <code>x({ childList: [y( )] })</code></li>
-</ul>
-
-<p>At this point, JSX doesn&#39;t need to know about React - it&#39;s just a convenient way to write function calls. Coincidentally, React&#39;s primary abstraction is the function. Okay maybe it&#39;s not so coincidental ;)</p>
-</blockquote>
-
-<p>Adam made a very insightful comment, which is now the default way we write lists in React with JSX.</p>
-
-<blockquote>
-<p>Adam Hupp:
-I think we should just treat arrays of elements as a frag. This is useful for constructs like:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">foo</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">data</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/li&gt;; })}&lt;/ul&gt;</span>
-</code></pre></div>
-<p>In this case the ul(..) will get a childList with a single child, which is itself a list.</p>
-</blockquote>
-
-<p>React didn&#39;t end up using Adam&#39;s implementation directly. Instead, we created JSX by forking <a href="https://github.com/laverdet/js-xml-literal">js-xml-literal</a>, a side project by XHP creator Marcel Laverdet. JSX took its name from js-xml-literal, which Jordan modified to just be syntactic sugar for deeply nested function calls.</p>
-
-<h2>API Churn</h2>
-
-<p>During the first year of React, internal adoption was growing quickly but there was quite a lot of churn in the component APIs and naming conventions:</p>
-
-<ul>
-<li><code>project</code> was renamed to <code>declare</code> then to <code>structure</code> and finally to <code>render</code>.</li>
-<li><code>Componentize</code> was renamed to <code>createComponent</code> and finally to <code>createClass</code>.</li>
-</ul>
-
-<p>As the project was about to be open sourced, <a href="https://twitter.com/leeb">Lee Byron</a> sat down with Jordan Walke, Tom Occhino and Sebastian Markbåge in order to refactor, reimplement, and rename one of React&#39;s most beloved features – the lifecycle API. Lee <a href="https://gist.github.com/vjeux/f2b015d230cc1ab18ed1df30550495ed">came up with a well-designed API</a> that is still in place today.</p>
-
-<ul>
-<li>Concepts
-
-<ul>
-<li>component - a ReactComponent instance</li>
-<li>state - internal state to a component</li>
-<li>props - external state to a component</li>
-<li>markup - the stringy HTML-ish stuff components generate</li>
-<li>DOM - the document and elements within the document</li>
-</ul></li>
-<li>Actions
-
-<ul>
-<li>mount - to put a component into a DOM</li>
-<li>initialize - to prepare a component for rendering</li>
-<li>update - a transition of state (and props) resulting a render.</li>
-<li>render - a side-effect-free process to get the representation (markup) of a component.</li>
-<li>validate - make assertions about something created and provided</li>
-<li>destroy - opposite of initialize</li>
-</ul></li>
-<li>Operands
-
-<ul>
-<li>create - make a new thing</li>
-<li>get - get an existing thing</li>
-<li>set - merge into existing</li>
-<li>replace - replace existing</li>
-<li>receive - respond to new data</li>
-<li>force - skip checks to do action</li>
-</ul></li>
-<li>Notifications
-
-<ul>
-<li>shouldObjectAction</li>
-<li>objectWillAction</li>
-<li>objectDidAction</li>
-</ul></li>
-</ul>
-
-<h2>Instagram</h2>
-
-<p>In 2012, Instagram got acquired by Facebook. <a href="https://twitter.com/floydophone">Pete Hunt</a>, who was working on Facebook photos and videos at the time, joined their newly formed web team. He wanted to build their website completely in React, which was in stark contrast with the incremental adoption model that had been used at Facebook.</p>
-
-<p>To make this happen, React had to be decoupled from Facebook&#39;s infrastructure, since Instagram didn&#39;t use any of it. This project acted as a forcing function to do the work needed to open source React. In the process, Pete also discovered and promoted a little project called Webpack. He also implemented the <code>renderToString</code> primitive which was needed to do server-side rendering.</p>
-
-<p>As we started to prepare for the open source launch, <a href="https://twitter.com/miekd">Maykel Loomans</a>, a designer on Instagram, made a mock of what the website could look like. The header ended up defining the visual identity of React: its logo and the electric blue color!</p>
-
-<p><center><a target="_blank" href="/react/img/blog/react-50k-mock-full.jpg"><img src="/react/img/blog/react-50k-mock.jpg" width="400" height="410" alt="React website mock" /></a></center></p>
-
-<p>In its earliest days, React benefited tremendously from feedback, ideas, and technical contributions of early adopters and collaborators all over the company. While it might look like an overnight success in hindsight, the story of React is actually a great example of how new ideas often need to go through several rounds of refinement, iteration, and course correction over a long period of time before reaching their full potential.</p>
-
-<p>React&#39;s approach to building user interfaces with functional programming principles has changed the way we do things in just a few short years. It goes without saying, but React would be nothing without the amazing open source community that&#39;s built up around it!</p>
 
 </div>
 

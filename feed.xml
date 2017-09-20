@@ -7,6 +7,153 @@
 		<atom:link href="https://facebook.github.io/react/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>DOM Attributes in React 16</title>
+				<description>&lt;p&gt;过去，React 习惯于忽视未知的 DOM 属性。若你在 JSX 中写了一个 React 无法识别的元素， React 将会忽略他。例如这样：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Your code:&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mycustomattribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;something&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在 React 15 中将会在 DOM 节点中渲染一个空的 div:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// React 15 output:&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在 React 16 中，我们做了一些改变。未知特性会在 DOM 节点的末尾：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// React 16 output:&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mycustomattribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;something&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;为何要改变？&lt;/h2&gt;
+
+&lt;p&gt;React 为 DOM 提供了以 JavaScript 为核心的 API。由于 React 组件总是带有自定义以及 DOM 相关的 props，其使得 React 使用小驼峰命名会更易理解，类似于 DOM 的 API：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tabIndex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;-1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这并未改变。然而，过去这一方式强制我们在库中维护一个合法的 DOM 元素白名单：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;summary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;summary&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;tabIndex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;tabindex&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;target&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这一方是有两个弊端：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;你无法&lt;a href=&quot;https://github.com/facebook/react/issues/140&quot;&gt;传自定义属性&lt;/a&gt;。而这对于未标准化的浏览器相关的属性，尝试新的DOM API以及集成一些独特的第三方库。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;属性列表不断地增长，但 大部分 React 独有的属性命名已在 DOM 中合法。移除白名单的大部分属性能够稍微减少库的大小。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;随着新版本发布，这些问题都将解决。在 React 16 中，你可以传递自定义属性给所有的 HTML 和 SVG 元素，同时 React 也不必在将所有的属性白名单包含进生产版本里。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意，对于已知属性，你仍需要使用规范的 React 命名。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// Yes, please&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tabIndex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;-1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Warning: Invalid DOM property `tabindex`. Did you mean `tabIndex`?&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tabindex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;-1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;换句话说，你在 React 中使用 DOM 组件的方式并没有改变，但现在你有了新方式。&lt;/p&gt;
+
+&lt;h2&gt;应该在属性中存储数据？&lt;/h2&gt;
+
+&lt;p&gt;不。我们不鼓励奖数据存放在 DOM 属性中。即使你不得不，使用 &lt;code&gt;data-&lt;/code&gt;
+可能会是更好的方式，但大多数情况下数据应被保存在 React 组件状态或额外存储。&lt;/p&gt;
+
+&lt;p&gt;然而，若你需要使用非标准化的或是新的 DOM 属性那新特性将会十分方便，或若你需要与依赖这些新特性的第三方库进行整合。&lt;/p&gt;
+
+&lt;h2&gt;Data 和 ARIA 属性&lt;/h2&gt;
+
+&lt;p&gt;和之前一样，React 能够让你随意地传递 &lt;code&gt;data-&lt;/code&gt; 和 &lt;code&gt;aria-&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;42&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;button&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aria&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Close&amp;quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onClick&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onClose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这并没有改变。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/react/docs/accessibility.html&quot;&gt;可访问性&lt;/a&gt; 非常重要，因此即使 React 16 能够传递任何属性，其仍然会在开发模式下验证 &lt;code&gt;aria-&lt;/code&gt; props 是否正确命名，就像之前 React 15 一样。&lt;/p&gt;
+
+&lt;h2&gt;迁移路径&lt;/h2&gt;
+
+&lt;p&gt;自一年多前的 &lt;a href=&quot;https://github.com/facebook/react/releases/tag/v15.2.0&quot;&gt;React 15.2.0&lt;/a&gt; 发布，我们已将&lt;a href=&quot;/react/warnings/unknown-prop.html&quot;&gt;关于未知属性的一个警告&lt;/a&gt; 包含在内。大量的第三方库也已进行代码升级。若你的应用在 React 15.2.0 或更高版本中并未产生警告，那么这一改变并不需要修改你应用中的代码。&lt;/p&gt;
+
+&lt;p&gt;若你仍意外地传递非 DOM props 到 DOM 组件中，在 React 16 你将会在 DOM 中开始看到这些特性，例如：&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;myData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;[Object object]&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这在一定程度上是安全的（浏览器将会忽略他们）但当你看到他们时，我们建议你修复这些问题。一个潜在的问题是若你传递一个实现了自定义的 &lt;code&gt;toString()&lt;/code&gt; 或 &lt;code&gt;valueOf()&lt;/code&gt; 方法的对象将会抛出异常。另一个可能的问题是合法的 HTML 元素如 &lt;code&gt;align&lt;/code&gt; 和 &lt;code&gt;valign&lt;/code&gt; 现在会被传递给 DOM。它们过去则是被忽略，因为React 并不支持它们。&lt;/p&gt;
+
+&lt;p&gt;为避免这些问题，在升级到 React 16 之前，我们建议你修复你在 React 15中看到的这些警告。&lt;/p&gt;
+
+&lt;h2&gt;变更细节&lt;/h2&gt;
+
+&lt;p&gt;我们已做了一些其他调整已让行为能够更加可预测并能致力于让你不犯错。我们无法预期这些改变可能会破坏实际应用。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;这些变更仅影响 DOM 组件 如 &lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt;，而不会影响你自己的组件。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;下列是变更的细节。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有字符，数字或对象值得未知属性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mycustomattribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;value&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mycustomattribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mycustomattribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 15：警告并忽略。
+React 16：将值转换成字符串并传递给组件。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;注意：以 &lt;code&gt;on&lt;/code&gt; 开始的特性并不会被传递而是抛出异常因为这可能是一个潜在的安全漏洞。&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有不同规范的 React 命名的已知属性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tabindex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;-1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 15：警告并忽略。
+React 16：警告但会将其转换为字符串并传递给组件。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;注意：永远对支持的特性使用规范的 React 命名规则。&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有布尔值的非布尔值特性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;className&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 15：将布尔值转换为字符串并传递给组件
+React 16：警告并忽略。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有函数的非事件特性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;className&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 15：将函数转换为字符串并传递给组件。
+React 16：警告并忽略。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有 Symbol 的属性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;className&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Symbol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 15：崩溃。
+React 16：警告并忽略。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;带有 &lt;code&gt;NaN&lt;/code&gt; 值的属性：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tabIndex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;React 16：将 &lt;code&gt;NaN&lt;/code&gt; 转换为字符串并传递给组件。
+React 16：警告并忽略。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;随这一测试版的发布，我们也为所有已知元素&lt;a href=&quot;https://github.com/facebook/react/blob/master/fixtures/attribute-behavior/AttributeTableSnapshot.md&quot;&gt;创建一个自动生成的表单&lt;/a&gt;以追踪潜在的问题。&lt;/p&gt;
+
+&lt;h2&gt;试一试&lt;/h2&gt;
+
+&lt;p&gt;你可以在 &lt;a href=&quot;https://codepen.io/gaearon/pen/gxNVdP?editors=0010&quot;&gt;CodePen&lt;/a&gt; 尝试这些变更。其使用 React 16 RC 版本，你也可以 &lt;a href=&quot;https://github.com/facebook/react/issues/10294&quot;&gt;在你的项目中帮助我们测试 RC&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2&gt;感谢&lt;/h2&gt;
+
+&lt;p&gt;这一努力大部分由一位 &lt;a href=&quot;https://github.com/nhunzaker&quot;&gt;Nathan Hunzaker&lt;/a&gt; 所推动， &lt;a href=&quot;https://github.com/facebook/react/pulls?q=is%3Apr+author%3Anhunzaker+is%3Aclosed&quot;&gt;其是一位高产的 React 外部贡献者&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;你可以在过去一年的历程里在下列几个 PR 的这个问题上发现他的工作：
+&lt;a href=&quot;https://github.com/facebook/react/pull/6459&quot;&gt;#6459&lt;/a&gt;、&lt;a href=&quot;https://github.com/facebook/react/pull/7311&quot;&gt;#7311&lt;/a&gt;、&lt;a href=&quot;https://github.com/facebook/react/pull/10229&quot;&gt;#10229&lt;/a&gt;、&lt;a href=&quot;https://github.com/facebook/react/pull/10397&quot;&gt;#10397&lt;/a&gt;、&lt;a href=&quot;https://github.com/facebook/react/pull/10385&quot;&gt;#10385&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/facebook/react/pull/10470&quot;&gt;#10470&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;在一个受欢迎的项目中核心的调整需要花费大量时间和研究。Nathan 展示了坚定的决心并承诺完成这一调整，我们非常感谢他的这一工作及其他的贡献。&lt;/p&gt;
+
+&lt;p&gt;我们也想要感谢 &lt;a href=&quot;https://github.com/aweary&quot;&gt;Brandon Dail&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/jquense&quot;&gt;Jason Quense&lt;/a&gt; 在这一年中无私地帮助维护 React 项目。&lt;/p&gt;
+
+&lt;h2&gt;未来计划&lt;/h2&gt;
+
+&lt;p&gt;我们还未调整 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements&quot;&gt;自定义元素&lt;/a&gt; 如何在 React 16 中工作，但关于设置属性而非特性已经有了一些&lt;a href=&quot;https://github.com/facebook/react/issues/7249&quot;&gt;讨论&lt;/a&gt;，我们可能在 React 17 中在回过头来看看。若你愿意提供帮助，随时都可以来提。&lt;/p&gt;
+</description>
+				<pubDate>2017-09-08T00:00:00-07:00</pubDate>
+				<link>https://facebook.github.io/react/blog/2017/09/08/dom-attributes-in-react-16.html</link>
+				<guid isPermaLink="true">https://facebook.github.io/react/blog/2017/09/08/dom-attributes-in-react-16.html</guid>
+			</item>
+		
+			<item>
 				<title>Error Handle in React 16</title>
 				<description>&lt;p&gt;随着React 16发布在即，我们打算介绍一些在组件内部React如何处理JavaScript错误。这些改变包含在React 16的beta版本中，并将成为React 16的一部分。&lt;/p&gt;
 
@@ -1685,51 +1832,6 @@ The console output is tuned to be minimal to help you focus on the problems:&lt;
 				<pubDate>2016-07-11T00:00:00-07:00</pubDate>
 				<link>https://facebook.github.io/react/blog/2016/07/11/introducing-reacts-error-code-system.html</link>
 				<guid isPermaLink="true">https://facebook.github.io/react/blog/2016/07/11/introducing-reacts-error-code-system.html</guid>
-			</item>
-		
-			<item>
-				<title>React v15.0.1</title>
-				<description>&lt;p&gt;Yesterday afternoon we shipped v15.0.0 and quickly got some feedback about a couple of issues. We apologize for these problems and we&amp;#39;ve been working since then to make sure we get fixes into your hands as quickly as possible.&lt;/p&gt;
-
-&lt;p&gt;The first of these issues is related to the removal of an undocumented API. This API was added to enable &lt;a href=&quot;/react/docs/jsx-spread.html&quot;&gt;JSX Spread Attributes&lt;/a&gt; in our JS compile tools (react-tools, JSXTransformer) before &lt;code&gt;Object.assign&lt;/code&gt; was standard. When we stopped supporting these tools last year, we kept the API there to catch the longer tail of people using those tools. Meanwhile we moved to using Babel and encouraged others to do the same. Babel will typically compile the spread use to an &lt;code&gt;_extends&lt;/code&gt; helper, which will use &lt;code&gt;Object.assign&lt;/code&gt;. We did not properly research other compilation tools before deciding to remove the API in v15. Specifically, TypeScript and coffee-react are two popular packages using &lt;code&gt;React.__spread&lt;/code&gt;, as well as reactify which still makes use react-tools. In order to make sure that code compiled with these tools is not broken, we will be restoring the &lt;code&gt;React.__spread&lt;/code&gt; API and adding a warning. It will be removed in the future so if you maintain a project making using of it, we encourage you to compile to &lt;code&gt;Object.assign&lt;/code&gt; directly or a similar helper function.&lt;/p&gt;
-
-&lt;p&gt;The second issue resulted in cursor position being lost in controlled inputs. We merged a pull request earlier this week to fix a separate regression from v0.14. Our goal was to target &lt;code&gt;&amp;lt;option&amp;gt;&lt;/code&gt; elements but we ended up targeting all interactions with &lt;code&gt;value&lt;/code&gt; properties. Unfortunately we didn&amp;#39;t test it as thoroughly as we thought. We backed out the offending change and fixed the issue in different way which doesn&amp;#39;t have the same problem.&lt;/p&gt;
-
-&lt;p&gt;We apologize if you installed 15.0.0 and have encountered these issues yourselves.&lt;/p&gt;
-
-&lt;p&gt;As usual, you can get install the &lt;code&gt;react&lt;/code&gt; package via npm or download a browser bundle.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;React&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-15.0.1.js&quot;&gt;https://fb.me/react-15.0.1.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-15.0.1.min.js&quot;&gt;https://fb.me/react-15.0.1.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React with Add-Ons&lt;/strong&gt;&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-with-addons-15.0.1.js&quot;&gt;https://fb.me/react-with-addons-15.0.1.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-with-addons-15.0.1.min.js&quot;&gt;https://fb.me/react-with-addons-15.0.1.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;React DOM&lt;/strong&gt; (include React in the page before React DOM)&lt;br&gt;
-Dev build with warnings: &lt;a href=&quot;https://fb.me/react-dom-15.0.1.js&quot;&gt;https://fb.me/react-dom-15.0.1.js&lt;/a&gt;&lt;br&gt;
-Minified build for production: &lt;a href=&quot;https://fb.me/react-dom-15.0.1.min.js&quot;&gt;https://fb.me/react-dom-15.0.1.min.js&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Changelog&lt;/h2&gt;
-
-&lt;h3&gt;React&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Restore &lt;code&gt;React.__spread&lt;/code&gt; API to unbreak code compiled with some tools making use of this undocumented API. It is now officially deprecated.&lt;br&gt;
-&lt;small&gt;&lt;a href=&quot;https://github.com/zpao&quot;&gt;@zpao&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/6444&quot;&gt;#6444&lt;/a&gt;&lt;/small&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3&gt;ReactDOM&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fixed issue resulting in loss of cursor position in controlled inputs.&lt;br&gt;
-&lt;small&gt;&lt;a href=&quot;https://github.com/spicyj&quot;&gt;@spicyj&lt;/a&gt; in &lt;a href=&quot;https://github.com/facebook/react/pull/6449&quot;&gt;#6449&lt;/a&gt;&lt;/small&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-				<pubDate>2016-04-08T00:00:00-07:00</pubDate>
-				<link>https://facebook.github.io/react/blog/2016/04/08/react-v15.0.1.html</link>
-				<guid isPermaLink="true">https://facebook.github.io/react/blog/2016/04/08/react-v15.0.1.html</guid>
 			</item>
 		
 	</channel>
