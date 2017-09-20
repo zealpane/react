@@ -173,7 +173,7 @@
 
 <p>如果你只是想简单尝试下 React，可以使用 CodePen. 首先试试这个 <a href="http://codepen.io/gaearon/pen/rrpgNB?editors=0010">Hello World 示例代码</a>。你不需要安装任何东西，还能简单修改下代码使其生效。</p>
 
-<p>如果你喜欢使用自己的文本编辑器，你还可以 <a href="/react/downloads/single-file-example.html" download="hello.html">下载此 HTML 文件</a> 进行编辑, 然后在本地浏览器中打开。它会执行缓慢的运行时代码转换，所以不要在生产环境中使用。</p>
+<p>如果你喜欢使用自己的文本编辑器，你还可以 <a href="/react/downloads/single-file-example.html" download="hello.html">下载此 HTML 文件</a> 进行编辑, 然后在本地浏览器中打开。它会缓慢的执行代码转换，所以不要在生产环境中使用。</p>
 
 <p>如果你想在一个完整的项目中使用 React，一般有两种方式：创建 React 应用或添加 React 到现有应用。</p>
 
@@ -283,6 +283,14 @@ npm install --save react react-dom
 <p>如果想要加载指定版本的 <code>react</code> 和 <code>react-dom</code>，用版本号替换 15。</p>
 
 <p>如果你在使用 Bower，可以通过 <code>react</code> 包来使用 React。</p>
+
+<p>为什么crossorigin属性？
+如果你从CDN引用react,我们建议保持设置crossorigin属性:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">crossorigin</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p><img src="https://facebook.github.io/react/img/docs/cdn-cors-header.png" alt="Alt cdn-cors-header"></p>
+
+<p>这能在React 16和之后的版本中有一个更好的错误处理经验。</p>
 
 <script>
 /**
