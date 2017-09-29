@@ -1,0 +1,2 @@
+webpackJsonp([0xb095b2e127b6],{"./node_modules/json-loader/index.js!./.cache/json/blog-2016-02-19-new-versioning-scheme-html.json":function(e,n){e.exports={pathContext:{slug:"/blog/2016/02/19/new-versioning-scheme.html"}}}});
+//# sourceMappingURL=path---blog-2016-02-19-new-versioning-scheme-html-38c5252f28e9fd2424a8.js.map
