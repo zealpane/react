@@ -1,2 +1,0 @@
-webpackJsonp([0x6f21acab7e44],{"./node_modules/json-loader/index.js!./.cache/json/blog-2015-05-01-graphql-introduction-html.json":function(o,n){o.exports={pathContext:{slug:"/blog/2015/05/01/graphql-introduction.html"}}}});
-//# sourceMappingURL=path---blog-2015-05-01-graphql-introduction-html-10abde94d39d0957030b.js.map

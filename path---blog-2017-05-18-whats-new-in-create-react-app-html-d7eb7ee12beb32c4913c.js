@@ -1,2 +1,0 @@
-webpackJsonp([34230478123533],{"./node_modules/json-loader/index.js!./.cache/json/blog-2017-05-18-whats-new-in-create-react-app-html.json":function(e,n){e.exports={pathContext:{slug:"/blog/2017/05/18/whats-new-in-create-react-app.html"}}}});
-//# sourceMappingURL=path---blog-2017-05-18-whats-new-in-create-react-app-html-d7eb7ee12beb32c4913c.js.map

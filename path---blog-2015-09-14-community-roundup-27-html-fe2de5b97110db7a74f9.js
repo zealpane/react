@@ -1,2 +1,0 @@
-webpackJsonp([0x879c8ee4c2ff],{"./node_modules/json-loader/index.js!./.cache/json/blog-2015-09-14-community-roundup-27-html.json":function(o,n){o.exports={pathContext:{slug:"/blog/2015/09/14/community-roundup-27.html"}}}});
-//# sourceMappingURL=path---blog-2015-09-14-community-roundup-27-html-fe2de5b97110db7a74f9.js.map
