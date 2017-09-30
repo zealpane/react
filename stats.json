@@ -409,8 +409,8 @@
       "path---docs-portals-html-ee41f865a0894647f63b.js.map"
     ],
     "path---index": [
-      "path---index-c7e3f4a8a60e1d5869f4.js",
-      "path---index-c7e3f4a8a60e1d5869f4.js.map"
+      "path---index-cd8050382f69c6cc84e5.js",
+      "path---index-cd8050382f69c6cc84e5.js.map"
     ],
     "path---blog-2015-10-01-react-render-and-top-level-api-html": [
       "path---blog-2015-10-01-react-render-and-top-level-api-html-349f035f4de0681b940d.js",
@@ -485,8 +485,8 @@
       "path---blog-2014-02-20-react-v-0-9-html-46f8b607ab5778f2e5b0.js.map"
     ],
     "commons": [
-      "commons-46d82fe731f267895d93.js",
-      "commons-46d82fe731f267895d93.js.map"
+      "commons-53f37e3256cebdbd586d.js",
+      "commons-53f37e3256cebdbd586d.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-4899fbf9176b243d268a.js",
@@ -669,9 +669,9 @@
       "path---docs-web-components-html-a62405fe30f08a89651f.js.map"
     ],
     "app": [
-      "app-9f3ac75523571cbd1289.js",
+      "app-33882bd200e8a6e93d12.js",
       "build-js-styles.css",
-      "app-9f3ac75523571cbd1289.js.map",
+      "app-33882bd200e8a6e93d12.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
@@ -795,8 +795,8 @@
       "path---blog-2014-09-03-introducing-the-jsx-specification-html-d909e8bfd83188f06791.js.map"
     ],
     "component---src-templates-home-js": [
-      "component---src-templates-home-js-c0298bc4747d529b5484.js",
-      "component---src-templates-home-js-c0298bc4747d529b5484.js.map"
+      "component---src-templates-home-js-5b68b16a84abea05a99a.js",
+      "component---src-templates-home-js-5b68b16a84abea05a99a.js.map"
     ],
     "path---blog-2013-10-29-react-v-0-5-1-html": [
       "path---blog-2013-10-29-react-v-0-5-1-html-0374de63d66401fd53fe.js",
