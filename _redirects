@@ -1,10 +1,9 @@
 ## Created with gatsby-plugin-netlify
 
-/tips/introduction.html  /contributing/how-to-contribute.html  302
 /docs/conferences.html  /community/conferences.html  302
 /support.html  /community/support.html  302
 /docs/videos.html  /community/videos.html  302
-/blog/2014/10/14/introducting-react-elements.html  //blog/2014/10/14/introducing-react-elements.html  302
+/tips/introduction.html  /contributing/how-to-contribute.html  302
 /docs/index.html  /docs/accessibility.html  302
 /docs/animation-ja-JP.html  /docs/animation.html  302
 /docs/animation-ko-KR.html  /docs/animation.html  302
@@ -72,6 +71,7 @@
 /docs/thinking-in-react-zh-CN.html  /docs/thinking-in-react.html  302
 /docs/react-api.html#typechecking-with-proptypes  /docs/typechecking-with-proptypes.html  302
 /docs/webcomponents.html  /docs/web-components.html  302
+/blog/2014/10/14/introducting-react-elements.html  //blog/2014/10/14/introducing-react-elements.html  302
 /docs/tutorial.html  //tutorial/tutorial.html  302
 /docs/why-react.html  //tutorial/tutorial.html  302
 /docs/tutorial-ja-JP.html  //tutorial/tutorial.html  302
