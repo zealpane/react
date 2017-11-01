@@ -245,8 +245,8 @@
       "path---docs-videos-ko-kr-html-0d990044a703362e301d.js.map"
     ],
     "path---docs-handling-events-html": [
-      "path---docs-handling-events-html-f62647a5df4be164045d.js",
-      "path---docs-handling-events-html-f62647a5df4be164045d.js.map"
+      "path---docs-handling-events-html-7e6ea8436e3d126e6494.js",
+      "path---docs-handling-events-html-7e6ea8436e3d126e6494.js.map"
     ],
     "path---blog-2014-07-28-community-roundup-20-html": [
       "path---blog-2014-07-28-community-roundup-20-html-1baeb645e4cc982490c7.js",
@@ -705,9 +705,9 @@
       "path---docs-web-components-html-a589b9afda9457f4e40a.js.map"
     ],
     "app": [
-      "app-df26e85c693dba2fc330.js",
+      "app-eb773da96c111c7ea7f4.js",
       "build-js-styles.css",
-      "app-df26e85c693dba2fc330.js.map",
+      "app-eb773da96c111c7ea7f4.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
