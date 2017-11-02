@@ -117,8 +117,8 @@
       "path---blog-2016-09-28-our-first-50000-stars-html-9ace7776e9361dd508f5.js.map"
     ],
     "path---docs-forms-html": [
-      "path---docs-forms-html-05992c3097150ef61338.js",
-      "path---docs-forms-html-05992c3097150ef61338.js.map"
+      "path---docs-forms-html-3d4f24024c890d2c06ee.js",
+      "path---docs-forms-html-3d4f24024c890d2c06ee.js.map"
     ],
     "component---src-templates-blog-js": [
       "component---src-templates-blog-js-b3bc1e192585e3b95579.js",
@@ -245,8 +245,8 @@
       "path---docs-videos-ko-kr-html-0d990044a703362e301d.js.map"
     ],
     "path---docs-handling-events-html": [
-      "path---docs-handling-events-html-8354dc88027af03a1478.js",
-      "path---docs-handling-events-html-8354dc88027af03a1478.js.map"
+      "path---docs-handling-events-html-14b0a75b991131ec04fb.js",
+      "path---docs-handling-events-html-14b0a75b991131ec04fb.js.map"
     ],
     "path---blog-2014-07-28-community-roundup-20-html": [
       "path---blog-2014-07-28-community-roundup-20-html-1baeb645e4cc982490c7.js",
@@ -705,9 +705,9 @@
       "path---docs-web-components-html-a589b9afda9457f4e40a.js.map"
     ],
     "app": [
-      "app-68cdc754573edc3ee78f.js",
+      "app-878efdff6fb5c350fb93.js",
       "build-js-styles.css",
-      "app-68cdc754573edc3ee78f.js.map",
+      "app-878efdff6fb5c350fb93.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
