@@ -61,8 +61,8 @@
       "path---blog-2013-06-27-community-roundup-3-html-fc850c8199d7f229f297.js.map"
     ],
     "path---docs-higher-order-components-html": [
-      "path---docs-higher-order-components-html-d40232e481f13399f0d4.js",
-      "path---docs-higher-order-components-html-d40232e481f13399f0d4.js.map"
+      "path---docs-higher-order-components-html-d5a415640888d0efb82d.js",
+      "path---docs-higher-order-components-html-d5a415640888d0efb82d.js.map"
     ],
     "path---blog-2014-05-06-flux-html": [
       "path---blog-2014-05-06-flux-html-3944719737e96beb2493.js",
@@ -705,9 +705,9 @@
       "path---docs-web-components-html-a589b9afda9457f4e40a.js.map"
     ],
     "app": [
-      "app-d7805d16fccfb86b352d.js",
+      "app-7cce87237dfdcf7851f0.js",
       "build-js-styles.css",
-      "app-d7805d16fccfb86b352d.js.map",
+      "app-7cce87237dfdcf7851f0.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
