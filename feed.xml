@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React]]></title><description><![CDATA[A JavaScript library for building user interfaces]]></description><link>https://reactjs.org</link><generator>RSS for Node</generator><lastBuildDate>Thu, 07 Dec 2017 11:20:03 GMT</lastBuildDate><item><title><![CDATA[React v16.2.0: Improved Support for Fragments]]></title><description><![CDATA[<p>React 16.2 is now available! The biggest addition is improved support for returning multiple children from a component’s render method. We call this feature <em>fragments</em>:</p>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React]]></title><description><![CDATA[A JavaScript library for building user interfaces]]></description><link>https://reactjs.org</link><generator>RSS for Node</generator><lastBuildDate>Thu, 07 Dec 2017 16:15:44 GMT</lastBuildDate><item><title><![CDATA[Introducing the React RFC Process]]></title><description><![CDATA[<p>We’re adopting an RFC (“request for comments”) process for contributing ideas to React. </p>
+<p>Inspired by <a href="https://github.com/yarnpkg/rfcs">Yarn</a>, <a href="https://github.com/emberjs/rfcs">Ember</a>, and <a href="https://github.com/rust-lang/rfcs">Rust</a>, the goal is to allow React core team members and community members to collaborate on the design of new features. It’s also intended to provide a clear path for ideas to enter the project:</p>
+<ul>
+<li>Create an RFC document detailing your proposal.</li>
+<li>Submit a PR to the <a href="https://github.com/reactjs/rfcs">RFC repository</a>.</li>
+<li>Incorporate feedback into the proposal.</li>
+<li>After discussion, the core team may or may not accept the RFC.</li>
+<li>If the RFC is accepted, the PR is merged.</li>
+</ul>
+<p>RFCs are accepted when they are approved for implementation in React. A more thorough description of the process is available in the repository’s <a href="https://github.com/reactjs/rfcs/blob/master/README.md">README</a>. The exact details may be refined in the future.</p>
+<h2 id="who-can-submit-rfcs"><a href="#who-can-submit-rfcs" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Who Can Submit RFCs?</h2>
+<p>Anyone! No knowledge of React’s internals is required, nor are you expected to implement the proposal yourself.</p>
+<p>As with our other repositories, we do ask that you complete a <a href="https://github.com/reactjs/rfcs#contributor-license-agreement-cla">Contributor License Agreement</a> before we can accept your PR.</p>
+<h2 id="what-types-of-changes-should-be-submitted-as-rfcs"><a href="#what-types-of-changes-should-be-submitted-as-rfcs" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What Types of Changes Should Be Submitted As RFCs?</h2>
+<p>Generally, any idea that would benefit from additional review or design before being implemented is a good candidate for an RFC. As a rule of thumb, this means any proposal that adds, changes, or removes a React API.</p>
+<p>Not every change must go through the RFC process. Bug fixes or performance improvements that don’t touch the API can be submitted directly to the main library.</p>
+<p>We now have several repositories where you can submit contributions to React:</p>
+<ul>
+<li><strong>Issues, bugfixes, and code changes to the main library</strong>: <a href="https://github.com/facebook/react">facebook/react</a></li>
+<li><strong>Website and documentation</strong>: <a href="https://github.com/reactjs/reactjs.org">reactjs/reactjs.org</a></li>
+<li><strong>Ideas for changes that need additional review before being implemented</strong>: <a href="https://github.com/reactjs/rfcs">reactjs/rfcs</a></li>
+</ul>
+<h2 id="rfc-for-a-new-context-api"><a href="#rfc-for-a-new-context-api" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RFC for A New Context API</h2>
+<p>Coinciding with the launch of our RFC process, we’ve submitted a <a href="https://github.com/reactjs/rfcs/pull/2">proposal for a new version of context</a>. The proposal has already received many valuable comments from the community that we will incorporate into the design of the new API.</p>
+<p>The context PR is a good example of how a typical RFC should be structured. We’re excited to start receiving your proposals!</p>]]></description><link>https://reactjs.org/blog/2017/12/07/introducing-the-react-rfc-process.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/12/07/introducing-the-react-rfc-process.html</guid><pubDate>Wed, 06 Dec 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.2.0: Improved Support for Fragments]]></title><description><![CDATA[<p>React 16.2 is now available! The biggest addition is improved support for returning multiple children from a component’s render method. We call this feature <em>fragments</em>:</p>
 <p>Fragments look like empty JSX tags. They let you group a list of children without adding extra nodes to the DOM:</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1069,155 +1093,4 @@ Component<span class="token punctuation">.</span>propTypes <span class="token op
 <li>移除<code>peerDependencies</code>以让附件能够无限期继续工作。（<a href="https://github.com/acdlite">@acdlite</a> 和 <a href="https://github.com/bvaughn">@bvaughn</a> 在 <a href="https://github.com/facebook/react/commit/8a06cd7a786822fce229197cac8125a551e8abfa">8a06cd7</a> 和 <a href="https://github.com/facebook/react/commit/67a8db3650d724a51e70be130e9008806402678a">67a8db3</a>的提交）</li>
 <li>更新以移除<code>React.createClass</code> 和 <code>React.PropTypes</code> 的引用。（<a href="https://github.com/acdlite">@acdlite</a> 在 <a href="https://github.com/facebook/react/commit/12a96b94823d6b6de6b1ac13bd576864abd50175">12a96b9</a>的提交）</li>
 <li><code>react-addons-test-utils</code>被移除。使用<code>react-dom/test-utils</code> 和 <code>react-test-renderer/shallow</code> 代替。（<a href="https://github.com/bvaughn">@bvaughn</a>）</li>
-</ul>]]></description><link>https://reactjs.org/blog/2017/04/07/react-v15.5.0.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/04/07/react-v15.5.0.html</guid><pubDate>Thu, 06 Apr 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.4.0]]></title><description><![CDATA[<p>Today we are releasing React 15.4.0.</p>
-<p>We didn’t announce the <a href="https://github.com/facebook/react/blob/master/CHANGELOG.md#1510-may-20-2016">previous</a> <a href="https://github.com/facebook/react/blob/master/CHANGELOG.md#1520-july-1-2016">minor</a> <a href="https://github.com/facebook/react/blob/master/CHANGELOG.md#1530-july-29-2016">releases</a> on the blog because most of the changes were bug fixes. However, 15.4.0 is a special release, and we would like to highlight a few notable changes in it.</p>
-<h3 id="separating-react-and-react-dom"><a href="#separating-react-and-react-dom" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Separating React and React DOM</h3>
-<p><a href="/react/blog/2015/09/10/react-v0.14-rc1.html#two-packages-react-and-react-dom">More than a year ago</a>, we started separating React and React DOM into separate packages. We deprecated <code>React.render()</code> in favor of <code>ReactDOM.render()</code> in React 0.14, and removed DOM-specific APIs from <code>React</code> completely in React 15. However, the React DOM implementation still <a href="https://www.reddit.com/r/javascript/comments/3m6wyu/found_this_line_in_the_react_codebase_made_me/cvcyo4a/">secretly lived inside the React package</a>.</p>
-<p>In React 15.4.0, we are finally moving React DOM implementation to the React DOM package. The React package will now contain only the renderer-agnostic code such as <code>React.Component</code> and <code>React.createElement()</code>.</p>
-<p>This solves a few long-standing issues, such as <a href="https://github.com/facebook/react/issues/7386">errors</a> when you import React DOM in the same file as the <a href="https://facebook.github.io/jest/blog/2016/07/27/jest-14.html">snapshot testing</a> renderer.</p>
-<p><strong>If you only use the official and documented React APIs you won’t need to change anything in your application.</strong></p>
-<p>However, there is a possibility that you imported private APIs from <code>react/lib/*</code>, or that a package you rely on might use them. We would like to remind you that this was never supported, and that your apps should not rely on internal APIs. The React internals will keep changing as we work to make React better.</p>
-<p>Another thing to watch out for is that React DOM Server is now about the same size as React DOM since it contains its own copy of the React reconciler. We don’t recommend using React DOM Server on the client in most cases.</p>
-<h3 id="profiling-components-with-chrome-timeline"><a href="#profiling-components-with-chrome-timeline" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Profiling Components with Chrome Timeline</h3>
-<p>You can now visualize React components in the Chrome Timeline. This lets you see which components exactly get mounted, updated, and unmounted, how much time they take relative to each other.</p>
-<html><head></head><body><center></center></body></html>
-<p>To use it:</p>
-<ol>
-<li>
-<p>Load your app with <code>?react_perf</code> in the query string (for example, <code>http://localhost:3000/?react_perf</code>).</p>
-</li>
-<li>
-<p>Open the Chrome DevTools <strong>Timeline</strong> tab and press <strong>Record</strong>.</p>
-</li>
-<li>
-<p>Perform the actions you want to profile. Don’t record more than 20 seconds or Chrome might hang.</p>
-</li>
-<li>
-<p>Stop recording.</p>
-</li>
-<li>
-<p>React events will be grouped under the <strong>User Timing</strong> label.</p>
-</li>
-</ol>
-<p>Note that the numbers are relative so components will render faster in production. Still, this should help you realize when unrelated UI gets updated by mistake, and how deep and how often your UI updates occur.</p>
-<p>Currently Chrome, Edge, and IE are the only browsers supporting this feature, but we use the standard <a href="https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API">User Timing API</a> so we expect more browsers to add support for it.</p>
-<h3 id="mocking-refs-for-snapshot-testing"><a href="#mocking-refs-for-snapshot-testing" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mocking Refs for Snapshot Testing</h3>
-<p>If you’re using Jest <a href="https://facebook.github.io/jest/blog/2016/07/27/jest-14.html">snapshot testing</a>, you might have had <a href="https://github.com/facebook/react/issues/7371">issues</a> with components that rely on refs. With React 15.4.0, we introduce a way to provide mock refs to the test renderer. For example, consider this component using a ref in <code>componentDidMount</code>:</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">MyInput</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
-  <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="gatsby-highlight-code-line">    <span class="token keyword">this</span><span class="token punctuation">.</span>input<span class="token punctuation">.</span><span class="token function">focus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</span>  <span class="token punctuation">}</span>
-
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span>
-<span class="gatsby-highlight-code-line">        <span class="token attr-name">ref</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>node <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>input <span class="token operator">=</span> node<span class="token punctuation">}</span></span>
-</span>      <span class="token punctuation">/></span></span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
-      </div>
-<p>With snapshot renderer, <code>this.input</code> will be <code>null</code> because there is no DOM. React 15.4.0 lets us avoid such crashes by passing a custom <code>createNodeMock</code> function to the snapshot renderer in an <code>options</code> argument:</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> MyInput <span class="token keyword">from</span> <span class="token string">'./MyInput'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> renderer <span class="token keyword">from</span> <span class="token string">'react-test-renderer'</span><span class="token punctuation">;</span>
-
-<span class="gatsby-highlight-code-line"><span class="token keyword">function</span> <span class="token function">createNodeMock</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-</span><span class="gatsby-highlight-code-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>element<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">'input'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-</span><span class="gatsby-highlight-code-line">    <span class="token keyword">return</span> <span class="token punctuation">{</span>
-</span><span class="gatsby-highlight-code-line">      <span class="token function">focus</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-</span><span class="gatsby-highlight-code-line">    <span class="token punctuation">}</span><span class="token punctuation">;</span>
-</span><span class="gatsby-highlight-code-line">  <span class="token punctuation">}</span>
-</span><span class="gatsby-highlight-code-line">  <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-</span><span class="gatsby-highlight-code-line"><span class="token punctuation">}</span>
-</span>
-<span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'renders correctly'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>createNodeMock<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="gatsby-highlight-code-line">  <span class="token keyword">const</span> tree <span class="token operator">=</span> renderer<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyInput</span> <span class="token punctuation">/></span></span><span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span>
-</span>  <span class="token function">expect</span><span class="token punctuation">(</span>tree<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toMatchSnapshot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-      </div>
-<p>We would like to thank <a href="https://github.com/Aweary">Brandon Dail</a> for implementing this feature.</p>
-<p>You can learn more about snapshot testing in <a href="https://facebook.github.io/jest/blog/2016/07/27/jest-14.html">this Jest blog post</a>.</p>
-<hr>
-<h2 id="installation"><a href="#installation" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<p>We recommend using <a href="https://yarnpkg.com/">Yarn</a> or <a href="https://www.npmjs.com/">npm</a> for managing front-end dependencies. If you’re new to package managers, the <a href="https://yarnpkg.com/en/docs/getting-started">Yarn documentation</a> is a good place to get started.</p>
-<p>To install React with Yarn, run:</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code>yarn add react@15.4.0 react-dom@15.4.0
-</code></pre>
-      </div>
-<p>To install React with npm, run:</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token function">npm</span> <span class="token function">install</span> --save react@15.4.0 react-dom@15.4.0
-</code></pre>
-      </div>
-<p>We recommend using a bundler like <a href="https://webpack.js.org/">webpack</a> or <a href="http://browserify.org/">Browserify</a> so you can write modular code and bundle it together into small packages to optimize load time.</p>
-<p>Remember that by default, React runs extra checks and provides helpful warnings in development mode. When deploying your app, make sure to <a href="/react/docs/installation.html#development-and-production-versions">compile it in production mode</a>.</p>
-<p>In case you don’t use a bundler, we also provide pre-built bundles in the npm packages which you can <a href="/react/docs/installation.html#using-a-cdn">include as script tags</a> on your page:</p>
-<ul>
-<li><strong>React</strong><br>
-Dev build with warnings: <a href="https://unpkg.com/react@15.4.0/dist/react.js">react/dist/react.js</a><br>
-Minified build for production: <a href="https://unpkg.com/react@15.4.0/dist/react.min.js">react/dist/react.min.js</a>  </li>
-<li><strong>React with Add-Ons</strong><br>
-Dev build with warnings: <a href="https://unpkg.com/react@15.4.0/dist/react-with-addons.js">react/dist/react-with-addons.js</a><br>
-Minified build for production: <a href="https://unpkg.com/react@15.4.0/dist/react-with-addons.min.js">react/dist/react-with-addons.min.js</a>  </li>
-<li><strong>React DOM</strong> (include React in the page before React DOM)<br>
-Dev build with warnings: <a href="https://unpkg.com/react-dom@15.4.0/dist/react-dom.js">react-dom/dist/react-dom.js</a><br>
-Minified build for production: <a href="https://unpkg.com/react-dom@15.4.0/dist/react-dom.min.js">react-dom/dist/react-dom.min.js</a>  </li>
-<li><strong>React DOM Server</strong> (include React in the page before React DOM Server)<br>
-Dev build with warnings: <a href="https://unpkg.com/react-dom@15.4.0/dist/react-dom-server.js">react-dom/dist/react-dom-server.js</a><br>
-Minified build for production: <a href="https://unpkg.com/react-dom@15.4.0/dist/react-dom-server.min.js">react-dom/dist/react-dom-server.min.js</a></li>
-</ul>
-<p>We’ve also published version <code>15.4.0</code> of the <code>react</code>, <code>react-dom</code>, and addons packages on npm and the <code>react</code> package on bower.</p>
-<hr>
-<h2 id="changelog"><a href="#changelog" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
-<h3 id="react"><a href="#react" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React</h3>
-<ul>
-<li>React package and browser build no longer “secretly” includes React DOM.<br>
-<small>(<a href="https://github.com/sebmarkbage">@sebmarkbage</a> in <a href="https://github.com/facebook/react/pull/7164">#7164</a> and <a href="https://github.com/facebook/react/pull/7168">#7168</a>)</small></li>
-<li>Required PropTypes now fail with specific messages for null and undefined.<br>
-<small>(<a href="https://github.com/chenglou">@chenglou</a> in <a href="https://github.com/facebook/react/pull/7291">#7291</a>)</small></li>
-<li>Improved development performance by freezing children instead of copying.<br>
-<small>(<a href="https://github.com/keyanzhang">@keyanzhang</a> in <a href="https://github.com/facebook/react/pull/7455">#7455</a>)</small></li>
-</ul>
-<h3 id="react-dom"><a href="#react-dom" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React DOM</h3>
-<ul>
-<li>Fixed occasional test failures when React DOM is used together with shallow renderer.<br>
-<small>(<a href="https://github.com/goatslacker">@goatslacker</a> in <a href="https://github.com/facebook/react/pull/8097">#8097</a>)</small></li>
-<li>Added a warning for invalid <code>aria-</code> attributes.<br>
-<small>(<a href="https://github.com/jessebeach">@jessebeach</a> in <a href="https://github.com/facebook/react/pull/7744">#7744</a>)</small></li>
-<li>Added a warning for using <code>autofocus</code> rather than <code>autoFocus</code>.<br>
-<small>(<a href="https://github.com/hkal">@hkal</a> in <a href="https://github.com/facebook/react/pull/7694">#7694</a>)</small></li>
-<li>Removed an unnecessary warning about polyfilling <code>String.prototype.split</code>.<br>
-<small>(<a href="https://github.com/nhunzaker">@nhunzaker</a> in <a href="https://github.com/facebook/react/pull/7629">#7629</a>)</small></li>
-<li>Clarified the warning about not calling PropTypes manually.<br>
-<small>(<a href="https://github.com/jedwards1211">@jedwards1211</a> in <a href="https://github.com/facebook/react/pull/7777">#7777</a>)</small></li>
-<li>The unstable <code>batchedUpdates</code> API now passes the wrapped function’s return value through.<br>
-<small>(<a href="https://github.com/bgnorlov">@bgnorlov</a> in <a href="https://github.com/facebook/react/pull/7444">#7444</a>)</small></li>
-<li>Fixed a bug with updating text in IE 8.<br>
-<small>(<a href="https://github.com/mnpenner">@mnpenner</a> in <a href="https://github.com/facebook/react/pull/7832">#7832</a>)</small></li>
-</ul>
-<h3 id="react-perf"><a href="#react-perf" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React Perf</h3>
-<ul>
-<li>When ReactPerf is started, you can now view the relative time spent in components as a chart in Chrome Timeline.<br>
-<small>(<a href="https://github.com/gaearon">@gaearon</a> in <a href="https://github.com/facebook/react/pull/7549">#7549</a>)</small></li>
-</ul>
-<h3 id="react-test-utils"><a href="#react-test-utils" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React Test Utils</h3>
-<ul>
-<li>If you call <code>Simulate.click()</code> on a <code>&#x3C;input disabled onClick={foo} /></code> then <code>foo</code> will get called whereas it didn’t before.<br>
-<small>(<a href="https://github.com/nhunzaker">@nhunzaker</a> in <a href="https://github.com/facebook/react/pull/7642">#7642</a>)</small></li>
-</ul>
-<h3 id="react-test-renderer"><a href="#react-test-renderer" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React Test Renderer</h3>
-<ul>
-<li>Due to packaging changes, it no longer crashes when imported together with React DOM in the same file.<br>
-<small>(<a href="https://github.com/sebmarkbage">@sebmarkbage</a> in <a href="https://github.com/facebook/react/pull/7164">#7164</a> and <a href="https://github.com/facebook/react/pull/7168">#7168</a>)</small></li>
-<li><code>ReactTestRenderer.create()</code> now accepts <code>{createNodeMock: element => mock}</code> as an optional argument so you can mock refs with snapshot testing.<br>
-<small>(<a href="https://github.com/Aweary">@Aweary</a> in <a href="https://github.com/facebook/react/pull/7649">#7649</a> and <a href="https://github.com/facebook/react/pull/8261">#8261</a>)</small></li>
-</ul>]]></description><link>https://reactjs.org/blog/2016/11/16/react-v15.4.0.html</link><guid isPermaLink="false">https://reactjs.org/blog/2016/11/16/react-v15.4.0.html</guid><pubDate>Tue, 15 Nov 2016 16:00:00 GMT</pubDate></item></channel></rss>
+</ul>]]></description><link>https://reactjs.org/blog/2017/04/07/react-v15.5.0.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/04/07/react-v15.5.0.html</guid><pubDate>Thu, 06 Apr 2017 16:00:00 GMT</pubDate></item></channel></rss>
