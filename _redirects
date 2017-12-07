@@ -31,13 +31,13 @@
 /docs/getting-started-zh-CN.html  /docs/hello-world.html  302
 /contributing/how-to-contribute.html  /docs/how-to-contribute.html  302
 /tips/introduction.html  /docs/how-to-contribute.html  302
+/contributing/implementation-notes.html  /docs/implementation-notes.html  302
 /download.html  /docs/installation.html  302
 /downloads.html  /docs/installation.html  302
 /docs/tooling-integration.html  /docs/installation.html  302
 /docs/package-management.html  /docs/installation.html  302
 /docs/language-tooling.html  /docs/installation.html  302
 /docs/environments.html  /docs/installation.html  302
-/contributing/implementation-notes.html  /docs/implementation-notes.html  302
 /docs/jsx-spread.html  /docs/jsx-in-depth.html  302
 /docs/jsx-gotchas.html  /docs/jsx-in-depth.html  302
 /tips/if-else-in-JSX.html  /docs/jsx-in-depth.html  302
