@@ -533,8 +533,8 @@
       "path---blog-2014-02-20-react-v-0-9-html-4ce289951e91b99c0654.js.map"
     ],
     "commons": [
-      "commons-23e3142d1fe75ec7bf67.js",
-      "commons-23e3142d1fe75ec7bf67.js.map"
+      "commons-91f07b2f68224486150d.js",
+      "commons-91f07b2f68224486150d.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-f979c8df8600f8da264f.js",
@@ -704,6 +704,10 @@
       "path---docs-addons-html-09728fee7e2971e5fbaf.js",
       "path---docs-addons-html-09728fee7e2971e5fbaf.js.map"
     ],
+    "path---docs-fragments-html": [
+      "path---docs-fragments-html-fb619a0557b6b9b8f3fd.js",
+      "path---docs-fragments-html-fb619a0557b6b9b8f3fd.js.map"
+    ],
     "path---blog-2015-03-04-community-roundup-25-html": [
       "path---blog-2015-03-04-community-roundup-25-html-444a9c3d183cf2709e02.js",
       "path---blog-2015-03-04-community-roundup-25-html-444a9c3d183cf2709e02.js.map"
@@ -725,9 +729,9 @@
       "path---docs-web-components-html-94eeb77ea0b1294361d4.js.map"
     ],
     "app": [
-      "app-78d4f7365f97d4d7aee8.js",
+      "app-32f4f7ac7df773072ba9.js",
       "build-js-styles.css",
-      "app-78d4f7365f97d4d7aee8.js.map",
+      "app-32f4f7ac7df773072ba9.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
@@ -889,6 +893,10 @@
     "path---docs-test-utils-html": [
       "path---docs-test-utils-html-f3078456498cd8107b11.js",
       "path---docs-test-utils-html-f3078456498cd8107b11.js.map"
+    ],
+    "path---docs-static-type-checking-html": [
+      "path---docs-static-type-checking-html-31e52c0c997c2fa20d0f.js",
+      "path---docs-static-type-checking-html-31e52c0c997c2fa20d0f.js.map"
     ]
   }
 }
