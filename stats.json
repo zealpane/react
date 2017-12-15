@@ -353,8 +353,8 @@
       "path---blog-2014-01-06-community-roundup-14-html-7c09c3892f8e17afee6c.js.map"
     ],
     "path---docs-dom-elements-html": [
-      "path---docs-dom-elements-html-5b0543f4434e2ac44503.js",
-      "path---docs-dom-elements-html-5b0543f4434e2ac44503.js.map"
+      "path---docs-dom-elements-html-dc3f040b095f6fc2c65b.js",
+      "path---docs-dom-elements-html-dc3f040b095f6fc2c65b.js.map"
     ],
     "path---blog-2014-05-29-one-year-of-open-source-react-html": [
       "path---blog-2014-05-29-one-year-of-open-source-react-html-70bdd78bcb99144b4e17.js",
@@ -729,9 +729,9 @@
       "path---docs-web-components-html-94eeb77ea0b1294361d4.js.map"
     ],
     "app": [
-      "app-5e316cf9eb287a31db64.js",
+      "app-f4eaaa4c2397ffbcc60a.js",
       "build-js-styles.css",
-      "app-5e316cf9eb287a31db64.js.map",
+      "app-f4eaaa4c2397ffbcc60a.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
