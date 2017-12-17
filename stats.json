@@ -93,8 +93,8 @@
       "path---docs-integrating-with-other-libraries-html-61b57b6b2d8e7c2542f1.js.map"
     ],
     "path---docs-faq-structure-html": [
-      "path---docs-faq-structure-html-5c579595aadefd9a13de.js",
-      "path---docs-faq-structure-html-5c579595aadefd9a13de.js.map"
+      "path---docs-faq-structure-html-39f6d7b8918616196552.js",
+      "path---docs-faq-structure-html-39f6d7b8918616196552.js.map"
     ],
     "path---blog-2015-11-18-react-v-0-14-3-html": [
       "path---blog-2015-11-18-react-v-0-14-3-html-cea29482860f799f2754.js",
@@ -517,8 +517,8 @@
       "component---src-pages-404-js-84e889a1a76ca8121e31.js.map"
     ],
     "path---docs-faq-state-html": [
-      "path---docs-faq-state-html-98ec3f19f9223d0f621c.js",
-      "path---docs-faq-state-html-98ec3f19f9223d0f621c.js.map"
+      "path---docs-faq-state-html-75931ab3207ccec2a0a1.js",
+      "path---docs-faq-state-html-75931ab3207ccec2a0a1.js.map"
     ],
     "path---blog-2014-02-24-community-roundup-17-html": [
       "path---blog-2014-02-24-community-roundup-17-html-5a2359a4769ef4a0d7de.js",
@@ -533,8 +533,8 @@
       "path---blog-2014-02-20-react-v-0-9-html-4ce289951e91b99c0654.js.map"
     ],
     "commons": [
-      "commons-91f07b2f68224486150d.js",
-      "commons-91f07b2f68224486150d.js.map"
+      "commons-0f2e64a95d12fe99b712.js",
+      "commons-0f2e64a95d12fe99b712.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-f979c8df8600f8da264f.js",
@@ -729,9 +729,9 @@
       "path---docs-web-components-html-94eeb77ea0b1294361d4.js.map"
     ],
     "app": [
-      "app-f4eaaa4c2397ffbcc60a.js",
+      "app-357b97e47cca65652bf6.js",
       "build-js-styles.css",
-      "app-f4eaaa4c2397ffbcc60a.js.map",
+      "app-357b97e47cca65652bf6.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
@@ -749,6 +749,10 @@
     "path---blog-2016-03-16-react-v-15-rc-2-html": [
       "path---blog-2016-03-16-react-v-15-rc-2-html-26066cba14ab39c420bf.js",
       "path---blog-2016-03-16-react-v-15-rc-2-html-26066cba14ab39c420bf.js.map"
+    ],
+    "path---docs-glossary-html": [
+      "path---docs-glossary-html-b23423a91cdf5c3f5187.js",
+      "path---docs-glossary-html-b23423a91cdf5c3f5187.js.map"
     ],
     "component---src-templates-docs-js": [
       "component---src-templates-docs-js-c1e0325350dce755876a.js",
