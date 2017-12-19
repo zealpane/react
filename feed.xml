@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React]]></title><description><![CDATA[A JavaScript library for building user interfaces]]></description><link>https://reactjs.org</link><generator>RSS for Node</generator><lastBuildDate>Mon, 18 Dec 2017 06:55:06 GMT</lastBuildDate><item><title><![CDATA[Behind the Scenes: Improving the Repository Infrastructure]]></title><description><![CDATA[<p>As we worked on <a href="/blog/2017/09/26/react-v16.0.html">React 16</a>, we revamped the folder structure and much of the build tooling in the React repository. Among other things, we introduced projects such as <a href="https://rollupjs.org/">Rollup</a>, <a href="https://prettier.io/">Prettier</a>, and <a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a> into our workflow. People often ask us questions about how we use those tools. In this post, we would like to share some of the changes that we’ve made to our build and test infrastructure in 2017, and what motivated them.</p>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React]]></title><description><![CDATA[A JavaScript library for building user interfaces]]></description><link>https://doc.react-china.org</link><generator>RSS for Node</generator><lastBuildDate>Tue, 19 Dec 2017 05:10:42 GMT</lastBuildDate><item><title><![CDATA[Behind the Scenes: Improving the Repository Infrastructure]]></title><description><![CDATA[<p>As we worked on <a href="/blog/2017/09/26/react-v16.0.html">React 16</a>, we revamped the folder structure and much of the build tooling in the React repository. Among other things, we introduced projects such as <a href="https://rollupjs.org/">Rollup</a>, <a href="https://prettier.io/">Prettier</a>, and <a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a> into our workflow. People often ask us questions about how we use those tools. In this post, we would like to share some of the changes that we’ve made to our build and test infrastructure in 2017, and what motivated them.</p>
 <p>While these changes helped us make React better, they don’t affect most React users directly. However, we hope that blogging about them might help other library authors solve similar problems. Our contributors might also find these notes helpful!</p>
 <h2 id="formatting-code-with-prettier"><a href="#formatting-code-with-prettier" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Formatting Code with Prettier</h2>
 <p>React was one of the first large repositories to <a href="https://github.com/facebook/react/pull/9101">fully embrace</a> opinionated automatic code formatting with <a href="https://prettier.io/">Prettier</a>. Our current Prettier setup consists of:</p>
@@ -72,14 +72,14 @@
 <p>Typically, when you <a href="/docs/optimizing-performance.html#use-the-production-build">configure a bundler for production</a>, you need to tell it to substitute <code>process.env.NODE_ENV</code> with the <code>"production"</code> string literal. This process is sometimes called “envification”. Consider this code:</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">"production"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// development-only code</span>
+  <span class="token comment">// development-only code</span>
 <span class="token punctuation">}</span>
 </code></pre>
       </div>
 <p>After envification, this condition will always be <code>false</code>, and can be completely eliminated by most minifiers:</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"production"</span> <span class="token operator">!==</span> <span class="token string">"production"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// development-only code</span>
+  <span class="token comment">// development-only code</span>
 <span class="token punctuation">}</span>
 </code></pre>
       </div>
@@ -103,7 +103,7 @@
 
 <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">"production"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// bundle code</span>
+    <span class="token comment">// bundle code</span>
   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
@@ -115,19 +115,19 @@
 <p>We can’t completely prevent React users from misconfiguring their bundlers, but we introduced a few additional checks for this in <a href="https://github.com/facebook/react-devtools">React DevTools</a>.</p>
 <p>If the development bundle executes, <a href="https://github.com/facebook/react/blob/d906de7f602df810c38aa622c83023228b047db6/packages/react-dom/src/client/ReactDOM.js#L1333-L1335">React DOM reports this to React DevTools</a>:</p>
 <br>
-<html><head></head><body>
-  <a class="gatsby-resp-image-link" href="/static/e434ce2f7e64f63e597edf03f4465694-8af80.png" style="display: block" target="_blank" rel="noopener">
+
+  <a class="gatsby-resp-image-link" href="/static/devtools-dev-e434ce2f7e64f63e597edf03f4465694-1e9b4.png" style="display: block" target="_blank" rel="noopener">
   
-  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 300px; margin-left: auto; margin-right: auto;">
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 600px; margin-left: auto; margin-right: auto;">
     <span class="gatsby-resp-image-background-image" style="padding-bottom: 33.33333333333333%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA7ElEQVQY05WQDWuDMBCG8///VQvCSIzxI9n8qEtiurmaqFFHwc3pUsZKYYyxh+N477gX7g68/x+tdSs593bgz9GPHyzLcn6dzoMFNGEQwiShaZr6GDNGaXIBQkQIYYwFJKRJjHEgxUHXqTOv6+rytm0gzwtVVZzzsiyLIldKHY9PnD9KIZ0uioMQQlXKDWRZJqvKNZ3W2lzMb78wz/OtuJZX3EXA8zy3XoD9OKToLnSBYRSFaUTu4/CBYLLf77DvI4QR8t0tUqjtG9Ca1lo7jmNnBtMMTW2bF3uqe6dPz33X2S+Mafu+n6bp9nOfEzOCGSCp8RoAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
-      <img class="gatsby-resp-image-image" style="width: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;" alt="React DevTools on a website with development version of React" title="" src="/static/e434ce2f7e64f63e597edf03f4465694-8af80.png" srcset="/static/e434ce2f7e64f63e597edf03f4465694-ddd27.png 210w,
-/static/e434ce2f7e64f63e597edf03f4465694-4f509.png 420w,
-/static/e434ce2f7e64f63e597edf03f4465694-8af80.png 600w" sizes="(max-width: 300px) 100vw, 300px">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px white;" alt="React DevTools on a website with development version of React" title="" src="/static/devtools-dev-e434ce2f7e64f63e597edf03f4465694-1e9b4.png" srcset="/static/devtools-dev-e434ce2f7e64f63e597edf03f4465694-1cd08.png 210w,
+/static/devtools-dev-e434ce2f7e64f63e597edf03f4465694-9b07a.png 420w,
+/static/devtools-dev-e434ce2f7e64f63e597edf03f4465694-1e9b4.png 600w" sizes="(max-width: 600px) 100vw, 600px">
     </span>
   </span>
   
   </a>
-    </body></html>
+    
 <p>There is also one more bad scenario. Sometimes, <code>process.env.NODE_ENV</code> is set to <code>"production"</code> at runtime rather than at the build time. This is how it should work in Node.js, but it is bad for the client-side builds because the unnecessary development code is bundled even though it never executes. This is harder to detect but we found a heuristic that works well in most cases and doesn’t seem to produce false positives.</p>
 <p>We can write a function that contains a <a href="https://github.com/facebook/react/blob/d906de7f602df810c38aa622c83023228b047db6/packages/react-dom/npm/index.js#L11-L20">development-only branch</a> with an arbitrary string literal. Then, if <code>process.env.NODE_ENV</code> is set to <code>"production"</code>, we can <a href="https://github.com/facebook/react-devtools/blob/b370497ba6e873c63479408f11d784095523a630/backend/installGlobalHook.js#L143">call <code>toString()</code> on that function</a> and verify that the string literal in the development-only has been stripped out. If it is still there, the dead code elimination didn’t work, and we need to warn the developer. Since developers might not notice the React DevTools warnings on a production website, we also <a href="https://github.com/facebook/react-devtools/blob/b370497ba6e873c63479408f11d784095523a630/backend/installGlobalHook.js#L153-L160">throw an error inside <code>setTimeout</code></a> from React DevTools in the hope that it will be picked up by the error analytics.</p>
 <p>We recognize this approach is somewhat fragile. The <code>toString()</code> method is not reliable and may change its behavior in future browser versions. This is why we put that logic into React DevTools itself rather than into React. This allows us to remove it later if it becomes problematic. We also warn only if we <em>found</em> the special string literal rather than if we <em>didn’t</em> find it. This way, if the <code>toString()</code> output becomes opaque, or is overridden, the warning just won’t fire.</p>
@@ -143,7 +143,7 @@
 <h3 id="using-public-api-in-tests"><a href="#using-public-api-in-tests" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Public API in Tests</h3>
 <p>When we were <a href="https://code.facebook.com/posts/1716776591680069/react-16-a-look-inside-an-api-compatible-rewrite-of-our-frontend-ui-library/">rewriting the React reconciler</a>, we recognized the importance of writing tests against the public API instead of internal modules. If the test is written against the public API, it is clear what is being tested from the user’s perspective, and you can run it even if you rewrite the implementation from scratch.</p>
 <p>We reached out to the wonderful React community <a href="https://github.com/facebook/react/issues/11299">asking for help</a> converting the remaining tests to use the public API. Almost all of the tests are converted now! The process wasn’t easy. Sometimes a unit test just calls an internal method, and it’s hard to figure out what the observable behavior from user’s point of view was supposed to be tested. We found a few strategies that helped with this. The first thing we would try is to find the git history for when the test was added, and find clues in the issue and pull request description. Often they would contain reproducing cases that ended up being more valuable than the original unit tests! A good way to verify the guess is to try commenting out individual lines in the source code being tested. If the test fails, we know for sure that it stresses the given code path.</p>
-<p>We would like to give our deepest thanks to <a href="https://github.com/facebook/react/issues?q=is%253Apr+11299+is%253Aclosed">everyone who contributed to this effort</a>.</p>
+<p>We would like to give our deepest thanks to <a href="https://github.com/facebook/react/issues?q=is%3Apr+11299+is%3Aclosed">everyone who contributed to this effort</a>.</p>
 <h3 id="running-tests-on-compiled-bundles"><a href="#running-tests-on-compiled-bundles" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running Tests on Compiled Bundles</h3>
 <p>There is also one more benefit to writing tests against the public API: now we can <a href="https://github.com/facebook/react/pull/11633">run them against the compiled bundles</a>.</p>
 <p>This helps us ensure that tools like Babel, Rollup, and Google Closure Compiler don’t introduce any regressions. This also opens the door for future more aggressive optimizations, as we can be confident that React still behaves exactly as expected after them.</p>
@@ -163,7 +163,7 @@
 <p>Still, it was hard to review DOM-related changes, and occasionally we would make mistakes. In particular, it was hard to remember all the edge cases that the code had to handle, why they were added, and when it was safe to remove them. We considered adding some automatic tests that run in the browser but we didn’t want to slow down the development cycle and deal with a fragile CI. Additionally, automatic tests don’t always catch DOM issues. For example, an input value displayed by the browser may not match what it reports as a DOM property.</p>
 <p>We’ve chatted about this with <a href="https://github.com/aweary">Brandon Dail</a>, <a href="https://github.com/jquense">Jason Quense</a>, and <a href="https://github.com/nhunzaker">Nathan Hunzaker</a>. They were sending substantial patches to React DOM but were frustrated that we failed to review them timely. We decided to give them commit access, but asked them to <a href="https://github.com/facebook/react/pull/8589">create a set of manual tests</a> for DOM-related areas like input management. The initial set of manual fixtures <a href="https://github.com/facebook/react/commits/master/fixtures/dom">kept growing</a> over the year.</p>
 <p>These fixtures are implemented as a React app located in <a href="https://github.com/facebook/react/tree/d906de7f602df810c38aa622c83023228b047db6/fixtures/dom"><code>fixtures/dom</code></a>. Adding a fixture involves writing a React component with a description of the expected behavior, and links to the appropriate issues and browser quirks, like <a href="https://github.com/facebook/react/pull/11760">in this example</a>:</p>
-<img src="https://user-images.githubusercontent.com/590904/33555298-dd52fb4e-d8cd-11e7-80e9-8369538eb633.png" alt="DOM fixture example">
+<img src="https://user-images.githubusercontent.com/590904/33555298-dd52fb4e-d8cd-11e7-80e9-8369538eb633.png" style="max-width:100%" alt="DOM fixture example">
 <p>The fixture app lets you choose a version of React (local or one of the published versions) which is handy for comparing the behavior before and after the changes. When we change the behavior related to how we interact with the DOM, we can verify that it didn’t regress by going through the related fixtures in different browsers.</p>
 <p>In some cases, a change proved to be so complex that it necessitated a standalone purpose-built fixture to verify it. For example, the <a href="/blog/2017/09/08/dom-attributes-in-react-16.html">DOM attribute handling in React 16</a> was very hard to pull off with confidence at first. We kept discovering different edge cases, and almost gave up on doing it in time for the React 16 release. However, then we’ve built an <a href="https://github.com/facebook/react/tree/d906de7f602df810c38aa622c83023228b047db6/fixtures/attribute-behavior">“attribute table” fixture</a> that renders all supported attributes and their misspellings with previous and next version of React, and displays the differences. It took a few iterations (the key insight was to group attributes with similar behavior together) but it ultimately allowed us to fix all major issues in just a few days.</p>
 <br>
@@ -226,7 +226,7 @@ type Check<span class="token operator">&lt;</span>_X<span class="token punctuati
 <h3 id="tracking-bundle-size"><a href="#tracking-bundle-size" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tracking Bundle Size</h3>
 <p>As a final build step, we now <a href="https://github.com/facebook/react/blob/d906de7f602df810c38aa622c83023228b047db6/scripts/rollup/build.js#L264-L272">record build sizes for all bundles</a> and write them to a file that <a href="https://github.com/facebook/react/blob/d906de7f602df810c38aa622c83023228b047db6/scripts/rollup/results.json">looks like this</a>. When you run <code>yarn build</code>, it prints a table with the results:</p>
 <br>
-<img src="https://user-images.githubusercontent.com/1519870/28427900-80487dbc-6d6f-11e7-828d-1b594bd1ddb5.png" alt="Build results after running GCC">
+<img src="https://user-images.githubusercontent.com/1519870/28427900-80487dbc-6d6f-11e7-828d-1b594bd1ddb5.png" style="max-width:100%" alt="Build results after running GCC">
 <p><em>(It doesn’t always look as good as this. This was the commit that migrated React from Uglify to Google Closure Compiler.)</em></p>
 <p>Keeping the file sizes committed for everyone to see was helpful for tracking size changes and motivating people to find optimization opportunities.</p>
 <p>We haven’t been entirely happy with this strategy because the JSON file often causes merge conflicts on larger branches. Updating it is also not currently enforced so it gets out of date. In the future, we’re considering integrating a bot that would comment on pull requests with the size changes.</p>
@@ -246,7 +246,7 @@ type Check<span class="token operator">&lt;</span>_X<span class="token punctuati
 <p>(You may have noticed a <code>--dry</code> flag in the screenshots above. This flag allows us to run a release, end-to-end, without actually publishing to NPM. This is useful when working on the release script itself.)</p>
 <h2 id="in-conclusion"><a href="#in-conclusion" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>In Conclusion</h2>
 <p>Did this post inspire you to try some of these ideas in your own projects? We certainly hope so! If you have other ideas about how React build, test, or contribution workflow could be improved, please let us know on <a href="https://github.com/facebook/react/issues">our issue tracker</a>.</p>
-<p>You can find the related issues by the <a href="https://github.com/facebook/react/labels/Component%253A%20Build%20Infrastructure">build infrastructure label</a>. These are often great first contribution opportunities!</p>
+<p>You can find the related issues by the <a href="https://github.com/facebook/react/labels/Component%3A%20Build%20Infrastructure">build infrastructure label</a>. These are often great first contribution opportunities!</p>
 <h2 id="acknowledgements"><a href="#acknowledgements" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Acknowledgements</h2>
 <p>We would like to thank:</p>
 <ul>
@@ -255,7 +255,7 @@ type Check<span class="token operator">&lt;</span>_X<span class="token punctuati
 <li><a href="https://github.com/watadarkstar">Adrian Carolli</a>, <a href="https://github.com/rivenhk">Adams Au</a>, <a href="https://github.com/accordeiro">Alex Cordeiro</a>, <a href="https://github.com/HeroProtagonist">Jordan Tepper</a>, <a href="https://github.com/sjy">Johnson</a>, <a href="https://github.com/misoguy">Soo Jae Hwang</a>, <a href="https://github.com/xjlim">Joe Lim</a>, <a href="https://github.com/yu-tian113">Yu Tian</a>, and others for helping prototype and implement some of these and other improvements.</li>
 <li><a href="https://github.com/anushreesubramani">Anushree Subramani</a>, <a href="https://github.com/abiduzz420">Abid Uzair</a>, <a href="https://github.com/skiritsis">Sotiris Kiritsis</a>, <a href="https://github.com/timjacobi">Tim Jacobi</a>, <a href="https://github.com/aarboleda1">Anton Arboleda</a>, <a href="https://github.com/jeremenichelli">Jeremias Menichelli</a>, <a href="https://github.com/audyodi">Audy Tanudjaja</a>, <a href="https://github.com/gordyd">Gordon Dent</a>, <a href="https://github.com/enapupe">Iacami Gevaerd
 </a>, <a href="https://github.com/sadpandabear">Lucas Lentz</a>, <a href="https://github.com/silvestrijonathan">Jonathan Silvestri</a>, <a href="https://github.com/mjw56">Mike Wilcox</a>, <a href="https://github.com/smaniotto">Bernardo Smaniotto</a>, <a href="https://github.com/douglasgimli">Douglas Gimli</a>, <a href="https://github.com/ethan-arrowood">Ethan Arrowood</a>, and others for their help porting the React test suite to use the public API.</li>
-</ul>]]></description><link>https://reactjs.org/blog/2017/12/15/improving-the-repository-infrastructure.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/12/15/improving-the-repository-infrastructure.html</guid><pubDate>Thu, 14 Dec 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[Introducing the React RFC Process]]></title><description><![CDATA[<p>我们正在采用一个 RFC（“征求意见（request for comments）”）  的流程为 React 提供意见。</p>
+</ul>]]></description><link>https://doc.react-china.org/blog/2017/12/15/improving-the-repository-infrastructure.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/12/15/improving-the-repository-infrastructure.html</guid><pubDate>Fri, 15 Dec 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Introducing the React RFC Process]]></title><description><![CDATA[<p>我们正在采用一个 RFC（“征求意见（request for comments）”）  的流程为 React 提供意见。</p>
 <p>受到  <a href="https://github.com/yarnpkg/rfcs">Yarn</a>、 <a href="https://github.com/emberjs/rfcs">Ember</a> 和 <a href="https://github.com/rust-lang/rfcs">Rust</a> 社区的激励，目标是能够让 React 核心团队成员和社区成员共同来设计新特性。这也是打算为参加这一项目的成员提供一个明确的路径：</p>
 <ul>
 <li>创建一个 RFC 文档详细描述你的建议。</li>
@@ -279,7 +279,7 @@ type Check<span class="token operator">&lt;</span>_X<span class="token punctuati
 </ul>
 <h2 id="关于新-api-的-rfc"><a href="#%E5%85%B3%E4%BA%8E%E6%96%B0-api-%E7%9A%84-rfc" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>关于新 API 的 RFC</h2>
 <p>结合我们刚发布的 RFC 流程，我们已经提交了一份<a href="https://github.com/reactjs/rfcs/pull/2">关于新版本背景的提案</a>。该提案已受到了许多来自社区的有价值的反馈，我们已将这些意见采纳到新设计的 API 中。</p>
-<p>该提案是一个如何组织 RFC 的好例子。我们期待收到你的提案！</p>]]></description><link>https://reactjs.org/blog/2017/12/07/introducing-the-react-rfc-process.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/12/07/introducing-the-react-rfc-process.html</guid><pubDate>Wed, 06 Dec 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.2.0: Improved Support for Fragments]]></title><description><![CDATA[<p>React 16.2 现在已经发布了！最大的增加是提高了对子组件的渲染方法返回多个子元素的支持。我们称这一特性称为 <em>fragments</em>：</p>
+<p>该提案是一个如何组织 RFC 的好例子。我们期待收到你的提案！</p>]]></description><link>https://doc.react-china.org/blog/2017/12/07/introducing-the-react-rfc-process.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/12/07/introducing-the-react-rfc-process.html</guid><pubDate>Thu, 07 Dec 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.2.0: Improved Support for Fragments]]></title><description><![CDATA[<p>React 16.2 现在已经发布了！最大的增加是提高了对子组件的渲染方法返回多个子元素的支持。我们称这一特性称为 <em>fragments</em>：</p>
 <p>Fragment 看起来像是空的 JSX 标签。他们能够让 let you group a list of children 而无需添加额外的节点到 DOM 树上：</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -308,7 +308,7 @@ Even more text.
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
-    <span class="token comment" spellcheck="true">// Extraneous div element :(</span>
+    <span class="token comment">// Extraneous div element :(</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
       Some text<span class="token punctuation">.</span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>A heading<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
@@ -365,7 +365,7 @@ Even more text.
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ChildC</span> <span class="token punctuation">/></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Fragment</span><span class="token punctuation">></span></span>
 
-<span class="token comment" spellcheck="true">// This also works</span>
+<span class="token comment">// This also works</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>React.Fragment</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ChildA</span> <span class="token punctuation">/></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ChildB</span> <span class="token punctuation">/></span></span>
@@ -399,7 +399,7 @@ Even more text.
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dl</span><span class="token punctuation">></span></span>
       <span class="token punctuation">{</span>props<span class="token punctuation">.</span>items<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=></span> <span class="token punctuation">(</span>
-        <span class="token comment" spellcheck="true">// Without the `key`, React will fire a key warning</span>
+        <span class="token comment">// Without the `key`, React will fire a key warning</span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Fragment</span> <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>id<span class="token punctuation">}</span></span><span class="token punctuation">></span></span>
           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dt</span><span class="token punctuation">></span></span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>term<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dt</span><span class="token punctuation">></span></span>
           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dd</span><span class="token punctuation">></span></span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>description<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dd</span><span class="token punctuation">></span></span>
@@ -420,17 +420,17 @@ Even more text.
 <h3 id="babel"><a href="#babel" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Babel</h3>
 <p>对于 JSX fragment 已经在 <a href="https://github.com/babel/babel/releases/tag/v7.0.0-beta.31">Babel v7.0.0-beta.31</a> 及以上版本中得到支持！若你已经在使用 Babel 7，很容易将其升级到最新版本的 Babel 和 transform 插件（plugin transform）:</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn upgrade @babel/core @babel/plugin-transform-react-jsx
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> update @babel/core @babel/plugin-transform-react-jsx
 </code></pre>
       </div>
 <p>或若你正在使用 <a href="https://www.npmjs.com/package/@babel/preset-react">react preset</a>：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn upgrade @babel/core @babel/preset-react
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> update @babel/core @babel/preset-react
 </code></pre>
       </div>
@@ -444,18 +444,18 @@ yarn upgrade @babel/core @babel/preset-react
 <p>TypeScript 已经完全支持 fragment 语法！请升级到 <a href="https://github.com/Microsoft/TypeScript/releases/tag/v2.6.2">2.6.2 版本</a>。（注意这非常重要，即使你已经升级到了 2.6.1 版本，由于这一支持是作为补丁发布在 2.6.2 上的。）</p>
 <p>使用如下命令升级到最新版本的 TypeScript：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn upgrade typescript
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> update typescript
 </code></pre>
       </div>
 <h3 id="flow"><a href="#flow" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Flow</h3>
 <p><a href="https://flow.org/">Flow</a> 对 JSX fragment 的语法支持从 <a href="https://github.com/facebook/flow/releases/tag/v0.59.0">0.59 版本</a> 开始！简单运行</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn upgrade flow-bin
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> update flow-bin
 </code></pre>
       </div>
@@ -465,17 +465,17 @@ yarn upgrade flow-bin
 <h3 id="eslint"><a href="#eslint" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLint</h3>
 <p>当其和 <a href="https://github.com/babel/babel-eslint">babel-eslint</a> 一同使用时，<a href="https://eslint.org/">ESLint</a> 3.x 支持 JSX fragment 语法：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn add eslint@3.x babel-eslint@7
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> <span class="token function">install</span> eslint@3.x babel-eslint@7
 </code></pre>
       </div>
 <p>若你已经在使用，则将其升级：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code><span class="token comment" spellcheck="true"># for yarn users</span>
+      <pre class="gatsby-code-bash"><code><span class="token comment"># for yarn users</span>
 yarn upgrade eslint@3.x babel-eslint@7
-<span class="token comment" spellcheck="true"># for npm users</span>
+<span class="token comment"># for npm users</span>
 <span class="token function">npm</span> update eslint@3.x babel-eslint@7
 </code></pre>
       </div>
@@ -536,14 +536,14 @@ yarn upgrade eslint@3.x babel-eslint@7
 <h2 id="感谢"><a href="#%E6%84%9F%E8%B0%A2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>感谢</h2>
 <p>本次发布由我们的开源贡献者完成。非常感谢提交问题的人，对语法讨论的贡献和审阅 PR，在第三方库中增加 JSX fragment 支持等等！</p>
 <p>尤为感谢  <a href="https://www.typescriptlang.org/">TypeScript</a> 和 <a href="https://flow.org/">Flow</a> 团队，以及 <a href="https://babeljs.io/">Babel</a> 的维护者们，帮助为新语法在工具上提供了无缝支持。</p>
-<p>感谢 <a href="https://github.com/gajus/">Gajus Kuizinas</a> 和其他贡献者在开源社区提出了 <code>Fragment</code> 的原型。</p>]]></description><link>https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html</guid><pubDate>Mon, 27 Nov 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.0]]></title><description><![CDATA[<p>我们非常激动地宣布 React v16.0 发布了！这些变更包含了一些存在已久的特性，包括<a href="#new-render-return-types-fragments-and-strings"><strong>碎片（fragments）</strong></a>，<a href="#better-error-handling"><strong>错误边界</strong></a>，<a href="#portals"><strong>portals</strong></a>，支持<a href="#support-for-custom-dom-attributes"><strong>自定义 DOM 属性</strong></a>，提升[<strong>服务端渲染</strong>]以及<a href="#reduced-file-size"><strong>减小库的大小</strong></a>。</p>
+<p>感谢 <a href="https://github.com/gajus/">Gajus Kuizinas</a> 和其他贡献者在开源社区提出了 <code>Fragment</code> 的原型。</p>]]></description><link>https://doc.react-china.org/blog/2017/11/28/react-v16.2.0-fragment-support.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/11/28/react-v16.2.0-fragment-support.html</guid><pubDate>Tue, 28 Nov 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.0]]></title><description><![CDATA[<p>我们非常激动地宣布 React v16.0 发布了！这些变更包含了一些存在已久的特性，包括<a href="#new-render-return-types-fragments-and-strings"><strong>碎片（fragments）</strong></a>，<a href="#better-error-handling"><strong>错误边界</strong></a>，<a href="#portals"><strong>portals</strong></a>，支持<a href="#support-for-custom-dom-attributes"><strong>自定义 DOM 属性</strong></a>，提升[<strong>服务端渲染</strong>]以及<a href="#reduced-file-size"><strong>减小库的大小</strong></a>。</p>
 <h3 id="新的渲染返回类型：碎片和字符串"><a href="#%E6%96%B0%E7%9A%84%E6%B8%B2%E6%9F%93%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%EF%BC%9A%E7%A2%8E%E7%89%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>新的渲染返回类型：碎片和字符串</h3>
 <p>现在你可以从组件的渲染方法中返回一个包含元素的数组。类似于其他数组，但你需要为每一个元素添加key以避免警告：</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// No need to wrap list items in an extra element!</span>
+  <span class="token comment">// No need to wrap list items in an extra element!</span>
   <span class="token keyword">return</span> <span class="token punctuation">[</span>
-    <span class="token comment" spellcheck="true">// Don't forget the keys :)</span>
+    <span class="token comment">// Don't forget the keys :)</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>A<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>First item<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">,</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>B<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Second item<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">,</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>C<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Third item<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">,</span>
@@ -568,8 +568,8 @@ yarn upgrade eslint@3.x babel-eslint@7
 <p>Portals 提供了一种很好的将子节点渲染到父组件以外的 DOM 节点的方式。</p>
 <div class="gatsby-highlight">
       <pre class="gatsby-code-jsx"><code><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// React does *not* create a new div. It renders the children into `domNode`.</span>
-  <span class="token comment" spellcheck="true">// `domNode` is any valid DOM node, regardless of its location in the DOM.</span>
+  <span class="token comment">// React does *not* create a new div. It renders the children into `domNode`.</span>
+  <span class="token comment">// `domNode` is any valid DOM node, regardless of its location in the DOM.</span>
   <span class="token keyword">return</span> ReactDOM<span class="token punctuation">.</span><span class="token function">createPortal</span><span class="token punctuation">(</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">,</span>
     domNode<span class="token punctuation">,</span>
@@ -686,14 +686,14 @@ ReactDOM<span class="token punctuation">.</span><span class="token function">ren
       </div>
 <p>React 也依赖于 <code>requestAnimationFrame</code> （甚至包括测试环境）。一个在测试环境下的简单 shim 如下：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code>global<span class="token punctuation">.</span>requestAnimationFrame <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <pre class="gatsby-code-jsx"><code>global<span class="token punctuation">.</span><span class="token function-variable function">requestAnimationFrame</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">setTimeout</span><span class="token punctuation">(</span>callback<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
       </div>
 <h2 id="感谢"><a href="#%E6%84%9F%E8%B0%A2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>感谢</h2>
 <p>一如既往，此次发布没有开源社区贡献将无法完成。感谢每一位提bug，开PR，回答问题，编写文档以及其他有所贡献的人们！</p>
-<p>尤其感谢我们的核心贡献者，尤其是在过去几周的预发布周期的卓越贡献：<a href="https://twitter.com/aweary">Brandon Dail</a>，<a href="https://twitter.com/monasticpanic">Jason Quense</a>，<a href="https://twitter.com/natehunzaker">Nathan Hunzaker</a>，和 <a href="https://twitter.com/xander76">Sasha Aickin</a>。</p>]]></description><link>https://reactjs.org/blog/2017/09/26/react-v16.0.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/09/26/react-v16.0.html</guid><pubDate>Mon, 25 Sep 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.6.2]]></title><description><![CDATA[<p>今天我们发布了 React 15.6.2。在 15.6.1，我们为产生的一些意外结果的变更事件和输入进行了修复。这些问题已经被消除，同时我们也包含了一些用于提高 React 跨浏览器稳定性的补丁。</p>
+<p>尤其感谢我们的核心贡献者，尤其是在过去几周的预发布周期的卓越贡献：<a href="https://twitter.com/aweary">Brandon Dail</a>，<a href="https://twitter.com/monasticpanic">Jason Quense</a>，<a href="https://twitter.com/natehunzaker">Nathan Hunzaker</a>，和 <a href="https://twitter.com/xander76">Sasha Aickin</a>。</p>]]></description><link>https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</guid><pubDate>Tue, 26 Sep 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.6.2]]></title><description><![CDATA[<p>今天我们发布了 React 15.6.2。在 15.6.1，我们为产生的一些意外结果的变更事件和输入进行了修复。这些问题已经被消除，同时我们也包含了一些用于提高 React 跨浏览器稳定性的补丁。</p>
 <p>此外，15.6.2 增加了 <a href="https://developers.google.com/web/updates/2017/03/chrome-58-media-updates#controlslist"><code>controlList</code></a> 特性，以及 CSS columns 不再需要添加 <code>px</code> 后缀。</p>
 <h2 id="安装"><a href="#%E5%AE%89%E8%A3%85" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>安装</h2>
 <p>我们推荐使用 <a href="https://yarnpkg.com/">Yarn</a>或 <a href="https://www.npmjs.com/">npm</a>来管理前端依赖。若你是初次接触包管理器，<a href="https://yarnpkg.com/en/docs/getting-started">Yarn 文档</a>是一个不错的起点。</p>
@@ -742,21 +742,21 @@ ReactDOM<span class="token punctuation">.</span><span class="token function">ren
 <li>修复带有 <code>defaultChecked</code> 单选框（radio）不触发 <code>onChange</code> 的情况。（<a href="https://github.com/jquense">@jquense</a> 在 <a href="https://github.com/facebook/react/pull/10156">#10156</a> 提及）</li>
 <li>将 <code>controlList</code> 添加到 DOM 特性白名单（<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9940">#9940</a> 提及）</li>
 <li>修复了开发环境下当在构造函数里创建带有 ref 的元素并未抛出异常。（<a href="https://github.com/iansu">@iansu</a> 在 <a href="https://github.com/facebook/react/pull/10025">#10025</a> 提及）</li>
-</ul>]]></description><link>https://reactjs.org/blog/2017/09/25/react-v15.6.2.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/09/25/react-v15.6.2.html</guid><pubDate>Sun, 24 Sep 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[DOM Attributes in React 16]]></title><description><![CDATA[<p>过去，React 习惯于忽视未知的 DOM 属性。若你在 JSX 中写了一个 React 无法识别的元素， React 将会忽略他。例如这样：</p>
+</ul>]]></description><link>https://doc.react-china.org/blog/2017/09/25/react-v15.6.2.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/25/react-v15.6.2.html</guid><pubDate>Mon, 25 Sep 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[DOM Attributes in React 16]]></title><description><![CDATA[<p>过去，React 习惯于忽视未知的 DOM 属性。若你在 JSX 中写了一个 React 无法识别的元素， React 将会忽略他。例如这样：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token comment" spellcheck="true">// Your code:</span>
+      <pre class="gatsby-code-jsx"><code><span class="token comment">// Your code:</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>something<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
 </code></pre>
       </div>
 <p>在 React 15 中将会在 DOM 节点中渲染一个空的 div:</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token comment" spellcheck="true">// React 15 output:</span>
+      <pre class="gatsby-code-jsx"><code><span class="token comment">// React 15 output:</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token punctuation">/></span></span>
 </code></pre>
       </div>
 <p>在 React 16 中，我们做了一些改变。未知特性会在 DOM 节点的末尾：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token comment" spellcheck="true">// React 16 output:</span>
+      <pre class="gatsby-code-jsx"><code><span class="token comment">// React 16 output:</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>something<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
 </code></pre>
       </div>
@@ -768,12 +768,12 @@ ReactDOM<span class="token punctuation">.</span><span class="token function">ren
       </div>
 <p>这并未改变。然而，过去这一方式强制我们在库中维护一个合法的 DOM 元素白名单：</p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token comment" spellcheck="true">// ...</span>
+      <pre class="gatsby-code-jsx"><code><span class="token comment">// ...</span>
 summary<span class="token punctuation">:</span> <span class="token string">'summary'</span><span class="token punctuation">,</span>
 tabIndex<span class="token punctuation">:</span> <span class="token string">'tabindex'</span>
 target<span class="token punctuation">:</span> <span class="token string">'target'</span><span class="token punctuation">,</span>
 title<span class="token punctuation">:</span> <span class="token string">'title'</span><span class="token punctuation">,</span>
-<span class="token comment" spellcheck="true">// ...</span>
+<span class="token comment">// ...</span>
 </code></pre>
       </div>
 <p>这一方是有两个弊端：</p>
@@ -788,10 +788,10 @@ title<span class="token punctuation">:</span> <span class="token string">'title'
 <p>随着新版本发布，这些问题都将解决。在 React 16 中，你可以传递自定义属性给所有的 HTML 和 SVG 元素，同时 React 也不必在将所有的属性白名单包含进生产版本里。</p>
 <p><strong>注意，对于已知属性，你仍需要使用规范的 React 命名。</strong></p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token comment" spellcheck="true">// Yes, please</span>
+      <pre class="gatsby-code-jsx"><code><span class="token comment">// Yes, please</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabIndex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
 
-<span class="token comment" spellcheck="true">// Warning: Invalid DOM property `tabindex`. Did you mean `tabIndex`?</span>
+<span class="token comment">// Warning: Invalid DOM property `tabindex`. Did you mean `tabIndex`?</span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabindex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
 </code></pre>
       </div>
@@ -858,7 +858,7 @@ React 16：警告并忽略。</p>
 <li>
 <p><strong>带有函数的非事件特性：</strong></p>
 <div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">className</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+      <pre class="gatsby-code-jsx"><code><span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
 </code></pre>
       </div>
 <p>React 15：将函数转换为字符串并传递给组件。
@@ -887,13 +887,13 @@ React 16：警告并忽略。</p>
 <h2 id="试一试"><a href="#%E8%AF%95%E4%B8%80%E8%AF%95" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>试一试</h2>
 <p>你可以在 <a href="https://codepen.io/gaearon/pen/gxNVdP?editors=0010">CodePen</a> 尝试这些变更。其使用 React 16 RC 版本，你也可以 <a href="https://github.com/facebook/react/issues/10294">在你的项目中帮助我们测试 RC</a>。</p>
 <h2 id="感谢"><a href="#%E6%84%9F%E8%B0%A2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>感谢</h2>
-<p>这一努力大部分由一位 <a href="https://github.com/nhunzaker">Nathan Hunzaker</a> 所推动， <a href="https://github.com/facebook/react/pulls?q=is%253Apr+author%253Anhunzaker+is%253Aclosed">其是一位高产的 React 外部贡献者</a>。</p>
+<p>这一努力大部分由一位 <a href="https://github.com/nhunzaker">Nathan Hunzaker</a> 所推动， <a href="https://github.com/facebook/react/pulls?q=is%3Apr+author%3Anhunzaker+is%3Aclosed">其是一位高产的 React 外部贡献者</a>。</p>
 <p>你可以在过去一年的历程里在下列几个 PR 的这个问题上发现他的工作：
 <a href="https://github.com/facebook/react/pull/6459">#6459</a>、<a href="https://github.com/facebook/react/pull/7311">#7311</a>、<a href="https://github.com/facebook/react/pull/10229">#10229</a>、<a href="https://github.com/facebook/react/pull/10397">#10397</a>、<a href="https://github.com/facebook/react/pull/10385">#10385</a> 和 <a href="https://github.com/facebook/react/pull/10470">#10470</a>。</p>
 <p>在一个受欢迎的项目中核心的调整需要花费大量时间和研究。Nathan 展示了坚定的决心并承诺完成这一调整，我们非常感谢他的这一工作及其他的贡献。</p>
 <p>我们也想要感谢 <a href="https://github.com/aweary">Brandon Dail</a> 和 <a href="https://github.com/jquense">Jason Quense</a> 在这一年中无私地帮助维护 React 项目。</p>
 <h2 id="未来计划"><a href="#%E6%9C%AA%E6%9D%A5%E8%AE%A1%E5%88%92" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>未来计划</h2>
-<p>我们还未调整 <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements">自定义元素</a> 如何在 React 16 中工作，但关于设置属性而非特性已经有了一些<a href="https://github.com/facebook/react/issues/7249">讨论</a>，我们可能在 React 17 中在回过头来看看。若你愿意提供帮助，随时都可以来提。</p>]]></description><link>https://reactjs.org/blog/2017/09/08/dom-attributes-in-react-16.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/09/08/dom-attributes-in-react-16.html</guid><pubDate>Thu, 07 Sep 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[Error Handle in React 16]]></title><description><![CDATA[<p>随着React 16发布在即，我们打算介绍一些在组件内部React如何处理JavaScript错误。这些改变包含在React 16的beta版本中，并将成为React 16的一部分。</p>
+<p>我们还未调整 <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements">自定义元素</a> 如何在 React 16 中工作，但关于设置属性而非特性已经有了一些<a href="https://github.com/facebook/react/issues/7249">讨论</a>，我们可能在 React 17 中在回过头来看看。若你愿意提供帮助，随时都可以来提。</p>]]></description><link>https://doc.react-china.org/blog/2017/09/08/dom-attributes-in-react-16.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/08/dom-attributes-in-react-16.html</guid><pubDate>Fri, 08 Sep 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Error Handle in React 16]]></title><description><![CDATA[<p>随着React 16发布在即，我们打算介绍一些在组件内部React如何处理JavaScript错误。这些改变包含在React 16的beta版本中，并将成为React 16的一部分。</p>
 <p><strong>顺便一提，<a href="https://github.com/facebook/react/issues/10294">你可以尝试我们刚发布了React 16的第一个测试版本！</a></strong></p>
 <h2 id="react-15及之前的行为"><a href="#react-15%E5%8F%8A%E4%B9%8B%E5%89%8D%E7%9A%84%E8%A1%8C%E4%B8%BA" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React 15及之前的行为</h2>
 <p>过去，组件内部的JavaScript异常曾经常阻断了React内部状态并导致其在下一次渲染时<a href="https://github.com/facebook/react/issues/6895">触发了隐藏的错误</a>。这些错误常常是由应用程序代码中的早期错误所引起的，但React并未提供一种在组件里优雅处理的方式，也不会从异常中回复。</p>
@@ -909,15 +909,15 @@ React 16：警告并忽略。</p>
   <span class="token punctuation">}</span>
 
   <span class="token function">componentDidCatch</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> info<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// Display fallback UI</span>
+    <span class="token comment">// Display fallback UI</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> hasError<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// You can also log the error to an error reporting service</span>
+    <span class="token comment">// You can also log the error to an error reporting service</span>
     <span class="token function">logErrorToMyService</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> info<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 
   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>hasError<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token comment" spellcheck="true">// You can render any custom fallback UI</span>
+      <span class="token comment">// You can render any custom fallback UI</span>
       <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Something went wrong<span class="token punctuation">.</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">;</span>
@@ -946,9 +946,9 @@ React 16：警告并忽略。</p>
 <p>我们也鼓励你使用JS错误报告服务（或自己构建）以让你能够了解在产品中产生的未处理的异常，并修复它们。</p>
 <h2 id="组件栈追踪"><a href="#%E7%BB%84%E4%BB%B6%E6%A0%88%E8%BF%BD%E8%B8%AA" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>组件栈追踪</h2>
 <p>React 16会打印所有在开发环节中发生在渲染过程的错误到控制台，即使应用程序意外地将他们吞了。除了错误信息和JavaScript堆栈，其还提供了组件栈追踪。闲杂你可以在组件树中精确地查看错误产生的地方：</p>
-<html><head></head><body></body></html>
+
 <p>你也可以在组件堆栈中查看文件名和行数。这一功能在<a href="https://github.com/facebookincubator/create-react-app">Create React App 项目</a>中默认开启：</p>
-<p><html><head></head><body></body></html></p>
+<p></p>
 <p>若你不使用Create React App，你可以手动添加<a href="https://www.npmjs.com/package/babel-plugin-transform-react-jsx-source">该插件</a> 到你的Babel配置中。注意其仅能在开发环境中使用并<strong>禁止在生产环境中使用。</strong></p>
 <h2 id="为何不使用try--catch？"><a href="#%E4%B8%BA%E4%BD%95%E4%B8%8D%E4%BD%BF%E7%94%A8try--catch%EF%BC%9F" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>为何不使用<code>try</code> / <code>catch</code>？</h2>
 <p><code>try</code> / <code>catch</code> 很好但其仅适用于命令式的代码：</p>
@@ -956,7 +956,7 @@ React 16：警告并忽略。</p>
       <pre class="gatsby-code-jsx"><code><span class="token keyword">try</span> <span class="token punctuation">{</span>
   <span class="token function">showButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token comment">// ...</span>
 <span class="token punctuation">}</span>
 </code></pre>
       </div>
@@ -968,7 +968,7 @@ React 16：警告并忽略。</p>
 <p>错误边界保留了React声明式的特性，同时其行为和你期望的一直。例如，即使一个在<code>componentDidUpdate</code>周期由组件树内部底层的<code>setState</code>导致的错误，其仍能够正确地传递到最近的错误边界。</p>
 <h2 id="自react-15开始的命名变更"><a href="#%E8%87%AAreact-15%E5%BC%80%E5%A7%8B%E7%9A%84%E5%91%BD%E5%90%8D%E5%8F%98%E6%9B%B4" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>自React 15开始的命名变更</h2>
 <p>React 15 在不同的方法名下为错误边界包含了一个非常有限的支持：<code>unstable_handleError</code>。该方法不再生效，同时自React 16第一个测试版本发布开始，你需要在你的代码中将其修改为<code>componentDidCatch</code>。</p>
-<p>为应对这一改变，我们已提供了<a href="https://github.com/reactjs/react-codemod#error-boundaries">一份 codemod</a>以用于自动地迁移你的代码。</p>]]></description><link>https://reactjs.org/blog/2017/07/26/error-handle-in-react-16.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/07/26/error-handle-in-react-16.html</guid><pubDate>Tue, 25 Jul 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[Error Handling in React 16]]></title><description><![CDATA[<p>As React 16 release is getting closer, we would like to announce a few changes to how React handles JavaScript errors inside components. These changes are included in React 16 beta versions, and will be a part of React 16.</p>
+<p>为应对这一改变，我们已提供了<a href="https://github.com/reactjs/react-codemod#error-boundaries">一份 codemod</a>以用于自动地迁移你的代码。</p>]]></description><link>https://doc.react-china.org/blog/2017/07/26/error-handle-in-react-16.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/07/26/error-handle-in-react-16.html</guid><pubDate>Wed, 26 Jul 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Error Handling in React 16]]></title><description><![CDATA[<p>As React 16 release is getting closer, we would like to announce a few changes to how React handles JavaScript errors inside components. These changes are included in React 16 beta versions, and will be a part of React 16.</p>
 <p><strong>By the way, <a href="https://github.com/facebook/react/issues/10294">we just released the first beta of React 16 for you to try!</a></strong></p>
 <h2 id="behavior-in-react-15-and-earlier"><a href="#behavior-in-react-15-and-earlier" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Behavior in React 15 and Earlier</h2>
 <p>In the past, JavaScript errors inside components used to corrupt React’s internal state and cause it to <a href="https://github.com/facebook/react/issues/4026">emit</a> <a href="https://github.com/facebook/react/issues/6895">cryptic</a> <a href="https://github.com/facebook/react/issues/8579">errors</a> on next renders. These errors were always caused by an earlier error in the application code, but React did not provide a way to handle them gracefully in components, and could not recover from them.</p>
@@ -984,15 +984,15 @@ React 16：警告并忽略。</p>
   <span class="token punctuation">}</span>
 
 <span class="gatsby-highlight-code-line">  <span class="token function">componentDidCatch</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> info<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-</span><span class="gatsby-highlight-code-line">    <span class="token comment" spellcheck="true">// Display fallback UI</span>
+</span><span class="gatsby-highlight-code-line">    <span class="token comment">// Display fallback UI</span>
 </span><span class="gatsby-highlight-code-line">    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> hasError<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</span><span class="gatsby-highlight-code-line">    <span class="token comment" spellcheck="true">// You can also log the error to an error reporting service</span>
+</span><span class="gatsby-highlight-code-line">    <span class="token comment">// You can also log the error to an error reporting service</span>
 </span><span class="gatsby-highlight-code-line">    <span class="token function">logErrorToMyService</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> info<span class="token punctuation">)</span><span class="token punctuation">;</span>
 </span><span class="gatsby-highlight-code-line">  <span class="token punctuation">}</span>
 </span>
   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 <span class="gatsby-highlight-code-line">    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>hasError<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-</span><span class="gatsby-highlight-code-line">      <span class="token comment" spellcheck="true">// You can render any custom fallback UI</span>
+</span><span class="gatsby-highlight-code-line">      <span class="token comment">// You can render any custom fallback UI</span>
 </span><span class="gatsby-highlight-code-line">      <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Something went wrong<span class="token punctuation">.</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><span class="token punctuation">;</span>
 </span><span class="gatsby-highlight-code-line">    <span class="token punctuation">}</span>
 </span>    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">;</span>
@@ -1021,9 +1021,9 @@ React 16：警告并忽略。</p>
 <p>We also encourage you to use JS error reporting services (or build your own) so that you can learn about unhandled exceptions as they happen in production, and fix them.</p>
 <h2 id="component-stack-traces"><a href="#component-stack-traces" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component Stack Traces</h2>
 <p>React 16 prints all errors that occurred during rendering to the console in development, even if the application accidentally swallows them. In addition to the error message and the JavaScript stack, it also provides component stack traces. Now you can see where exactly in the component tree the failure has happened:</p>
-<html><head></head><body></body></html>
+
 <p>You can also see the filenames and line numbers in the component stack trace. This works by default in <a href="https://github.com/facebookincubator/create-react-app">Create React App</a> projects:</p>
-<html><head></head><body></body></html>
+
 <p>If you don’t use Create React App, you can add <a href="https://www.npmjs.com/package/babel-plugin-transform-react-jsx-source">this plugin</a> manually to your Babel configuration. Note that it’s intended only for development and <strong>must be disabled in production</strong>.</p>
 <h2 id="why-not-use-try--catch"><a href="#why-not-use-try--catch" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why Not Use <code>try</code> / <code>catch</code>?</h2>
 <p><code>try</code> / <code>catch</code> is great but it only works for imperative code:</p>
@@ -1031,7 +1031,7 @@ React 16：警告并忽略。</p>
       <pre class="gatsby-code-jsx"><code><span class="token keyword">try</span> <span class="token punctuation">{</span>
   <span class="token function">showButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token comment">// ...</span>
 <span class="token punctuation">}</span>
 </code></pre>
       </div>
@@ -1043,7 +1043,7 @@ React 16：警告并忽略。</p>
 <p>Error boundaries preserve the declarative nature of React, and behave as you would expect. For example, even if an error occurs in a <code>componentDidUpdate</code> hook caused by a <code>setState</code> somewhere deep in the tree, it will still correctly propagate to the closest error boundary.</p>
 <h2 id="naming-changes-from-react-15"><a href="#naming-changes-from-react-15" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Naming Changes from React 15</h2>
 <p>React 15 included a very limited support for error boundaries under a different method name: <code>unstable_handleError</code>. This method no longer works, and you will need to change it to <code>componentDidCatch</code> in your code starting from the first 16 beta release.</p>
-<p>For this change, we’ve provided <a href="https://github.com/reactjs/react-codemod#error-boundaries">a codemod</a> to automatically migrate your code.</p>]]></description><link>https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html</guid><pubDate>Tue, 25 Jul 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.6.0]]></title><description><![CDATA[<p>今天我们发布了 React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。</p>
+<p>For this change, we’ve provided <a href="https://github.com/reactjs/react-codemod#error-boundaries">a codemod</a> to automatically migrate your code.</p>]]></description><link>https://doc.react-china.org/blog/2017/07/26/error-handling-in-react-16.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/07/26/error-handling-in-react-16.html</guid><pubDate>Wed, 26 Jul 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.6.0]]></title><description><![CDATA[<p>今天我们发布了 React 15.6.0。由于我们在准备React 16.0，因此我们修复和清理了许多东西。此次发布将继续为后续铺路。</p>
 <h2 id="提升inputs"><a href="#%E6%8F%90%E5%8D%87inputs" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>提升Inputs</h2>
 <p>在React 15.6.0，输入框的<code>onChange</code>事件稍微可靠了点并能够处理更多边界条件，涵盖以下：</p>
 <ul>
@@ -1107,7 +1107,7 @@ React 16：警告并忽略。</p>
 <li>修复在某些输入场景下<code>onChange</code>未触发的问题。(<a href="https://github.com/jquense">@jquense</a> 在 <a href="https://github.com/facebook/react/pull/8575">#8575</a> 的提交)</li>
 <li>修复控制数字输入框错误允许期间的异常。(<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9584">#9584</a> 的提交)</li>
 <li>修复性能记录(performance entry)被清除的bug。(<a href="https://github.com/chrisui">@chrisui</a> 在 <a href="https://github.com/facebook/react/pull/9451">#9451</a> 的提交)</li>
-</ul>]]></description><link>https://reactjs.org/blog/2017/06/13/react-v15.6.0.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/06/13/react-v15.6.0.html</guid><pubDate>Mon, 12 Jun 2017 16:00:00 GMT</pubDate></item><item><title><![CDATA[What's New in Create React App]]></title><description><![CDATA[<p>Less than a year ago, we introduced <a href="/blog/2016/07/22/create-apps-with-no-configuration.html">Create React App</a> as an officially supported way to create apps with zero configuration. The project has since enjoyed tremendous growth, with over 950 commits by more than 250 contributors.</p>
+</ul>]]></description><link>https://doc.react-china.org/blog/2017/06/13/react-v15.6.0.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/06/13/react-v15.6.0.html</guid><pubDate>Tue, 13 Jun 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[What's New in Create React App]]></title><description><![CDATA[<p>Less than a year ago, we introduced <a href="/blog/2016/07/22/create-apps-with-no-configuration.html">Create React App</a> as an officially supported way to create apps with zero configuration. The project has since enjoyed tremendous growth, with over 950 commits by more than 250 contributors.</p>
 <p>Today, we are excited to announce that many features that have been in the pipeline for the last few months are finally released.</p>
 <p>As usual with Create React App, <strong>you can enjoy these improvements in your existing non-ejected apps by updating a single dependency</strong> and following our <a href="https://github.com/facebookincubator/create-react-app/releases/tag/v1.0.0">migration instructions</a>.</p>
 <p>Newly created apps will get these improvements automatically.</p>
@@ -1169,4 +1169,4 @@ React 16：警告并忽略。</p>
 <h3 id="acknowledgements"><a href="#acknowledgements" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Acknowledgements</h3>
 <p>This release is a result of months of work from many people in the React community. It is focused on improving both developer and end user experience, as we believe they are complementary and go hand in hand.</p>
 <p>We are grateful to <a href="https://github.com/facebookincubator/create-react-app/graphs/contributors">everyone who has offered their contributions</a>, whether in code, documentation, or by helping other people. We would like to specifically thank <a href="https://github.com/timer">Joe Haddad</a> for his invaluable help maintaining the project.</p>
-<p>We are excited to bring these improvements to everybody using Create React App, and we are looking forward to more of your feedback and contributions.</p>]]></description><link>https://reactjs.org/blog/2017/05/18/whats-new-in-create-react-app.html</link><guid isPermaLink="false">https://reactjs.org/blog/2017/05/18/whats-new-in-create-react-app.html</guid><pubDate>Wed, 17 May 2017 16:00:00 GMT</pubDate></item></channel></rss>
+<p>We are excited to bring these improvements to everybody using Create React App, and we are looking forward to more of your feedback and contributions.</p>]]></description><link>https://doc.react-china.org/blog/2017/05/18/whats-new-in-create-react-app.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/05/18/whats-new-in-create-react-app.html</guid><pubDate>Thu, 18 May 2017 00:00:00 GMT</pubDate></item></channel></rss>
