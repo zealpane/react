@@ -573,8 +573,8 @@
       "path---blog-2014-02-20-react-v-0-9-html-e24a5389eda6f786b762.js.map"
     ],
     "commons": [
-      "commons-cf934675c667fb06c859.js",
-      "commons-cf934675c667fb06c859.js.map"
+      "commons-e546383fd585e420161e.js",
+      "commons-e546383fd585e420161e.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-be952826662e3a0898da.js",
@@ -773,9 +773,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-cb837cfe9b3d254af158.js",
+      "app-b164ee41a4834f2e61e1.js",
       "build-js-styles.css",
-      "app-cb837cfe9b3d254af158.js.map",
+      "app-b164ee41a4834f2e61e1.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
