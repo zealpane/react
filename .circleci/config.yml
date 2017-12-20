@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest
+    branches:
+      ignore:
+        - master
+        - gh-pages
+    steps:
+      - run:
+          name: No Test
+          command: echo finished
