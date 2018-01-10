@@ -413,8 +413,8 @@
       "path---blog-2014-04-04-reactnet-html-1f9f5420dd09badd8033.js.map"
     ],
     "path---docs-optimizing-performance-html": [
-      "path---docs-optimizing-performance-html-6435b98b98ff66a37ef7.js",
-      "path---docs-optimizing-performance-html-6435b98b98ff66a37ef7.js.map"
+      "path---docs-optimizing-performance-html-abf6f32cabaabd573751.js",
+      "path---docs-optimizing-performance-html-abf6f32cabaabd573751.js.map"
     ],
     "path---docs-faq-internals-html": [
       "path---docs-faq-internals-html-73ddf7538bf48d7ae2bb.js",
@@ -773,9 +773,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-c2c3ebd2fcbdda31fa79.js",
+      "app-39021bfa6650801e0dc0.js",
       "build-js-styles.css",
-      "app-c2c3ebd2fcbdda31fa79.js.map",
+      "app-39021bfa6650801e0dc0.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
