@@ -369,8 +369,8 @@
       "path---blog-2013-06-12-community-roundup-html-bc6ecbe710df7e9b6551.js.map"
     ],
     "component---src-layouts-index-js": [
-      "component---src-layouts-index-js-505d958779f43eb3bd69.js",
-      "component---src-layouts-index-js-505d958779f43eb3bd69.js.map"
+      "component---src-layouts-index-js-cadbac7fc8f5456a779f.js",
+      "component---src-layouts-index-js-cadbac7fc8f5456a779f.js.map"
     ],
     "path---docs-introducing-jsx-html": [
       "path---docs-introducing-jsx-html-473c3f536464ae09046b.js",
@@ -773,9 +773,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-46b4110dbf06b923015e.js",
+      "app-206e42e9f98de532c991.js",
       "build-js-styles.css",
-      "app-46b4110dbf06b923015e.js.map",
+      "app-206e42e9f98de532c991.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
