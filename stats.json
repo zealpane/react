@@ -289,8 +289,8 @@
       "path---docs-conferences-ko-kr-html-d98dceca21e9f4fa1e66.js.map"
     ],
     "path---docs-reconciliation-html": [
-      "path---docs-reconciliation-html-69284d58ca6058932bcb.js",
-      "path---docs-reconciliation-html-69284d58ca6058932bcb.js.map"
+      "path---docs-reconciliation-html-f69b0adb6035fe1ce747.js",
+      "path---docs-reconciliation-html-f69b0adb6035fe1ce747.js.map"
     ],
     "path---docs-refs-and-the-dom-html": [
       "path---docs-refs-and-the-dom-html-b6692f8e9de557075116.js",
@@ -773,9 +773,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-206e42e9f98de532c991.js",
+      "app-86e5e85a6029c96f9e8f.js",
       "build-js-styles.css",
-      "app-206e42e9f98de532c991.js.map",
+      "app-86e5e85a6029c96f9e8f.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
