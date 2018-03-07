@@ -277,8 +277,8 @@
       "path---redirect-to-codepen-hello-world-6247e79de3fd3559d06f.js.map"
     ],
     "path---docs-handling-events-html": [
-      "path---docs-handling-events-html-a513f694b258cda9e2fb.js",
-      "path---docs-handling-events-html-a513f694b258cda9e2fb.js.map"
+      "path---docs-handling-events-html-c3f8ddac5ad5ba1f7e13.js",
+      "path---docs-handling-events-html-c3f8ddac5ad5ba1f7e13.js.map"
     ],
     "path---blog-2014-07-28-community-roundup-20-html": [
       "path---blog-2014-07-28-community-roundup-20-html-2eb86b0dc77c6b94fa59.js",
@@ -793,9 +793,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-161fa96b89bbf69e6b40.js",
+      "app-e2a2841c566117166789.js",
       "build-js-styles.css",
-      "app-161fa96b89bbf69e6b40.js.map",
+      "app-e2a2841c566117166789.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
