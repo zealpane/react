@@ -313,8 +313,8 @@
       "path---redirect-to-codepen-introducing-jsx-675236fa9cd0d0387334.js.map"
     ],
     "path---docs-react-component-html": [
-      "path---docs-react-component-html-953a23effbdb878f7f7f.js",
-      "path---docs-react-component-html-953a23effbdb878f7f7f.js.map"
+      "path---docs-react-component-html-55c67c9a2368ca0bf0eb.js",
+      "path---docs-react-component-html-55c67c9a2368ca0bf0eb.js.map"
     ],
     "path---docs-react-api-html": [
       "path---docs-react-api-html-c96c45774e9d1fc26d0c.js",
@@ -793,9 +793,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-fc4a4452e37d012da703.js",
+      "app-72795861e27b5ae8ca3d.js",
       "build-js-styles.css",
-      "app-fc4a4452e37d012da703.js.map",
+      "app-72795861e27b5ae8ca3d.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
