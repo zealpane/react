@@ -565,8 +565,8 @@
       "component---src-pages-acknowledgements-html-js-11827acaa308bf6d6760.js.map"
     ],
     "path---docs-error-decoder-html": [
-      "path---docs-error-decoder-html-ac6eb234235086fe499a.js",
-      "path---docs-error-decoder-html-ac6eb234235086fe499a.js.map"
+      "path---docs-error-decoder-html-6a269c19ae2a656290b9.js",
+      "path---docs-error-decoder-html-6a269c19ae2a656290b9.js.map"
     ],
     "component---src-pages-404-js": [
       "component---src-pages-404-js-9eb55395052628367e05.js",
@@ -709,8 +709,8 @@
       "path---blog-2013-10-3-community-roundup-9-html-e39fbeab1be734006ff4.js.map"
     ],
     "path---docs-rendering-elements-html": [
-      "path---docs-rendering-elements-html-81671dd7d61bae4663bb.js",
-      "path---docs-rendering-elements-html-81671dd7d61bae4663bb.js.map"
+      "path---docs-rendering-elements-html-d724820411743e91812d.js",
+      "path---docs-rendering-elements-html-d724820411743e91812d.js.map"
     ],
     "path---warnings-legacy-factories-html": [
       "path---warnings-legacy-factories-html-77f711e56bd10b18cb61.js",
@@ -793,9 +793,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-72795861e27b5ae8ca3d.js",
+      "app-a4c1d51d5e560a64caba.js",
       "build-js-styles.css",
-      "app-72795861e27b5ae8ca3d.js.map",
+      "app-a4c1d51d5e560a64caba.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
