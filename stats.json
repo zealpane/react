@@ -125,8 +125,8 @@
       "path---blog-2016-09-28-our-first-50000-stars-html-9e6371359f11b1059932.js.map"
     ],
     "path---docs-forms-html": [
-      "path---docs-forms-html-8486dc8dd7ae43ad6165.js",
-      "path---docs-forms-html-8486dc8dd7ae43ad6165.js.map"
+      "path---docs-forms-html-d1befcc616d7d7c4d2f7.js",
+      "path---docs-forms-html-d1befcc616d7d7c4d2f7.js.map"
     ],
     "component---src-pages-index-js": [
       "component---src-pages-index-js-ce8044a2d8f3a52ed29f.js",
@@ -793,9 +793,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-a4c1d51d5e560a64caba.js",
+      "app-55b95e3ffbfd08f4b647.js",
       "build-js-styles.css",
-      "app-a4c1d51d5e560a64caba.js.map",
+      "app-55b95e3ffbfd08f4b647.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
