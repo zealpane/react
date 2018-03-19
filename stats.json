@@ -141,8 +141,8 @@
       "component---src-templates-codepen-example-js-d945da304cdf87856a51.js.map"
     ],
     "path---docs-lifting-state-up-html": [
-      "path---docs-lifting-state-up-html-379fb192580df134b346.js",
-      "path---docs-lifting-state-up-html-379fb192580df134b346.js.map"
+      "path---docs-lifting-state-up-html-0bfba6901c86a48cb71f.js",
+      "path---docs-lifting-state-up-html-0bfba6901c86a48cb71f.js.map"
     ],
     "path---blog-2016-07-13-mixins-considered-harmful-html": [
       "path---blog-2016-07-13-mixins-considered-harmful-html-7a62094aa4e429501018.js",
@@ -793,9 +793,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-55b95e3ffbfd08f4b647.js",
+      "app-1ccd8cc623473a4b2a7b.js",
       "build-js-styles.css",
-      "app-55b95e3ffbfd08f4b647.js.map",
+      "app-1ccd8cc623473a4b2a7b.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
