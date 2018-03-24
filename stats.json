@@ -373,8 +373,8 @@
       "path---blog-2016-08-05-relay-state-of-the-state-html-aa53abf7d0a9f72cdee7.js.map"
     ],
     "path---docs-uncontrolled-components-html": [
-      "path---docs-uncontrolled-components-html-04b018abb6e61ba0d339.js",
-      "path---docs-uncontrolled-components-html-04b018abb6e61ba0d339.js.map"
+      "path---docs-uncontrolled-components-html-7f6e7747cc421c72879c.js",
+      "path---docs-uncontrolled-components-html-7f6e7747cc421c72879c.js.map"
     ],
     "path---blog-2013-06-12-community-roundup-html": [
       "path---blog-2013-06-12-community-roundup-html-fd265bc7a12d9f4c3fdf.js",
@@ -797,9 +797,9 @@
       "path---docs-web-components-html-2a53d929c54549bdb44e.js.map"
     ],
     "app": [
-      "app-3aeccb9c090f8d941538.js",
+      "app-d6c3ad5ce32f4bdab732.js",
       "build-js-styles.css",
-      "app-3aeccb9c090f8d941538.js.map",
+      "app-d6c3ad5ce32f4bdab732.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
