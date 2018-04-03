@@ -793,8 +793,8 @@
       "path---docs-hello-world-html-14314fe080bd367b2846.js.map"
     ],
     "path---docs-conditional-rendering-html": [
-      "path---docs-conditional-rendering-html-4bb5fa614e23c3e9cf56.js",
-      "path---docs-conditional-rendering-html-4bb5fa614e23c3e9cf56.js.map"
+      "path---docs-conditional-rendering-html-bb9cbb3b86a6ee0b37aa.js",
+      "path---docs-conditional-rendering-html-bb9cbb3b86a6ee0b37aa.js.map"
     ],
     "path---community-data-fetching-html": [
       "path---community-data-fetching-html-aeb435aa3c4b543db399.js",
@@ -1025,9 +1025,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-0744f1e9f8cd34cc2bc7.js",
+      "app-95d1b9cb5de33b239a7b.js",
       "build-js-styles.css",
-      "app-0744f1e9f8cd34cc2bc7.js.map",
+      "app-95d1b9cb5de33b239a7b.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
