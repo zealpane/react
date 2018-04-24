@@ -877,8 +877,8 @@
       "path---blog-2016-02-19-new-versioning-scheme-html-4e58ad9f3fd5477ba6a3.js.map"
     ],
     "path---docs-context-html": [
-      "path---docs-context-html-61c31bdb892a963d8a18.js",
-      "path---docs-context-html-61c31bdb892a963d8a18.js.map"
+      "path---docs-context-html-c8f7d32cdc4f6d646943.js",
+      "path---docs-context-html-c8f7d32cdc4f6d646943.js.map"
     ],
     "path---blog-2014-12-19-react-js-conf-diversity-scholarship-html": [
       "path---blog-2014-12-19-react-js-conf-diversity-scholarship-html-bd48284a481fce20ab76.js",
@@ -1037,9 +1037,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-55f08219f3d097d648c2.js",
+      "app-5ddfe629f63f93868f0e.js",
       "build-js-styles.css",
-      "app-55f08219f3d097d648c2.js.map",
+      "app-5ddfe629f63f93868f0e.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
@@ -1151,8 +1151,8 @@
       "path---blog-2018-03-27-update-on-async-rendering-html-f3220e78bd860bf76ef6.js.map"
     ],
     "path---docs-strict-mode-html": [
-      "path---docs-strict-mode-html-aa9d3a08d2a6c765129f.js",
-      "path---docs-strict-mode-html-aa9d3a08d2a6c765129f.js.map"
+      "path---docs-strict-mode-html-172ec9c7ab69c07b6474.js",
+      "path---docs-strict-mode-html-172ec9c7ab69c07b6474.js.map"
     ],
     "path---blog-2013-06-02-jsfiddle-integration-html": [
       "path---blog-2013-06-02-jsfiddle-integration-html-8ad3e40540911ac8553d.js",
