@@ -389,8 +389,8 @@
       "path---docs-conferences-ko-kr-html-d98dceca21e9f4fa1e66.js.map"
     ],
     "path---docs-reconciliation-html": [
-      "path---docs-reconciliation-html-efdd95000e94d2b601e5.js",
-      "path---docs-reconciliation-html-efdd95000e94d2b601e5.js.map"
+      "path---docs-reconciliation-html-62b234da42b62e8cd8f9.js",
+      "path---docs-reconciliation-html-62b234da42b62e8cd8f9.js.map"
     ],
     "path---docs-refs-and-the-dom-html": [
       "path---docs-refs-and-the-dom-html-8d4a4335a5268ded6783.js",
@@ -1037,9 +1037,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-f5a668ff0788890084bf.js",
+      "app-924918365e6a3f1c75ef.js",
       "build-js-styles.css",
-      "app-f5a668ff0788890084bf.js.map",
+      "app-924918365e6a3f1c75ef.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
