@@ -1,4 +1,422 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React 中文文档]]></title><description><![CDATA[用于构建用户界面的 JavaScript 库]]></description><link>https://doc.react-china.org</link><generator>RSS for Node</generator><lastBuildDate>Mon, 20 Aug 2018 05:28:56 GMT</lastBuildDate><item><title><![CDATA[React v16.4.0: Pointer Events]]></title><description><![CDATA[<p>The latest minor release adds support for an oft-requested feature: pointer events!</p>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[React 中文文档]]></title><description><![CDATA[用于构建用户界面的 JavaScript 库]]></description><link>https://doc.react-china.org</link><generator>RSS for Node</generator><lastBuildDate>Mon, 20 Aug 2018 05:36:02 GMT</lastBuildDate><item><title><![CDATA[React v16.4.2: Server-side vulnerability fix]]></title><description><![CDATA[<p>We discovered a minor vulnerability that might affect some apps using ReactDOMServer. We are releasing a patch version for every affected React minor release so that you can upgrade with no friction. Read on for more details.</p>
+<h2 id="short-description"><a href="#short-description" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Short Description</h2>
+<p>Today, we are releasing a fix for a vulnerability we discovered in the <code class="gatsby-code-text">react-dom/server</code> implementation. It was introduced with the version 16.0.0 and has existed in all subsequent releases until today.</p>
+<p>This vulnerability <strong>can only affect some server-rendered React apps.</strong> Purely client-rendered apps are <strong>not</strong> affected. Additionally, we expect that most server-rendered apps don’t contain the vulnerable pattern described below. Nevertheless, we recommend to follow the mitigation instructions at the earliest opportunity.</p>
+<p>While we were investigating this vulnerability, we found similar vulnerabilities in a few other popular front-end libraries. We have coordinated this release together with <a href="https://github.com/vuejs/vue/releases/tag/v2.5.17">Vue</a> and <a href="https://github.com/developit/preact-render-to-string/releases/tag/3.7.1">Preact</a> releases fixing the same issue. The tracking number for this vulnerability is <code class="gatsby-code-text">CVE-2018-6341</code>.</p>
+<h2 id="mitigation"><a href="#mitigation" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mitigation</h2>
+<p><strong>We have prepared a patch release with a fix for every affected minor version.</strong></p>
+<h3 id="160x"><a href="#160x" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>16.0.x</h3>
+<p>If you’re using <code class="gatsby-code-text">react-dom/server</code> with this version:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.0.0</code></li>
+</ul>
+<p>Update to this version instead:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.0.1</code> <strong>(contains the mitigation)</strong></li>
+</ul>
+<h3 id="161x"><a href="#161x" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>16.1.x</h3>
+<p>If you’re using <code class="gatsby-code-text">react-dom/server</code> with one of these versions:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.1.0</code></li>
+<li><code class="gatsby-code-text">react-dom@16.1.1</code></li>
+</ul>
+<p>Update to this version instead:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.1.2</code> <strong>(contains the mitigation)</strong></li>
+</ul>
+<h3 id="162x"><a href="#162x" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>16.2.x</h3>
+<p>If you’re using <code class="gatsby-code-text">react-dom/server</code> with this version:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.2.0</code></li>
+</ul>
+<p>Update to this version instead:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.2.1</code> <strong>(contains the mitigation)</strong></li>
+</ul>
+<h3 id="163x"><a href="#163x" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>16.3.x</h3>
+<p>If you’re using <code class="gatsby-code-text">react-dom/server</code> with one of these versions:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.3.0</code></li>
+<li><code class="gatsby-code-text">react-dom@16.3.1</code></li>
+<li><code class="gatsby-code-text">react-dom@16.3.2</code></li>
+</ul>
+<p>Update to this version instead:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.3.3</code> <strong>(contains the mitigation)</strong></li>
+</ul>
+<h3 id="164x"><a href="#164x" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>16.4.x</h3>
+<p>If you’re using <code class="gatsby-code-text">react-dom/server</code> with one of these versions:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.4.0</code></li>
+<li><code class="gatsby-code-text">react-dom@16.4.1</code></li>
+</ul>
+<p>Update to this version instead:</p>
+<ul>
+<li><code class="gatsby-code-text">react-dom@16.4.2</code> <strong>(contains the mitigation)</strong></li>
+</ul>
+<p>If you’re using a newer version of <code class="gatsby-code-text">react-dom</code>, no action is required.</p>
+<p>Note that only the <code class="gatsby-code-text">react-dom</code> package needs to be updated.</p>
+<h2 id="detailed-description"><a href="#detailed-description" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Detailed Description</h2>
+<p>Your app might be affected by this vulnerability only if both of these two conditions are true:</p>
+<ul>
+<li>Your app is <strong>being rendered to HTML using <a href="/docs/react-dom-server.html">ReactDOMServer API</a></strong>, and</li>
+<li>Your app <strong>includes a user-supplied attribute name in an HTML tag.</strong></li>
+</ul>
+<p>Specifically, the vulnerable pattern looks like this:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">let</span> props <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="gatsby-highlight-code-line">props<span class="token punctuation">[</span>userProvidedData<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+</span><span class="token keyword">let</span> element <span class="token operator">=</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token spread"><span class="token punctuation">{</span><span class="token punctuation">...</span><span class="token attr-value">props</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> html <span class="token operator">=</span> ReactDOMServer<span class="token punctuation">.</span><span class="token function">renderToString</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+      </div>
+<p>In order to exploit it, the attacker would need to craft a special attribute name that triggers an <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a> vulnerability. For example:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">let</span> userProvidedData <span class="token operator">=</span> <span class="token string">'>&lt;/div>&lt;script>alert("hi")&lt;/script>'</span><span class="token punctuation">;</span>
+</code></pre>
+      </div>
+<p>In the vulnerable versions of <code class="gatsby-code-text">react-dom/server</code>, the output would let the attacker inject arbitrary markup:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-html"><code class="gatsby-code-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"hi"</span><span class="token punctuation">)</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre>
+      </div>
+<p>In the versions after the vulnerability was <a href="https://github.com/facebook/react/pull/13302">fixed</a> (and before it was introduced), attributes with invalid names are skipped:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-html"><code class="gatsby-code-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+</code></pre>
+      </div>
+<p>You would also see a warning about an invalid attribute name.</p>
+<p>Note that <strong>we expect attribute names based on user input to be very rare in practice.</strong> It doesn’t serve any common practical use case, and has other potential security implications that React can’t guard against.</p>
+<h2 id="installation"><a href="#installation" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<p>React v16.4.2 is available on the npm registry.</p>
+<p>To install React 16 with Yarn, run:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-bash"><code class="gatsby-code-bash">yarn add react@^16.4.2 react-dom@^16.4.2
+</code></pre>
+      </div>
+<p>To install React 16 with npm, run:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-bash"><code class="gatsby-code-bash"><span class="token function">npm</span> <span class="token function">install</span> --save react@^16.4.2 react-dom@^16.4.2
+</code></pre>
+      </div>
+<p>We also provide UMD builds of React via a CDN:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-html"><code class="gatsby-code-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">crossorigin</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://unpkg.com/react@16/umd/react.production.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">crossorigin</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://unpkg.com/react-dom@16/umd/react-dom.production.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre>
+      </div>
+<p>Refer to the documentation for <a href="/docs/installation.html">detailed installation instructions</a>.</p>
+<h2 id="changelog"><a href="#changelog" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
+<h3 id="react-dom-server"><a href="#react-dom-server" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React DOM Server</h3>
+<ul>
+<li>
+<p>Fix a potential XSS vulnerability when the attacker controls an attribute name (<code class="gatsby-code-text">CVE-2018-6341</code>). This fix is available in the latest <code class="gatsby-code-text">react-dom@16.4.2</code>, as well as in previous affected minor versions: <code class="gatsby-code-text">react-dom@16.0.1</code>, <code class="gatsby-code-text">react-dom@16.1.2</code>, <code class="gatsby-code-text">react-dom@16.2.1</code>, and <code class="gatsby-code-text">react-dom@16.3.3</code>. (<a href="https://github.com/gaearon">@gaearon</a> in <a href="https://github.com/facebook/react/pull/13302">#13302</a>)</p>
+</li>
+<li>
+<p>Fix a crash in the server renderer when an attribute is called <code class="gatsby-code-text">hasOwnProperty</code>. This fix is only available in <code class="gatsby-code-text">react-dom@16.4.2</code>. (<a href="https://github.com/gaearon">@gaearon</a> in <a href="https://github.com/facebook/react/pull/13303">#13303</a>)</p>
+</li>
+</ul>]]></description><link>https://doc.react-china.org/blog/2018/08/01/react-v-16-4-2.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2018/08/01/react-v-16-4-2.html</guid><pubDate>Wed, 01 Aug 2018 00:00:00 GMT</pubDate></item><item><title><![CDATA[You Probably Don't Need Derived State]]></title><description><![CDATA[<p>React 16.4 included a <a href="/blog/2018/05/23/react-v-16-4.html#bugfix-for-getderivedstatefromprops">bugfix for getDerivedStateFromProps</a> which caused some existing bugs in React components to reproduce more consistently. If this release exposed a case where your application was using an anti-pattern and didn’t work properly after the fix, we’re sorry for the churn. In this post, we will explain some common anti-patterns with derived state and our preferred alternatives.</p>
+<p>For a long time, the lifecycle <code class="gatsby-code-text">componentWillReceiveProps</code> was the only way to update state in response to a change in props without an additional render. In version 16.3, <a href="/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes">we introduced a replacement lifecycle, <code class="gatsby-code-text">getDerivedStateFromProps</code></a> to solve the same use cases in a safer way. At the same time, we’ve realized that people have many misconceptions about how to use both methods, and we’ve found anti-patterns that result in subtle and confusing bugs. The <code class="gatsby-code-text">getDerivedStateFromProps</code> bugfix in 16.4 <a href="https://github.com/facebook/react/issues/12898">makes derived state more predictable</a>, so the results of misusing it are easier to notice.</p>
+<blockquote>
+<p>Note</p>
+<p>All of the anti-patterns described in this post apply to both the older <code class="gatsby-code-text">componentWillReceiveProps</code> and the newer <code class="gatsby-code-text">getDerivedStateFromProps</code>.</p>
+</blockquote>
+<p> This blog post will cover the following topics:</p>
+<ul>
+<li><a href="#when-to-use-derived-state">When to use derived state</a></li>
+<li>
+<p><a href="#common-bugs-when-using-derived-state">Common bugs when using derived state</a></p>
+<ul>
+<li><a href="#anti-pattern-unconditionally-copying-props-to-state">Anti-pattern: Unconditionally copying props to state</a></li>
+<li><a href="#anti-pattern-erasing-state-when-props-change">Anti-pattern: Erasing state when props change</a></li>
+</ul>
+</li>
+<li><a href="#preferred-solutions">Preferred solutions</a></li>
+<li><a href="#what-about-memoization">What about memoization?</a></li>
+</ul>
+<h2 id="when-to-use-derived-state"><a href="#when-to-use-derived-state" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>When to Use Derived State</h2>
+<p><code class="gatsby-code-text">getDerivedStateFromProps</code> exists for only one purpose. It enables a component to update its internal state as the result of <strong>changes in props</strong>. Our previous blog post provided some examples, like <a href="/blog/2018/03/27/update-on-async-rendering.html#updating-state-based-on-props">recording the current scroll direction based on a changing offset prop</a> or <a href="/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change">loading external data specified by a source prop</a>.</p>
+<p>We did not provide many examples, because as a general rule, <strong>derived state should be used sparingly</strong>. All problems with derived state that we have seen can be ultimately reduced to either (1) unconditionally updating state from props or (2) updating state whenever props and state don’t match. (We’ll go over both in more detail below.)</p>
+<ul>
+<li>If you’re using derived state to memoize some computation based only on the current props, you don’t need derived state. See <a href="#what-about-memoization">What about memoization?</a> below.</li>
+<li>If you’re updating derived state unconditionally or updating it whenever props and state don’t match, your component likely resets its state too frequently. Read on for more details.</li>
+</ul>
+<h2 id="common-bugs-when-using-derived-state"><a href="#common-bugs-when-using-derived-state" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common Bugs When Using Derived State</h2>
+<p>The terms <a href="/docs/forms.html#controlled-components">“controlled”</a> and <a href="/docs/uncontrolled-components.html">“uncontrolled”</a> usually refer to form inputs, but they can also describe where any component’s data lives. Data passed in as props can be thought of as <strong>controlled</strong> (because the parent component <em>controls</em> that data). Data that exists only in internal state can be thought of as <strong>uncontrolled</strong> (because the parent can’t directly change it).</p>
+<p>The most common mistake with derived state is mixing these two; when a derived state value is also updated by <code class="gatsby-code-text">setState</code> calls, there isn’t a single source of truth for the data. The <a href="/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change">external data loading example</a> mentioned above may sound similar, but it’s different in a few important ways. In the loading example, there is a clear source of truth for both the “source” prop and the “loading” state. When the source prop changes, the loading state should <strong>always</strong> be overridden. Conversely, the state is overridden only when the prop <strong>changes</strong> and is otherwise managed by the component.</p>
+<p>Problems arise when any of these constraints are changed. This typically comes in two forms. Let’s take a look at both.</p>
+<h3 id="anti-pattern-unconditionally-copying-props-to-state"><a href="#anti-pattern-unconditionally-copying-props-to-state" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Anti-pattern: Unconditionally copying props to state</h3>
+<p>A common misconception is that <code class="gatsby-code-text">getDerivedStateFromProps</code> and <code class="gatsby-code-text">componentWillReceiveProps</code> are only called when props “change”. These lifecycles are called any time a parent component rerenders, regardless of whether the props are “different” from before. Because of this, it has always been unsafe to <em>unconditionally</em> override state using either of these lifecycles. <strong>Doing so will cause state updates to be lost.</strong></p>
+<p>Let’s consider an example to demonstrate the problem. Here is a <code class="gatsby-code-text">EmailInput</code> component that “mirrors” an email prop in state:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">EmailInput</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span> email<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>email <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>email<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function-variable function">handleChange</span> <span class="token operator">=</span> event <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> email<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">componentWillReceiveProps</span><span class="token punctuation">(</span>nextProps<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// This will erase any local state updates!</span>
+    <span class="token comment">// Do not do this.</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> email<span class="token punctuation">:</span> nextProps<span class="token punctuation">.</span>email <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>At first, this component might look okay. State is initialized to the value specified by props and updated when we type into the <code class="gatsby-code-text">&lt;input&gt;</code>. But if our component’s parent rerenders, anything we’ve typed into the <code class="gatsby-code-text">&lt;input&gt;</code> will be lost! (<a href="https://codesandbox.io/s/m3w9zn1z8x">See this demo for an example.</a>) This holds true even if we were to compare <code class="gatsby-code-text">nextProps.email !== this.state.email</code> before resetting.</p>
+<p>In this simple example, adding <code class="gatsby-code-text">shouldComponentUpdate</code> to rerender only when the email prop has changed could fix this. However in practice, components usually accept multiple props; another prop changing would still cause a rerender and improper reset. Function and object props are also often created inline, making it hard to implement a <code class="gatsby-code-text">shouldComponentUpdate</code> that reliably returns true only when a material change has happened. <a href="https://codesandbox.io/s/jl0w6r9w59">Here is a demo that shows that happening.</a> As a result, <code class="gatsby-code-text">shouldComponentUpdate</code> is best used as a performance optimization, not to ensure correctness of derived state.</p>
+<p>Hopefully it’s clear by now why <strong>it is a bad idea to unconditionally copy props to state</strong>. Before reviewing possible solutions, let’s look at a related problematic pattern: what if we were to only update the state when the email prop changes?</p>
+<h3 id="anti-pattern-erasing-state-when-props-change"><a href="#anti-pattern-erasing-state-when-props-change" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Anti-pattern: Erasing state when props change</h3>
+<p>Continuing the example above, we could avoid accidentally erasing state by only updating it when <code class="gatsby-code-text">props.email</code> changes:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">EmailInput</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span>
+    email<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>email
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">componentWillReceiveProps</span><span class="token punctuation">(</span>nextProps<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Any time props.email changes, update state.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nextProps<span class="token punctuation">.</span>email <span class="token operator">!==</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>email<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        email<span class="token punctuation">:</span> nextProps<span class="token punctuation">.</span>email
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<blockquote>
+<p>Note</p>
+<p>Even though the example above shows <code class="gatsby-code-text">componentWillReceiveProps</code>, the same anti-pattern applies to <code class="gatsby-code-text">getDerivedStateFromProps</code>.</p>
+</blockquote>
+<p>We’ve just made a big improvement. Now our component will erase what we’ve typed only when the props actually change.</p>
+<p>There is still a subtle problem. Imagine a password manager app using the above input component. When navigating between details for two accounts with the same email, the input would fail to reset. This is because the prop value passed to the component would be the same for both accounts! This would be a surprise to the user, as an unsaved change to one account would appear to affect other accounts that happened to share the same email. (<a href="https://codesandbox.io/s/mz2lnkjkrx">See demo here.</a>)</p>
+<p>This design is fundamentally flawed, but it’s also an easy mistake to make. (<a href="https://twitter.com/brian_d_vaughn/status/959600888242307072">I’ve made it myself!</a>) Fortunately there are two alternatives that work better. The key to both is that <strong>for any piece of data, you need to pick a single component that owns it as the source of truth, and avoid duplicating it in other components.</strong> Let’s take a look at each of the alternatives.</p>
+<h2 id="preferred-solutions"><a href="#preferred-solutions" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Preferred Solutions</h2>
+<h3 id="recommendation-fully-controlled-component"><a href="#recommendation-fully-controlled-component" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recommendation: Fully controlled component</h3>
+<p>One way to avoid the problems mentioned above is to remove state from our component entirely. If the email address only exists as a prop, then we don’t have to worry about conflicts with state. We could even convert <code class="gatsby-code-text">EmailInput</code> to a lighter-weight functional component:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">function</span> <span class="token function">EmailInput</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>props<span class="token punctuation">.</span>onChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>props<span class="token punctuation">.</span>email<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>This approach simplifies the implementation of our component, but if we still want to store a draft value, the parent form component will now need to do that manually. (<a href="https://codesandbox.io/s/7154w1l551">Click here to see a demo of this pattern.</a>)</p>
+<h3 id="recommendation-fully-uncontrolled-component-with-a-key"><a href="#recommendation-fully-uncontrolled-component-with-a-key" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recommendation: Fully uncontrolled component with a <code class="gatsby-code-text">key</code></h3>
+<p>Another alternative would be for our component to fully own the “draft” email state. In that case, our component could still accept a prop for the <em>initial</em> value, but it would ignore subsequent changes to that prop:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">EmailInput</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span> email<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>defaultEmail <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function-variable function">handleChange</span> <span class="token operator">=</span> event <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> email<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>email<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>In order to reset the value when moving to a different item (as in our password manager scenario), we can use the special React attribute called <code class="gatsby-code-text">key</code>. When a <code class="gatsby-code-text">key</code> changes, React will <a href="/docs/reconciliation.html#keys"><em>create</em> a new component instance rather than <em>update</em> the current one</a>. Keys are usually used for dynamic lists but are also useful here. In our case, we could use the user ID to recreate the email input any time a new user is selected:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>EmailInput</span>
+  <span class="token attr-name">defaultEmail</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>user<span class="token punctuation">.</span>email<span class="token punctuation">}</span></span>
+  <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>user<span class="token punctuation">.</span>id<span class="token punctuation">}</span></span>
+<span class="token punctuation">/></span></span>
+</code></pre>
+      </div>
+<p>Each time the ID changes, the <code class="gatsby-code-text">EmailInput</code> will be recreated and its state will be reset to the latest <code class="gatsby-code-text">defaultEmail</code> value. (<a href="https://codesandbox.io/s/6v1znlxyxn">Click here to see a demo of this pattern.</a>) With this approach, you don’t have to add <code class="gatsby-code-text">key</code> to every input. It might make more sense to put a <code class="gatsby-code-text">key</code> on the whole form instead. Every time the key changes, all components within the form will be recreated with a freshly initialized state.</p>
+<p>In most cases, this is the best way to handle state that needs to be reset.</p>
+<blockquote>
+<p>Note</p>
+<p>While this may sound slow, the performance difference is usually insignificant. Using a key can even be faster if the components have heavy logic that runs on updates since diffing gets bypassed for that subtree.</p>
+</blockquote>
+<h4 id="alternative-1-reset-uncontrolled-component-with-an-id-prop"><a href="#alternative-1-reset-uncontrolled-component-with-an-id-prop" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Alternative 1: Reset uncontrolled component with an ID prop</h4>
+<p>If <code class="gatsby-code-text">key</code> doesn’t work for some reason (perhaps the component is very expensive to initialize), a workable but cumbersome solution would be to watch for changes to “userID” in <code class="gatsby-code-text">getDerivedStateFromProps</code>:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">EmailInput</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span>
+    email<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>defaultEmail<span class="token punctuation">,</span>
+    prevPropsUserID<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>userID
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">static</span> <span class="token function">getDerivedStateFromProps</span><span class="token punctuation">(</span>props<span class="token punctuation">,</span> state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Any time the current user changes,</span>
+    <span class="token comment">// Reset any parts of state that are tied to that user.</span>
+    <span class="token comment">// In this simple example, that's just the email.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>props<span class="token punctuation">.</span>userID <span class="token operator">!==</span> state<span class="token punctuation">.</span>prevPropsUserID<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        prevPropsUserID<span class="token punctuation">:</span> props<span class="token punctuation">.</span>userID<span class="token punctuation">,</span>
+        email<span class="token punctuation">:</span> props<span class="token punctuation">.</span>defaultEmail
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>This also provides the flexibility to only reset parts of our component’s internal state if we so choose. (<a href="https://codesandbox.io/s/rjyvp7l3rq">Click here to see a demo of this pattern.</a>)</p>
+<blockquote>
+<p>Note</p>
+<p>Even though the example above shows <code class="gatsby-code-text">getDerivedStateFromProps</code>, the same technique can be used with <code class="gatsby-code-text">componentWillReceiveProps</code>.</p>
+</blockquote>
+<h4 id="alternative-2-reset-uncontrolled-component-with-an-instance-method"><a href="#alternative-2-reset-uncontrolled-component-with-an-instance-method" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Alternative 2: Reset uncontrolled component with an instance method</h4>
+<p>More rarely, you may need to reset state even if there’s no appropriate ID to use as <code class="gatsby-code-text">key</code>. One solution is to reset the key to a random value or autoincrementing number each time you want to reset. One other viable alternative is to expose an instance method to imperatively reset the internal state:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">EmailInput</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span>
+    email<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>defaultEmail
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">resetEmailForNewUser</span><span class="token punctuation">(</span>newEmail<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> email<span class="token punctuation">:</span> newEmail <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>The parent form component could then <a href="/docs/glossary.html#refs">use a <code class="gatsby-code-text">ref</code> to call this method</a>. (<a href="https://codesandbox.io/s/l70krvpykl">Click here to see a demo of this pattern.</a>)</p>
+<p>Refs can be useful in certain cases like this one, but generally we recommend you use them sparingly. Even in the demo, this imperative method is nonideal because two renders will occur instead of one.</p>
+<hr>
+<h3 id="recap"><a href="#recap" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recap</h3>
+<p>To recap, when designing a component, it is important to decide whether its data will be controlled or uncontrolled.</p>
+<p>Instead of trying to <strong>“mirror” a prop value in state</strong>, make the component <strong>controlled</strong>, and consolidate the two diverging values in the state of some parent component. For example, rather than a child accepting a “committed” <code class="gatsby-code-text">props.value</code> and tracking a “draft” <code class="gatsby-code-text">state.value</code>, have the parent manage both <code class="gatsby-code-text">state.draftValue</code> and <code class="gatsby-code-text">state.committedValue</code> and control the child’s value directly. This makes the data flow more explicit and predictable.</p>
+<p>For <strong>uncontrolled</strong> components, if you’re trying to reset state when a particular prop (usually an ID) changes, you have a few options:</p>
+<ul>
+<li><strong>Recomendation: To reset <em>all internal state</em>, use the <code class="gatsby-code-text">key</code> attribute.</strong></li>
+<li>Alternative 1: To reset <em>only certain state fields</em>, watch for changes in a special property (e.g. <code class="gatsby-code-text">props.userID</code>).</li>
+<li>Alternative 2: You can also consider fall back to an imperative instance method using refs.</li>
+</ul>
+<h2 id="what-about-memoization"><a href="#what-about-memoization" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What about memoization?</h2>
+<p>We’ve also seen derived state used to ensure an expensive value used in <code class="gatsby-code-text">render</code> is recomputed only when the inputs change. This technique is known as <a href="https://en.wikipedia.org/wiki/Memoization">memoization</a>.</p>
+<p>Using derived state for memoization isn’t necessarily bad, but it’s usually not the best solution. There is inherent complexity in managing derived state, and this complexity increases with each additional property. For example, if we add a second derived field to our component state then our implementation would need to separately track changes to both.</p>
+<p>Let’s look at an example of one component that takes one prop—a list of items—and renders the items that match a search query entered by the user. We could use derived state to store the filtered list:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span>
+    filterText<span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// *******************************************************</span>
+  <span class="token comment">// NOTE: this example is NOT the recommended approach.</span>
+  <span class="token comment">// See the examples below for our recommendations instead.</span>
+  <span class="token comment">// *******************************************************</span>
+
+  <span class="token keyword">static</span> <span class="token function">getDerivedStateFromProps</span><span class="token punctuation">(</span>props<span class="token punctuation">,</span> state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Re-run the filter whenever the list array or filter text change.</span>
+    <span class="token comment">// Note we need to store prevPropsList and prevFilterText to detect changes.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>
+      props<span class="token punctuation">.</span>list <span class="token operator">!==</span> state<span class="token punctuation">.</span>prevPropsList <span class="token operator">||</span>
+      state<span class="token punctuation">.</span>prevFilterText <span class="token operator">!==</span> state<span class="token punctuation">.</span>filterText
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        prevPropsList<span class="token punctuation">:</span> props<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+        prevFilterText<span class="token punctuation">:</span> state<span class="token punctuation">.</span>filterText<span class="token punctuation">,</span>
+        filteredList<span class="token punctuation">:</span> props<span class="token punctuation">.</span>list<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>item <span class="token operator">=></span> item<span class="token punctuation">.</span>text<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function-variable function">handleChange</span> <span class="token operator">=</span> event <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filterText<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Fragment</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filteredList<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>id<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>text<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Fragment</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>This implementation avoids recalculating <code class="gatsby-code-text">filteredList</code> more often than necessary. But it is more complicated than it needs to be, because it has to separately track and detect changes in both props and state in order to properly update the filtered list. In this example, we could simplify things by using <code class="gatsby-code-text">PureComponent</code> and moving the filter operation into the render method: </p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// PureComponents only rerender if at least one state or prop value changes.</span>
+<span class="token comment">// Change is determined by doing a shallow comparison of state and prop keys.</span>
+<span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token keyword">extends</span> <span class="token class-name">PureComponent</span> <span class="token punctuation">{</span>
+  <span class="token comment">// State only needs to hold the current filter text value:</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span>
+    filterText<span class="token punctuation">:</span> <span class="token string">""</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function-variable function">handleChange</span> <span class="token operator">=</span> event <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filterText<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// The render method on this PureComponent is called only if</span>
+    <span class="token comment">// props.list or state.filterText has changed.</span>
+    <span class="token keyword">const</span> filteredList <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>list<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>
+      item <span class="token operator">=></span> item<span class="token punctuation">.</span>text<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Fragment</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span><span class="token punctuation">{</span>filteredList<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>id<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>text<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Fragment</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>The above approach is much cleaner and simpler than the derived state version. Occasionally, this won’t be good enough—filtering may be slow for large lists, and <code class="gatsby-code-text">PureComponent</code> won’t prevent rerenders if another prop were to change. To address both of these concerns, we could add a memoization helper to avoid unnecessarily re-filtering our list:</p>
+<div class="gatsby-highlight">
+      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token keyword">import</span> memoize <span class="token keyword">from</span> <span class="token string">"memoize-one"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  <span class="token comment">// State only needs to hold the current filter text value:</span>
+  state <span class="token operator">=</span> <span class="token punctuation">{</span> filterText<span class="token punctuation">:</span> <span class="token string">""</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Re-run the filter whenever the list array or filter text changes:</span>
+  filter <span class="token operator">=</span> <span class="token function">memoize</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span>list<span class="token punctuation">,</span> filterText<span class="token punctuation">)</span> <span class="token operator">=></span> list<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>item <span class="token operator">=></span> item<span class="token punctuation">.</span>text<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>filterText<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function-variable function">handleChange</span> <span class="token operator">=</span> event <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filterText<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Calculate the latest filtered list. If these arguments haven't changed</span>
+    <span class="token comment">// since the last render, `memoize-one` will reuse the last return value.</span>
+    <span class="token keyword">const</span> filteredList <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>list<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Fragment</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span></span> <span class="token attr-name">value</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>filterText<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span><span class="token punctuation">{</span>filteredList<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>id<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>text<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Fragment</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </div>
+<p>This is much simpler and performs just as well as the derived state version!</p>
+<p>When using memoization, remember a couple of constraints:</p>
+<ol>
+<li>In most cases, you’ll want to <strong>attach the memoized function to a component instance</strong>. This prevents multiple instances of a component from resetting each other’s memoized keys.</li>
+<li>Typically you’ll want to use a memoization helper with a <strong>limited cache size</strong> in order to prevent memory leaks over time. (In the example above, we used <code class="gatsby-code-text">memoize-one</code> because it only caches the most recent arguments and result.)</li>
+<li>None of the implementations shown in this section will work if <code class="gatsby-code-text">props.list</code> is recreated each time the parent component renders. But in most cases, this setup is appropriate.</li>
+</ol>
+<h2 id="in-closing"><a href="#in-closing" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>In closing</h2>
+<p>In real world applications, components often contain a mix of controlled and uncontrolled behaviors. This is okay! If each value has a clear source of truth, you can avoid the anti-patterns mentioned above.</p>
+<p>It is also worth re-iterating that <code class="gatsby-code-text">getDerivedStateFromProps</code> (and derived state in general) is an advanced feature and should be used sparingly because of this complexity. If your use case falls outside of these patterns, please share it with us on <a href="https://github.com/reactjs/reactjs.org/issues/new">GitHub</a> or <a href="https://twitter.com/reactjs">Twitter</a>!</p>]]></description><link>https://doc.react-china.org/blog/2018/06/07/you-probably-dont-need-derived-state.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2018/06/07/you-probably-dont-need-derived-state.html</guid><pubDate>Thu, 07 Jun 2018 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v16.4.0: Pointer Events]]></title><description><![CDATA[<p>The latest minor release adds support for an oft-requested feature: pointer events!</p>
 <p>It also includes a bugfix for <code class="gatsby-code-text">getDerivedStateFromProps</code>. Check out the full <a href="#changelog">changelog</a> below.</p>
 <h2 id="pointer-events"><a href="#pointer-events" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pointer Events</h2>
 <p>The following event types are now available in React DOM:</p>
@@ -1704,204 +2122,4 @@ ReactDOM<span class="token punctuation">.</span><span class="token function">ren
       </div>
 <h2 id="感谢"><a href="#%E6%84%9F%E8%B0%A2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>感谢</h2>
 <p>一如既往，此次发布没有开源社区贡献将无法完成。感谢每一位提bug，开PR，回答问题，编写文档以及其他有所贡献的人们！</p>
-<p>尤其感谢我们的核心贡献者，尤其是在过去几周的预发布周期的卓越贡献：<a href="https://twitter.com/aweary">Brandon Dail</a>，<a href="https://twitter.com/monasticpanic">Jason Quense</a>，<a href="https://twitter.com/natehunzaker">Nathan Hunzaker</a>，和 <a href="https://twitter.com/xander76">Sasha Aickin</a>。</p>]]></description><link>https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</guid><pubDate>Tue, 26 Sep 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[React v15.6.2]]></title><description><![CDATA[<p>今天我们发布了 React 15.6.2。在 15.6.1，我们为产生的一些意外结果的变更事件和输入进行了修复。这些问题已经被消除，同时我们也包含了一些用于提高 React 跨浏览器稳定性的补丁。</p>
-<p>此外，15.6.2 增加了 <a href="https://developers.google.com/web/updates/2017/03/chrome-58-media-updates#controlslist"><code class="gatsby-code-text">controlList</code></a> 特性，以及 CSS columns 不再需要添加 <code class="gatsby-code-text">px</code> 后缀。</p>
-<h2 id="安装"><a href="#%E5%AE%89%E8%A3%85" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>安装</h2>
-<p>我们推荐使用 <a href="https://yarnpkg.com/">Yarn</a>或 <a href="https://www.npmjs.com/">npm</a>来管理前端依赖。若你是初次接触包管理器，<a href="https://yarnpkg.com/en/docs/getting-started">Yarn 文档</a>是一个不错的起点。</p>
-<p>通过Yarn安装React，运行：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code class="gatsby-code-bash">yarn add react@^15.6.0 react-dom@^15.6.0
-</code></pre>
-      </div>
-<p>通过npm安装React，运行：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-bash"><code class="gatsby-code-bash"><span class="token function">npm</span> <span class="token function">install</span> --save react@^15.6.0 react-dom@^15.6.0
-</code></pre>
-      </div>
-<p>我们推荐如 <a href="https://webpack.js.org/">webpack</a> 或 <a href="http://browserify.org/">Browserify</a> 打包器，以让你可以编写模块化代码并将其打包到一起放在一个小的包内以优化加载时间。</p>
-<p>记住默认情况下，React 在开发模式下运行会带有额外检查并提供有用的警告。当部署你的应用时，确保其<a href="/react/docs/installation.html#development-and-production-versions">在生产模式编译</a>。</p>
-<p>万一你未使用打包器，我们也提供了一个预先构建好的包在npm上，你可以在你的页面中<a href="/react/docs/installation.html#using-a-cdn">通过script标签引入</a>：</p>
-<ul>
-<li><strong>React</strong><br/>
-带警告的开发版本: <a href="https://unpkg.com/react@15.6.2/dist/react.js">react/dist/react.js</a><br/>
-用于生产的压缩版本: <a href="https://unpkg.com/react@15.6.2/dist/react.min.js">react/dist/react.min.js</a><br/></li>
-<li><strong>React with Add-Ons</strong><br/>
-带警告的开发版本: <a href="https://unpkg.com/react@15.6.2/dist/react-with-addons.js">react/dist/react-with-addons.js</a><br/>
-用于生产的压缩版本: <a href="https://unpkg.com/react@15.5.2/dist/react-with-addons.min.js">react/dist/react-with-addons.min.js</a><br/></li>
-<li><strong>React DOM</strong> (页面中在React DOM之前引入React) <br/>
-带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.2/dist/react-dom.js">react-dom/dist/react-dom.js</a><br/>
-用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.2/dist/react-dom.min.js">react-dom/dist/react-dom.min.js</a><br/></li>
-<li><strong>React DOM Server</strong> (页面中在 React DOM Server 之前引入 React)<br/>
-带警告的开发版本: <a href="https://unpkg.com/react-dom@15.6.2/dist/react-dom-server.js">react-dom/dist/react-dom-server.js</a><br/>
-用于生产的压缩版本: <a href="https://unpkg.com/react-dom@15.6.2/dist/react-dom-server.min.js">react-dom/dist/react-dom-server.min.js</a><br/></li>
-</ul>
-<p>我们还在 npm 上发布了 <code class="gatsby-code-text">react</code>，<code class="gatsby-code-text">react-dom</code> 及附件包的<code class="gatsby-code-text">15.6.2</code> 版本以及在bower上发布了 <code class="gatsby-code-text">react</code> 包。</p>
-<hr>
-<h2 id="changelog"><a href="#changelog" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
-<h2 id="1562-september-25-2017"><a href="#1562-september-25-2017" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>15.6.2 (September 25, 2017)</h2>
-<h3 id="所有包"><a href="#%E6%89%80%E6%9C%89%E5%8C%85" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>所有包</h3>
-<ul>
-<li>从 BSD + Patents 切换到 MIT 协议</li>
-</ul>
-<h3 id="react-dom"><a href="#react-dom" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>React DOM</h3>
-<ul>
-<li>修复了当 <code class="gatsby-code-text">document.documentMode</code> 被修改时，在其他浏览器触发了 IE检测而中断了变更事件的 bug。（<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/10032">#10032</a> 提及）</li>
-<li>CSS Columns 会被认为是无单位的数字。（<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/10115">#10115</a> 提及）</li>
-<li>Fix bug in QtWebKit when wrapping synthetic events in proxies. (<a href="https://github.com/walrusfruitcake">@walrusfruitcake</a> in <a href="https://github.com/facebook/react/pull/10011">#10115</a>)</li>
-<li>修复了在 QtWebKit下合成事件包装在 proxies 的 bug。（<a href="https://github.com/walrusfruitcake">@walrusfruitcake</a> 在 <a href="https://github.com/facebook/react/pull/10011">#10115</a> 提及）</li>
-<li>在开发环境下阻止事件处理器接受额外参数。（<a href="https://github.com/aweary">@aweary</a> 在 <a href="https://github.com/facebook/react/pull/8363">#10115</a> 提及）</li>
-<li>修复带有 <code class="gatsby-code-text">defaultChecked</code> 单选框（radio）不触发 <code class="gatsby-code-text">onChange</code> 的情况。（<a href="https://github.com/jquense">@jquense</a> 在 <a href="https://github.com/facebook/react/pull/10156">#10156</a> 提及）</li>
-<li>将 <code class="gatsby-code-text">controlList</code> 添加到 DOM 特性白名单（<a href="https://github.com/nhunzaker">@nhunzaker</a> 在 <a href="https://github.com/facebook/react/pull/9940">#9940</a> 提及）</li>
-<li>修复了开发环境下当在构造函数里创建带有 ref 的元素并未抛出异常。（<a href="https://github.com/iansu">@iansu</a> 在 <a href="https://github.com/facebook/react/pull/10025">#10025</a> 提及）</li>
-</ul>]]></description><link>https://doc.react-china.org/blog/2017/09/25/react-v15.6.2.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/25/react-v15.6.2.html</guid><pubDate>Mon, 25 Sep 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[DOM Attributes in React 16]]></title><description><![CDATA[<p>过去，React 习惯于忽视未知的 DOM 属性。若你在 JSX 中写了一个 React 无法识别的元素， React 将会忽略他。例如这样：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// Your code:</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>something<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>在 React 15 中将会在 DOM 节点中渲染一个空的 div:</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// React 15 output:</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>在 React 16 中，我们做了一些改变。未知特性会在 DOM 节点的末尾：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// React 16 output:</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>something<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<h2 id="为何要改变？"><a href="#%E4%B8%BA%E4%BD%95%E8%A6%81%E6%94%B9%E5%8F%98%EF%BC%9F" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>为何要改变？</h2>
-<p>React 为 DOM 提供了以 JavaScript 为核心的 API。由于 React 组件总是带有自定义以及 DOM 相关的 props，其使得 React 使用小驼峰命名会更易理解，类似于 DOM 的 API：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabIndex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>这并未改变。然而，过去这一方式强制我们在库中维护一个合法的 DOM 元素白名单：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// ...</span>
-summary<span class="token punctuation">:</span> <span class="token string">'summary'</span><span class="token punctuation">,</span>
-tabIndex<span class="token punctuation">:</span> <span class="token string">'tabindex'</span>
-target<span class="token punctuation">:</span> <span class="token string">'target'</span><span class="token punctuation">,</span>
-title<span class="token punctuation">:</span> <span class="token string">'title'</span><span class="token punctuation">,</span>
-<span class="token comment">// ...</span>
-</code></pre>
-      </div>
-<p>这一方是有两个弊端：</p>
-<ul>
-<li>
-<p>你无法<a href="https://github.com/facebook/react/issues/140">传自定义属性</a>。而这对于未标准化的浏览器相关的属性，尝试新的DOM API以及集成一些独特的第三方库。</p>
-</li>
-<li>
-<p>属性列表不断地增长，但 大部分 React 独有的属性命名已在 DOM 中合法。移除白名单的大部分属性能够稍微减少库的大小。</p>
-</li>
-</ul>
-<p>随着新版本发布，这些问题都将解决。在 React 16 中，你可以传递自定义属性给所有的 HTML 和 SVG 元素，同时 React 也不必在将所有的属性白名单包含进生产版本里。</p>
-<p><strong>注意，对于已知属性，你仍需要使用规范的 React 命名。</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token comment">// Yes, please</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabIndex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-
-<span class="token comment">// Warning: Invalid DOM property `tabindex`. Did you mean `tabIndex`?</span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabindex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>换句话说，你在 React 中使用 DOM 组件的方式并没有改变，但现在你有了新方式。</p>
-<h2 id="应该在属性中存储数据？"><a href="#%E5%BA%94%E8%AF%A5%E5%9C%A8%E5%B1%9E%E6%80%A7%E4%B8%AD%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%EF%BC%9F" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>应该在属性中存储数据？</h2>
-<p>不。我们不鼓励奖数据存放在 DOM 属性中。即使你不得不，使用 <code class="gatsby-code-text">data-</code>
-可能会是更好的方式，但大多数情况下数据应被保存在 React 组件状态或额外存储。</p>
-<p>然而，若你需要使用非标准化的或是新的 DOM 属性那新特性将会十分方便，或若你需要与依赖这些新特性的第三方库进行整合。</p>
-<h2 id="data-和-aria-属性"><a href="#data-%E5%92%8C-aria-%E5%B1%9E%E6%80%A7" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data 和 ARIA 属性</h2>
-<p>和之前一样，React 能够让你随意地传递 <code class="gatsby-code-text">data-</code> 和 <code class="gatsby-code-text">aria-</code>：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">data-foo</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>42<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">aria-label</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Close<span class="token punctuation">"</span></span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>onClose<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>这并没有改变。</p>
-<p><a href="/react/docs/accessibility.html">可访问性</a> 非常重要，因此即使 React 16 能够传递任何属性，其仍然会在开发模式下验证 <code class="gatsby-code-text">aria-</code> props 是否正确命名，就像之前 React 15 一样。</p>
-<h2 id="迁移路径"><a href="#%E8%BF%81%E7%A7%BB%E8%B7%AF%E5%BE%84" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>迁移路径</h2>
-<p>自一年多前的 <a href="https://github.com/facebook/react/releases/tag/v15.2.0">React 15.2.0</a> 发布，我们已将<a href="/react/warnings/unknown-prop.html">关于未知属性的一个警告</a> 包含在内。大量的第三方库也已进行代码升级。若你的应用在 React 15.2.0 或更高版本中并未产生警告，那么这一改变并不需要修改你应用中的代码。</p>
-<p>若你仍意外地传递非 DOM props 到 DOM 组件中，在 React 16 你将会在 DOM 中开始看到这些特性，例如：</p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">myData</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>[Object object]<span class="token punctuation">'</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>这在一定程度上是安全的（浏览器将会忽略他们）但当你看到他们时，我们建议你修复这些问题。一个潜在的问题是若你传递一个实现了自定义的 <code class="gatsby-code-text">toString()</code> 或 <code class="gatsby-code-text">valueOf()</code> 方法的对象将会抛出异常。另一个可能的问题是合法的 HTML 元素如 <code class="gatsby-code-text">align</code> 和 <code class="gatsby-code-text">valign</code> 现在会被传递给 DOM。它们过去则是被忽略，因为React 并不支持它们。</p>
-<p>为避免这些问题，在升级到 React 16 之前，我们建议你修复你在 React 15中看到的这些警告。</p>
-<h2 id="变更细节"><a href="#%E5%8F%98%E6%9B%B4%E7%BB%86%E8%8A%82" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>变更细节</h2>
-<p>我们已做了一些其他调整已让行为能够更加可预测并能致力于让你不犯错。我们无法预期这些改变可能会破坏实际应用。</p>
-<p><strong>这些变更仅影响 DOM 组件 如 <code class="gatsby-code-text">&lt;div&gt;</code>，而不会影响你自己的组件。</strong></p>
-<p>下列是变更的细节。</p>
-<ul>
-<li>
-<p><strong>带有字符，数字或对象值得未知属性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>value<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token number">42</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">mycustomattribute</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>myObject<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>React 15：警告并忽略。
-React 16：将值转换成字符串并传递给组件。</p>
-<p><em>注意：以 <code class="gatsby-code-text">on</code> 开始的特性并不会被传递而是抛出异常因为这可能是一个潜在的安全漏洞。</em></p>
-</li>
-<li>
-<p><strong>带有不同规范的 React 命名的已知属性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabindex</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>-1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hi<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>React 15：警告并忽略。
-React 16：警告但会将其转换为字符串并传递给组件。</p>
-<p><em>注意：永远对支持的特性使用规范的 React 命名规则。</em></p>
-</li>
-<li>
-<p><strong>带有布尔值的非布尔值特性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">className</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token boolean">false</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>React 15：将布尔值转换为字符串并传递给组件
-React 16：警告并忽略。</p>
-</li>
-<li>
-<p><strong>带有函数的非事件特性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
-</code></pre>
-      </div>
-<p>React 15：将函数转换为字符串并传递给组件。
-React 16：警告并忽略。</p>
-</li>
-<li>
-<p><strong>带有 Symbol 的属性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">className</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>React 15：崩溃。
-React 16：警告并忽略。</p>
-</li>
-<li>
-<p><strong>带有 <code class="gatsby-code-text">NaN</code> 值的属性：</strong></p>
-<div class="gatsby-highlight">
-      <pre class="gatsby-code-jsx"><code class="gatsby-code-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">tabIndex</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token number">0</span> <span class="token operator">/</span> <span class="token number">0</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-      </div>
-<p>React 15：将 <code class="gatsby-code-text">NaN</code> 转换为字符串并传递给组件。
-React 16：警告并忽略。</p>
-</li>
-</ul>
-<p>随这一测试版的发布，我们也为所有已知元素<a href="https://github.com/facebook/react/blob/master/fixtures/attribute-behavior/AttributeTableSnapshot.md">创建一个自动生成的表单</a>以追踪潜在的问题。</p>
-<h2 id="试一试"><a href="#%E8%AF%95%E4%B8%80%E8%AF%95" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>试一试</h2>
-<p>你可以在 <a href="https://codepen.io/gaearon/pen/gxNVdP?editors=0010">CodePen</a> 尝试这些变更。其使用 React 16 RC 版本，你也可以 <a href="https://github.com/facebook/react/issues/10294">在你的项目中帮助我们测试 RC</a>。</p>
-<h2 id="感谢"><a href="#%E6%84%9F%E8%B0%A2" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>感谢</h2>
-<p>这一努力大部分由一位 <a href="https://github.com/nhunzaker">Nathan Hunzaker</a> 所推动， <a href="https://github.com/facebook/react/pulls?q=is%3Apr+author%3Anhunzaker+is%3Aclosed">其是一位高产的 React 外部贡献者</a>。</p>
-<p>你可以在过去一年的历程里在下列几个 PR 的这个问题上发现他的工作：
-<a href="https://github.com/facebook/react/pull/6459">#6459</a>、<a href="https://github.com/facebook/react/pull/7311">#7311</a>、<a href="https://github.com/facebook/react/pull/10229">#10229</a>、<a href="https://github.com/facebook/react/pull/10397">#10397</a>、<a href="https://github.com/facebook/react/pull/10385">#10385</a> 和 <a href="https://github.com/facebook/react/pull/10470">#10470</a>。</p>
-<p>在一个受欢迎的项目中核心的调整需要花费大量时间和研究。Nathan 展示了坚定的决心并承诺完成这一调整，我们非常感谢他的这一工作及其他的贡献。</p>
-<p>我们也想要感谢 <a href="https://github.com/aweary">Brandon Dail</a> 和 <a href="https://github.com/jquense">Jason Quense</a> 在这一年中无私地帮助维护 React 项目。</p>
-<h2 id="未来计划"><a href="#%E6%9C%AA%E6%9D%A5%E8%AE%A1%E5%88%92" aria-hidden="true" class="anchor"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>未来计划</h2>
-<p>我们还未调整 <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements">自定义元素</a> 如何在 React 16 中工作，但关于设置属性而非特性已经有了一些<a href="https://github.com/facebook/react/issues/7249">讨论</a>，我们可能在 React 17 中在回过头来看看。若你愿意提供帮助，随时都可以来提。</p>]]></description><link>https://doc.react-china.org/blog/2017/09/08/dom-attributes-in-react-16.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/08/dom-attributes-in-react-16.html</guid><pubDate>Fri, 08 Sep 2017 00:00:00 GMT</pubDate></item></channel></rss>
+<p>尤其感谢我们的核心贡献者，尤其是在过去几周的预发布周期的卓越贡献：<a href="https://twitter.com/aweary">Brandon Dail</a>，<a href="https://twitter.com/monasticpanic">Jason Quense</a>，<a href="https://twitter.com/natehunzaker">Nathan Hunzaker</a>，和 <a href="https://twitter.com/xander76">Sasha Aickin</a>。</p>]]></description><link>https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</link><guid isPermaLink="false">https://doc.react-china.org/blog/2017/09/26/react-v16.0.html</guid><pubDate>Tue, 26 Sep 2017 00:00:00 GMT</pubDate></item></channel></rss>
