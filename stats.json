@@ -797,8 +797,8 @@
       "path---redirect-to-codepen-update-on-async-rendering-invoking-external-callbacks-before-8168b899529df7a68922.js.map"
     ],
     "commons": [
-      "commons-de5e68ddeedfde110b3b.js",
-      "commons-de5e68ddeedfde110b3b.js.map"
+      "commons-84934e6cf821964f786c.js",
+      "commons-84934e6cf821964f786c.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-6d8444c8c6d23ebdebe5.js",
@@ -1061,9 +1061,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-533494e19ff2314905fa.js",
+      "app-13dbc1d809fdac92e1b4.js",
       "build-js-styles.css",
-      "app-533494e19ff2314905fa.js.map",
+      "app-13dbc1d809fdac92e1b4.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
