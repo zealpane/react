@@ -1057,9 +1057,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-cbfa0fd227acd74e6147.js",
+      "app-5baff9fa4c3a7c7d5135.js",
       "build-js-styles.css",
-      "app-cbfa0fd227acd74e6147.js.map",
+      "app-5baff9fa4c3a7c7d5135.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
@@ -1291,8 +1291,8 @@
       "path---docs-test-utils-html-74b0e72addcfe9283dde.js.map"
     ],
     "path---docs-static-type-checking-html": [
-      "path---docs-static-type-checking-html-8bb876ba5c20b3eb83ff.js",
-      "path---docs-static-type-checking-html-8bb876ba5c20b3eb83ff.js.map"
+      "path---docs-static-type-checking-html-1074878ab8782d9177fe.js",
+      "path---docs-static-type-checking-html-1074878ab8782d9177fe.js.map"
     ]
   }
 }
