@@ -937,8 +937,8 @@
       "path---blog-2013-10-3-community-roundup-9-html-69eae259b760fdd1c150.js.map"
     ],
     "path---docs-rendering-elements-html": [
-      "path---docs-rendering-elements-html-6fe95753a8eca4aeba98.js",
-      "path---docs-rendering-elements-html-6fe95753a8eca4aeba98.js.map"
+      "path---docs-rendering-elements-html-85abb0775fa9853a6d09.js",
+      "path---docs-rendering-elements-html-85abb0775fa9853a6d09.js.map"
     ],
     "path---redirect-to-codepen-forwarding-refs-log-props-after": [
       "path---redirect-to-codepen-forwarding-refs-log-props-after-3f00788383c257481444.js",
@@ -1057,9 +1057,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-3e964dde464703cd53e3.js",
+      "app-1a6992ab50a283bb1ee1.js",
       "build-js-styles.css",
-      "app-3e964dde464703cd53e3.js.map",
+      "app-1a6992ab50a283bb1ee1.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
