@@ -409,8 +409,8 @@
       "path---docs-reconciliation-html-62b234da42b62e8cd8f9.js.map"
     ],
     "path---docs-refs-and-the-dom-html": [
-      "path---docs-refs-and-the-dom-html-8d4a4335a5268ded6783.js",
-      "path---docs-refs-and-the-dom-html-8d4a4335a5268ded6783.js.map"
+      "path---docs-refs-and-the-dom-html-d85f10aa10ba7d56055d.js",
+      "path---docs-refs-and-the-dom-html-d85f10aa10ba7d56055d.js.map"
     ],
     "path---blog-2014-03-19-react-v-0-10-rc-1-html": [
       "path---blog-2014-03-19-react-v-0-10-rc-1-html-df14ec8b6392d1bc5563.js",
@@ -1057,9 +1057,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-1a6992ab50a283bb1ee1.js",
+      "app-dca6587ee5e82c58c946.js",
       "build-js-styles.css",
-      "app-1a6992ab50a283bb1ee1.js.map",
+      "app-dca6587ee5e82c58c946.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
