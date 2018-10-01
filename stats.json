@@ -464,6 +464,10 @@
       "path---blog-2014-12-18-react-v-0-12-2-html-fd154ddd47d0d2987868.js",
       "path---blog-2014-12-18-react-v-0-12-2-html-fd154ddd47d0d2987868.js.map"
     ],
+    "path---docs-getting-started-html": [
+      "path---docs-getting-started-html-824641c5ddc9ff070731.js",
+      "path---docs-getting-started-html-824641c5ddc9ff070731.js.map"
+    ],
     "path---redirect-to-codepen-context-lifecycles": [
       "path---redirect-to-codepen-context-lifecycles-8841c8b447063f7f1d9d.js",
       "path---redirect-to-codepen-context-lifecycles-8841c8b447063f7f1d9d.js.map"
@@ -648,10 +652,6 @@
       "path---blog-2014-03-21-react-v-0-10-html-ff8944b7197f6ff78e8a.js",
       "path---blog-2014-03-21-react-v-0-10-html-ff8944b7197f6ff78e8a.js.map"
     ],
-    "path---docs-try-react-html": [
-      "path---docs-try-react-html-8a2f88cdb047a18ab898.js",
-      "path---docs-try-react-html-8a2f88cdb047a18ab898.js.map"
-    ],
     "path---docs-react-dom-server-html": [
       "path---docs-react-dom-server-html-f5e8f64b791629bc360b.js",
       "path---docs-react-dom-server-html-f5e8f64b791629bc360b.js.map"
@@ -801,8 +801,8 @@
       "path---redirect-to-codepen-update-on-async-rendering-invoking-external-callbacks-before-8168b899529df7a68922.js.map"
     ],
     "commons": [
-      "commons-b57d49117c201561a86d.js",
-      "commons-b57d49117c201561a86d.js.map"
+      "commons-bfcdb7358548186113f7.js",
+      "commons-bfcdb7358548186113f7.js.map"
     ],
     "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html": [
       "path---blog-2015-03-19-building-the-facebook-news-feed-with-relay-html-fad1037912dd2777d139.js",
@@ -821,8 +821,8 @@
       "path---docs-jsx-in-depth-html-68950a4553f132aa3220.js.map"
     ],
     "path---docs-hello-world-html": [
-      "path---docs-hello-world-html-14314fe080bd367b2846.js",
-      "path---docs-hello-world-html-14314fe080bd367b2846.js.map"
+      "path---docs-hello-world-html-133eb796620e0ea1ff0b.js",
+      "path---docs-hello-world-html-133eb796620e0ea1ff0b.js.map"
     ],
     "path---docs-conditional-rendering-html": [
       "path---docs-conditional-rendering-html-bb9cbb3b86a6ee0b37aa.js",
@@ -1065,9 +1065,9 @@
       "path---redirect-to-codepen-16-3-release-blog-post-fancy-button-example-96cb387294f2f9e75ddc.js.map"
     ],
     "app": [
-      "app-a0a1132c3c6b6a3faa7f.js",
+      "app-977ada7198ab6f790432.js",
       "build-js-styles.css",
-      "app-a0a1132c3c6b6a3faa7f.js.map",
+      "app-977ada7198ab6f790432.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-shallow-compare-html": [
