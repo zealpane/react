@@ -79,7 +79,7 @@ ReactDOM.render(
 
 你可以通过5个步骤将函数组件 `Clock` 转换为类
 
-1. 创建一个名称扩展为 `React.Component` 的[ES6 类](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes)
+1. 创建一个名称继承 `React.Component` 的[ES6 类](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes)
 
 2. 创建一个叫做`render()`的空方法
 
